@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Crown, Edit2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Crown, Edit2, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites, useAttendances } from '@/hooks/useFavorites';
 import { useEvents } from '@/hooks/useEvents';
@@ -12,6 +12,7 @@ import NotificationSettingsModal from '../modals/NotificationSettingsModal';
 import ProfilePhotoModal from '../modals/ProfilePhotoModal';
 import EditProfileModal from '../modals/EditProfileModal';
 import UpdatePasswordModal from '../modals/UpdatePasswordModal';
+import { supabase } from '@/lib/supabase';
 
 interface ProfileViewProps {
   events: Event[];
@@ -45,6 +46,32 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
   const [showProfilePhoto, setShowProfilePhoto] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showUpdatePassword, setShowUpdatePassword] = useState(false);
+  const [emailVisible, setEmailVisible] = useState(false);
+
+  // Email görünürlük durumunu yükle
+  useEffect(() => {
+    if (profile) {
+      setEmailVisible(profile.email_visible ?? false);
+    }
+  }, [profile]);
+
+  // Email görünürlüğünü değiştir
+  const toggleEmailVisibility = async () => {
+    if (!user) return;
+
+    const newVisibility = !emailVisible;
+    setEmailVisible(newVisibility);
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ email_visible: newVisibility })
+      .eq('id', user.id);
+
+    if (error) {
+      console.error('Email görünürlük güncellenirken hata:', error);
+      setEmailVisible(!newVisibility); // Revert on error
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -276,7 +303,9 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                     <Edit2 className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-sm text-white/60 mb-3">{user.email}</p>
+                {emailVisible && (
+                  <p className="text-sm text-white/60 mb-3">{user.email}</p>
+                )}
 
                 {/* Stats */}
                 <div className="flex gap-4">
@@ -421,6 +450,35 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                     <span className="text-white">Bildirim Ayarları</span>
                   </div>
                   <span className="text-white/40">›</span>
+                </button>
+
+                <div className="border-t border-white/10"></div>
+
+                {/* Email Görünürlüğü */}
+                <button
+                  onClick={toggleEmailVisibility}
+                  className="w-full flex items-center justify-between hover:bg-white/5 rounded-xl p-3 -mx-3 transition-all"
+                >
+                  <div className="flex items-center gap-3">
+                    {emailVisible ? (
+                      <Eye className="w-5 h-5 text-white/60" />
+                    ) : (
+                      <EyeOff className="w-5 h-5 text-white/60" />
+                    )}
+                    <div className="text-left">
+                      <div className="text-white">Email Adresi Görünürlüğü</div>
+                      <div className="text-xs text-white/50">
+                        {emailVisible ? 'Profilimde görünür' : 'Profilimde gizli'}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`w-12 h-6 rounded-full transition-colors ${
+                    emailVisible ? 'bg-green-500' : 'bg-white/20'
+                  } relative`}>
+                    <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                      emailVisible ? 'translate-x-6' : ''
+                    }`}></div>
+                  </div>
                 </button>
 
                 <div className="border-t border-white/10"></div>

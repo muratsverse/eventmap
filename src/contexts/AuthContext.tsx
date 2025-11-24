@@ -11,6 +11,7 @@ interface Profile {
   cover_photo: string | null;
   is_premium: boolean;
   is_admin: boolean;
+  email_visible?: boolean;
 }
 
 interface AuthContextType {
