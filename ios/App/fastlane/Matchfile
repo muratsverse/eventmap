@@ -1,6 +1,6 @@
 # Matchfile for EventMap
 
-git_url("https://github.com/GITHUB_USERNAME/eventmap-certificates")
+git_url("https://github.com/muratsverse/eventmap-certificates")
 git_branch("main")
 
 storage_mode("git")
