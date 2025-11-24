@@ -49,7 +49,7 @@ jobs:
           FASTLANE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
         run: |
           cd ios/App
-          fastlane match appstore --readonly
+          fastlane match appstore
 
       - name: Build and upload to TestFlight
         env:

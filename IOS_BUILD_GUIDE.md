@@ -153,92 +153,9 @@ Write-Output $encoded
 
 ---
 
-### 🔴 ADIM 7: Fastlane Match Kurulumu
+### 🔴 ADIM 7: App Store Connect'te Uygulama Oluşturma
 
-Bu adım **MAC'te** yapılmalı. Eğer Mac'iniz varsa:
-
-#### 7.1 Mac'te Terminal Açın
-
-```bash
-# Projeyi Mac'e kopyalayın (USB, GitHub, vb.)
-
-# Proje klasörüne gidin
-cd /path/to/Eventmap
-
-# Node bağımlılıklarını yükleyin
-npm install
-
-# Build alın
-npm run build
-
-# iOS'u sync edin
-npx cap sync ios
-
-# iOS App klasörüne gidin
-cd ios/App
-
-# Ruby gem'lerini yükleyin
-bundle install
-
-# Fastlane Match'i başlatın
-bundle exec fastlane match init
-
-# "git" seçin
-# Repo URL: https://github.com/KULLANICI_ADINIZ/eventmap-certificates.git
-```
-
-#### 7.2 Sertifikaları Oluşturun
-
-```bash
-# Hala ios/App klasöründeyken
-
-# Environment variable'ları set edin
-export MATCH_PASSWORD="ADIM_6_DAKI_MATCH_PASSWORD"
-export FASTLANE_USER="APPLE_EMAIL_ADRESINIZ"
-export FASTLANE_PASSWORD="APP_SPECIFIC_PASSWORD"
-
-# Sertifikaları oluşturun
-bundle exec fastlane match appstore
-```
-
-Bu komut:
-- Apple Developer Portal'a bağlanacak
-- Distribution certificate oluşturacak
-- Provisioning profile oluşturacak
-- Bunları şifreyip `eventmap-certificates` repo'suna yükleyecek
-
-**Önemli:** Apple hesabınıza ait 2FA kodu istenirse girin.
-
----
-
-### 🔴 ADIM 8: Matchfile Güncelleme
-
-[ios/App/fastlane/Matchfile](ios/App/fastlane/Matchfile) dosyasını açın:
-
-**Değiştirin:**
-```ruby
-git_url("https://github.com/GITHUB_USERNAME/eventmap-certificates")
-```
-
-**Şununla:**
-```ruby
-git_url("https://github.com/KULLANICI_ADINIZ/eventmap-certificates")
-```
-
-`KULLANICI_ADINIZ` yerine kendi GitHub kullanıcı adınızı yazın!
-
-**Commit ve push:**
-```powershell
-git add ios/App/fastlane/Matchfile
-git commit -m "Update Matchfile with correct repo URL"
-git push
-```
-
----
-
-### 🔴 ADIM 9: App Store Connect'te Uygulama Oluşturma
-
-#### 9.1 Uygulamayı Kaydet
+#### 7.1 Uygulamayı Kaydet
 
 1. [appstoreconnect.apple.com](https://appstoreconnect.apple.com) adresine gidin
 2. **My Apps** → **+** → **New App**
@@ -246,11 +163,11 @@ git push
    - **Platform:** iOS
    - **Name:** EventMap
    - **Primary Language:** Turkish
-   - **Bundle ID:** `com.eventmap.app` (Adım 2'de oluşturduğunuz)
+   - **Bundle ID:** `com.muratveozturk.eventmap` (Adım 2'de oluşturduğunuz)
    - **SKU:** `eventmap` (benzersiz bir kod)
    - **User Access:** Full Access
 
-#### 9.2 Temel Bilgileri Doldurun
+#### 7.2 Temel Bilgileri Doldurun
 
 **App Information:**
 - **Category:** Entertainment veya Social Networking
@@ -260,12 +177,12 @@ git push
 - **Price:** Free (veya fiyat belirleyin)
 - **Availability:** Tüm ülkeler
 
-#### 9.3 App Privacy
+#### 7.3 App Privacy
 
 - **Privacy Policy URL:** (Hazırlamanız gerekiyor - zorunlu!)
 - Veri toplama politikanızı belirtin
 
-#### 9.4 Screenshots Hazırlama
+#### 7.4 Screenshots Hazırlama
 
 **Gerekli boyutlar:**
 - **6.7" (iPhone 14 Pro Max):** 1290 x 2796 px
@@ -283,7 +200,7 @@ En az **3 farklı ekran** gerekli:
 
 ---
 
-### 🔴 ADIM 10: İlk Build'i Tetikleme
+### 🔴 ADIM 8: İlk Build'i Tetikleme
 
 Artık her şey hazır! Build başlatmak için:
 
@@ -317,7 +234,7 @@ Push yaptığınızda GitHub Actions otomatik başlayacak.
 ### Olası Hatalar ve Çözümleri
 
 #### ❌ "No matching code signing identity found"
-**Çözüm:** Adım 7'yi Mac'te yapın (sertifikalar oluşturulmamış).
+**Çözüm:** İlk build'de sertifikalar otomatik oluşturulacak. GitHub Secrets'ların doğru girildiğinden emin olun (ADIM 6).
 
 #### ❌ "Could not find a valid Gemfile"
 **Çözüm:** `ios/App/Gemfile` dosyasının GitHub'da olduğundan emin olun.
@@ -328,7 +245,7 @@ Push yaptığınızda GitHub Actions otomatik başlayacak.
 - `APPLE_ID` secret'ını kontrol edin
 
 #### ❌ "Match repo not found"
-**Çözüm:** Adım 8'i yapın (Matchfile güncellemesi).
+**Çözüm:** `eventmap-certificates` repo'sunun oluşturulduğundan ve private olduğundan emin olun.
 
 ---
 
@@ -365,13 +282,13 @@ TestFlight'ta sorunsuz çalıştıktan sonra:
 **Sık Sorulan Sorular:**
 
 **S: Mac'im yok, ne yapabilirim?**
-C: Adım 7 için bir arkadaşınızdan Mac ödünç alabilir veya MacStadium/MacinCloud gibi cloud Mac servislerini kullanabilirsiniz (saatlik ~$1).
+C: Mac'e ihtiyacınız yok! GitHub Actions otomatik olarak macOS runner kullanarak build alıyor.
 
 **S: Build başarılı oldu ama App Store Connect'te görünmüyor?**
 C: İşleme 10-30 dakika sürebilir. Ayrıca spam klasörünüzü kontrol edin, Apple email gönderir.
 
 **S: Sertifika şifremi unuttum?**
-C: `eventmap-certificates` repo'sunu silin, Adım 7'yi tekrarlayın ve yeni bir şifre belirleyin.
+C: `eventmap-certificates` repo'sunu silin ve GitHub Actions'ı tekrar tetikleyin, otomatik olarak yeni sertifikalar oluşturulacak.
 
 **S: GitHub Actions'ı tetikledim, hiç build başlamadı?**
 C: Repo → Settings → Actions → **Allow all actions** seçeneğinin açık olduğundan emin olun.
@@ -383,14 +300,13 @@ C: Repo → Settings → Actions → **Allow all actions** seçeneğinin açık 
 Göndermeden önce:
 
 - [ ] Apple Developer hesabı aktif (99$ ödendi)
-- [ ] App ID oluşturuldu
+- [ ] App ID oluşturuldu (`com.muratveozturk.eventmap`)
 - [ ] GitHub'da 2 repo var (ana proje + sertifikalar)
-- [ ] GitHub Secrets eklendi (4 adet)
-- [ ] Fastlane Match kuruldu (Mac'te)
-- [ ] Matchfile güncellendi
+- [ ] GitHub Secrets eklendi (4 adet: APPLE_ID, APPLE_PASSWORD, MATCH_PASSWORD, GIT_AUTHORIZATION)
 - [ ] App Store Connect'te uygulama oluşturuldu
 - [ ] Screenshots hazırlandı (6.7" ve 5.5")
 - [ ] Privacy Policy URL'si hazır
+- [ ] İlk build tetiklendi (GitHub Actions otomatik sertifikaları oluşturacak)
 - [ ] TestFlight'ta test edildi
 - [ ] Build başarılı
 
