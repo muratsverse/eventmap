@@ -1,0 +1,82 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="url(#gradient)"/>
+
+  <!-- Central Location Pin -->
+  <g transform="translate(256, 180)">
+    <path d="M0 -84C-46.392 -84 -84 -46.392 -84 0C-84 69.333 0 180 0 180C0 180 84 69.333 84 0C84 -46.392 46.392 -84 0 -84Z" fill="white" opacity="0.95"/>
+    <circle cx="0" cy="0" r="28" fill="#A855F7"/>
+  </g>
+
+  <!-- Music Note (Top Left) -->
+  <g transform="translate(140, 120)">
+    <circle cx="0" cy="28" r="12" fill="white" opacity="0.9"/>
+    <circle cx="16" cy="24" r="12" fill="white" opacity="0.9"/>
+    <rect x="10" y="-8" width="4" height="36" fill="white" opacity="0.9"/>
+    <rect x="26" y="-8" width="4" height="32" fill="white" opacity="0.9"/>
+    <path d="M10 -8 L30 -12 L30 0 L10 4 Z" fill="white" opacity="0.9"/>
+  </g>
+
+  <!-- Theater Masks (Top Right) -->
+  <g transform="translate(372, 120)">
+    <!-- Happy Mask -->
+    <ellipse cx="-8" cy="0" rx="14" ry="16" fill="white" opacity="0.9"/>
+    <ellipse cx="-12" cy="-4" rx="3" ry="4" fill="#A855F7"/>
+    <ellipse cx="-4" cy="-4" rx="3" ry="4" fill="#A855F7"/>
+    <path d="M-14 4 Q-8 10 -2 4" stroke="#A855F7" stroke-width="2" fill="none"/>
+
+    <!-- Sad Mask -->
+    <ellipse cx="8" cy="0" rx="14" ry="16" fill="white" opacity="0.9"/>
+    <ellipse cx="4" cy="-4" rx="3" ry="4" fill="#EC4899"/>
+    <ellipse cx="12" cy="-4" rx="3" ry="4" fill="#EC4899"/>
+    <path d="M2 8 Q8 2 14 8" stroke="#EC4899" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- Sports Ball (Bottom Left) -->
+  <g transform="translate(140, 360)">
+    <circle cx="0" cy="0" r="22" fill="white" opacity="0.9"/>
+    <path d="M-8 -18 L-4 -6 L-12 2 M8 -18 L4 -6 L12 2" stroke="#3B82F6" stroke-width="3" fill="none"/>
+    <path d="M-18 8 L-6 4 L2 12 M18 8 L6 4 L-2 12" stroke="#3B82F6" stroke-width="3" fill="none"/>
+    <circle cx="0" cy="0" r="5" fill="#3B82F6"/>
+  </g>
+
+  <!-- Festival/Party Icon (Bottom Right) -->
+  <g transform="translate(372, 360)">
+    <!-- Party Hat -->
+    <path d="M0 -20 L-16 12 L16 12 Z" fill="white" opacity="0.9"/>
+    <circle cx="-8" cy="-4" r="3" fill="#EC4899"/>
+    <circle cx="4" cy="0" r="3" fill="#A855F7"/>
+    <circle cx="0" cy="8" r="3" fill="#3B82F6"/>
+    <ellipse cx="0" cy="12" rx="18" ry="4" fill="white" opacity="0.9"/>
+
+    <!-- Confetti -->
+    <rect x="-24" y="-8" width="3" height="8" fill="#A855F7" opacity="0.8" transform="rotate(20 -24 -8)"/>
+    <rect x="24" y="-4" width="3" height="8" fill="#EC4899" opacity="0.8" transform="rotate(-15 24 -4)"/>
+    <circle cx="-20" cy="8" r="2" fill="#3B82F6" opacity="0.8"/>
+    <circle cx="22" cy="10" r="2" fill="#A855F7" opacity="0.8"/>
+  </g>
+
+  <!-- Calendar Icon (Bottom Center) -->
+  <g transform="translate(256, 400)">
+    <rect x="-16" y="-16" width="32" height="36" rx="4" fill="white" opacity="0.9"/>
+    <rect x="-16" y="-16" width="32" height="10" rx="4" fill="#EC4899"/>
+    <rect x="-4" y="-20" width="3" height="8" rx="1.5" fill="white"/>
+    <rect x="1" y="-20" width="3" height="8" rx="1.5" fill="white"/>
+    <!-- Calendar grid -->
+    <circle cx="-8" cy="0" r="2" fill="#A855F7"/>
+    <circle cx="0" cy="0" r="2" fill="#A855F7"/>
+    <circle cx="8" cy="0" r="2" fill="#A855F7"/>
+    <circle cx="-8" cy="8" r="2" fill="#3B82F6"/>
+    <circle cx="0" cy="8" r="2" fill="#3B82F6"/>
+    <circle cx="8" cy="8" r="2" fill="#3B82F6"/>
+  </g>
+
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A855F7"/>
+      <stop offset="50%" stop-color="#EC4899"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+  </defs>
+</svg>

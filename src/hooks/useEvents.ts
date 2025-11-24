@@ -1,0 +1,133 @@
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase, supabaseHelpers } from '@/lib/supabase';
+import { mockEvents } from '@/data/mockData';
+import type { Event } from '@/types';
+
+// Convert database event to app event format
+const dbToEvent = (dbEvent: any): Event => ({
+  id: dbEvent.id,
+  title: dbEvent.title,
+  description: dbEvent.description,
+  category: dbEvent.category,
+  imageUrl: dbEvent.image_url,
+  date: dbEvent.date,
+  time: dbEvent.time,
+  endTime: dbEvent.end_time,
+  location: dbEvent.location,
+  address: dbEvent.address, // TAM ADRES
+  city: dbEvent.city,
+  price: {
+    min: dbEvent.price_min,
+    max: dbEvent.price_max,
+  },
+  organizer: dbEvent.organizer,
+  attendees: dbEvent.attendees,
+  latitude: dbEvent.latitude,
+  longitude: dbEvent.longitude,
+  isPremium: dbEvent.is_premium,
+  source: dbEvent.source,
+  status: dbEvent.status as 'draft' | 'inReview' | 'approved' | 'rejected',
+});
+
+export function useEvents(filters?: {
+  categories?: string[];
+  cities?: string[];
+}) {
+  return useQuery({
+    queryKey: ['events', filters],
+    queryFn: async () => {
+      // If Supabase not configured, return mock data
+      if (!supabaseHelpers.isConfigured()) {
+        let events = mockEvents;
+
+        // Apply filters to mock data
+        if (filters?.categories && filters.categories.length > 0) {
+          events = events.filter((e) => filters.categories!.includes(e.category));
+        }
+        if (filters?.cities && filters.cities.length > 0) {
+          events = events.filter((e) => filters.cities!.includes(e.city));
+        }
+
+        return events;
+      }
+
+      // Query from Supabase
+      let query = supabase.from('events').select('*').order('date', { ascending: true });
+
+      if (filters?.categories && filters.categories.length > 0) {
+        query = query.in('category', filters.categories);
+      }
+      if (filters?.cities && filters.cities.length > 0) {
+        query = query.in('city', filters.cities);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      return data.map(dbToEvent);
+    },
+  });
+}
+
+export function useNearbyEvents(latitude?: number, longitude?: number, distanceKm: number = 10) {
+  return useQuery({
+    queryKey: ['nearby-events', latitude, longitude, distanceKm],
+    queryFn: async () => {
+      if (!latitude || !longitude || !supabaseHelpers.isConfigured()) {
+        return [];
+      }
+
+      const { data, error } = await supabase.rpc('nearby_events', {
+        lat: latitude,
+        long: longitude,
+        distance_km: distanceKm,
+      });
+
+      if (error) throw error;
+
+      return data;
+    },
+    enabled: Boolean(latitude && longitude),
+  });
+}
+
+export function useCreateEvent() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (eventData: Partial<Event> & { creatorId: string }) => {
+      if (!supabaseHelpers.isConfigured()) {
+        throw new Error('Supabase not configured');
+      }
+
+      const { data, error } = await supabase
+        .from('events')
+        .insert({
+          title: eventData.title!,
+          description: eventData.description!,
+          category: eventData.category!,
+          image_url: eventData.imageUrl || '',
+          date: eventData.date!,
+          time: eventData.time!,
+          location: eventData.location!,
+          city: eventData.city!,
+          price_min: eventData.price?.min || 0,
+          price_max: eventData.price?.max || 0,
+          organizer: eventData.organizer!,
+          latitude: eventData.latitude!,
+          longitude: eventData.longitude!,
+          creator_id: eventData.creatorId,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return dbToEvent(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['events'] });
+    },
+  });
+}

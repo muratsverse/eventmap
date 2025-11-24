@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg?v=2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#A855F7" />
+    <meta name="description" content="Türkiye'nin en kapsamlı etkinlik rehberi - Konserler, festivallar, spor, tiyatro ve daha fazlası" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="EventMap" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json?v=2" />
+
+    <!-- PWA Icons -->
+    <link rel="apple-touch-icon" href="/icon.svg?v=2" />
+
+    <!-- Google AdSense -->
+    <!-- AdSense hesabı oluştuktan sonra aşağıdaki satırı aktif edin -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_ADSENSE_CLIENT_ID" crossorigin="anonymous"></script> -->
+
+    <title>EventMap - Türkiye Etkinlik Rehberi</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((reg) => console.log('✅ Service Worker registered:', reg.scope))
+            .catch((err) => console.error('❌ Service Worker registration failed:', err));
+        });
+      }
+    </script>
+
+    <!-- AdSense Auto Ads Initialization (Production'da aktif edin) -->
+    <script>
+      // AdSense client ID tanımlandıysa auto ads'i başlat
+      if (typeof adsbygoogle !== 'undefined') {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+{
+  "name": "EventMap - Türkiye Etkinlik Rehberi",
+  "short_name": "EventMap",
+  "description": "Türkiye'nin en kapsamlı etkinlik rehberi. Konserler, festivaller, spor etkinlikleri ve daha fazlası!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1F2937",
+  "theme_color": "#A855F7",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon.svg?v=2",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["entertainment", "lifestyle", "social"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Etkinlikler",
+      "short_name": "Liste",
+      "description": "Tüm etkinlikleri listele",
+      "url": "/?view=list",
+      "icons": [
+        {
+          "src": "/icon.svg?v=2",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "Harita",
+      "short_name": "Harita",
+      "description": "Etkinlikleri haritada gör",
+      "url": "/?view=map",
+      "icons": [
+        {
+          "src": "/icon.svg?v=2",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "Favorilerim",
+      "short_name": "Favoriler",
+      "description": "Favori etkinliklerim",
+      "url": "/?view=favorites",
+      "icons": [
+        {
+          "src": "/icon.svg?v=2",
+          "sizes": "any"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

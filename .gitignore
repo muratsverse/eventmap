@@ -1,0 +1,53 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# iOS
+ios/App/Pods/
+ios/App/build/
+ios/App/*.ipa
+ios/App/*.dSYM.zip
+ios/App/App.xcworkspace/xcshareddata/
+ios/App/App.xcodeproj/xcuserdata/
+ios/App/App.xcodeproj/project.xcworkspace/xcuserdata/
+*.mobileprovision
+*.p12
+*.cer
+
+# Fastlane
+ios/App/fastlane/report.xml
+ios/App/fastlane/Preview.html
+ios/App/fastlane/screenshots/
+ios/App/fastlane/test_output/
+ios/App/fastlane/README.md
+
+# Ruby
+ios/App/Gemfile.lock
+ios/App/.bundle/

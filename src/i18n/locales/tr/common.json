@@ -1,0 +1,130 @@
+{
+  "app": {
+    "name": "EventMap",
+    "tagline": "Etkinlikleri Keşfet"
+  },
+  "navigation": {
+    "list": "Liste",
+    "map": "Harita",
+    "search": "Ara",
+    "profile": "Profil",
+    "create": "Etkinlik Oluştur"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "share": "Paylaş",
+    "close": "Kapat",
+    "apply": "Uygula",
+    "clear": "Temizle",
+    "free": "Ücretsiz",
+    "from": "başlangıç",
+    "to": "bitiş"
+  },
+  "search": {
+    "placeholder": "Etkinlik, mekan veya şehir ara...",
+    "results": "Arama Sonuçları",
+    "noResults": "Sonuç bulunamadı",
+    "popularSearches": "Popüler Aramalar",
+    "upcomingEvents": "Yakında Başlayacaklar"
+  },
+  "filters": {
+    "title": "Filtreler",
+    "categories": "Kategoriler",
+    "location": "Konum",
+    "nearby": "Yakınımdakiler",
+    "nearbyDesc": "Kendi şehrimdeki etkinlikler",
+    "applyFilters": "Filtreleri Uygula"
+  },
+  "event": {
+    "title": "Etkinlik Başlığı",
+    "description": "Açıklama",
+    "category": "Kategori",
+    "date": "Tarih",
+    "time": "Saat",
+    "startTime": "Başlangıç Saati",
+    "endTime": "Bitiş Saati",
+    "location": "Konum",
+    "address": "Tam Adres",
+    "city": "Şehir",
+    "organizer": "Organizatör",
+    "attendees": "Katılımcılar",
+    "price": "Fiyat",
+    "priceRange": "Fiyat Aralığı",
+    "minPrice": "Min Fiyat (₺)",
+    "maxPrice": "Max Fiyat (₺)",
+    "image": "Görsel",
+    "getDirections": "Yol Tarifi Al",
+    "buyTicket": "Bilet Al",
+    "attending": "Katılıyorsunuz",
+    "addToFavorites": "Favorilere Ekle",
+    "reportEvent": "Etkinliği Bildir"
+  },
+  "createEvent": {
+    "title": "Yeni Etkinlik Oluştur",
+    "basicInfo": "Temel Bilgiler",
+    "dateTime": "Tarih ve Saat",
+    "locationInfo": "Konum Bilgileri",
+    "priceInfo": "Fiyat Bilgisi",
+    "selectFromMap": "Haritadan Konum Seç",
+    "hideMap": "Haritayı Gizle",
+    "clickToSelect": "Haritaya tıklayarak konumu seçin",
+    "coordinates": "Koordinatlar",
+    "uploadImage": "Görsel Yükle",
+    "imageUrl": "veya Görsel URL",
+    "imageRequirements": "Max 5MB • JPEG, PNG, WEBP formatları",
+    "freeEvent": "Ücretsiz etkinlikler için her iki alana da 0 yazın",
+    "submit": "Etkinliği Oluştur",
+    "creating": "Oluşturuluyor...",
+    "success": "Etkinlik başarıyla oluşturuldu!",
+    "premiumRequired": "Premium Özellik",
+    "premiumDesc": "Etkinlik oluşturabilmek için premium üyelik gereklidir.",
+    "upgradePremium": "Premium'a Geç",
+    "validationError": {
+      "endBeforeStart": "Bitiş saati başlangıç saatinden önce olamaz",
+      "fillRequired": "Lütfen tüm zorunlu alanları doldurun",
+      "invalidAddress": "Geçerli bir adres girin"
+    }
+  },
+  "categories": {
+    "Konser": "Konser",
+    "Spor": "Spor",
+    "Tiyatro": "Tiyatro",
+    "Festival": "Festival",
+    "Meetup": "Meetup",
+    "Sergi": "Sergi"
+  },
+  "cities": {
+    "Istanbul": "İstanbul",
+    "Ankara": "Ankara",
+    "Izmir": "İzmir",
+    "Antalya": "Antalya",
+    "Bursa": "Bursa"
+  },
+  "profile": {
+    "myEvents": "Etkinliklerim",
+    "favorites": "Favorilerim",
+    "attending": "Katılacaklarım",
+    "settings": "Ayarlar",
+    "language": "Dil",
+    "theme": "Tema",
+    "signOut": "Çıkış Yap",
+    "signIn": "Giriş Yap"
+  },
+  "moderation": {
+    "draft": "Taslak",
+    "inReview": "İncelemede",
+    "approved": "Onaylandı",
+    "rejected": "Reddedildi",
+    "spam": "Spam",
+    "inappropriate": "Uygunsuz İçerik"
+  },
+  "safety": {
+    "nightEventWarning": "Gece geç saatlerde olan etkinliklere katılırken güvenliğinize dikkat edin.",
+    "shareApproxLocation": "Yaklaşık konum paylaş (güvenlik için)"
+  }
+}

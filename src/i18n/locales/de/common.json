@@ -1,0 +1,130 @@
+{
+  "app": {
+    "name": "EventMap",
+    "tagline": "Discover Events"
+  },
+  "navigation": {
+    "list": "List",
+    "map": "Map",
+    "search": "Search",
+    "profile": "Profile",
+    "create": "Create Event"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "share": "Share",
+    "close": "Close",
+    "apply": "Apply",
+    "clear": "Clear",
+    "free": "Free",
+    "from": "from",
+    "to": "to"
+  },
+  "search": {
+    "placeholder": "Search events, venues or cities...",
+    "results": "Search Results",
+    "noResults": "No results found",
+    "popularSearches": "Popular Searches",
+    "upcomingEvents": "Upcoming Events"
+  },
+  "filters": {
+    "title": "Filters",
+    "categories": "Categories",
+    "location": "Location",
+    "nearby": "Nearby",
+    "nearbyDesc": "Events in my city",
+    "applyFilters": "Apply Filters"
+  },
+  "event": {
+    "title": "Event Title",
+    "description": "Description",
+    "category": "Category",
+    "date": "Date",
+    "time": "Time",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "location": "Location",
+    "address": "Full Address",
+    "city": "City",
+    "organizer": "Organizer",
+    "attendees": "Attendees",
+    "price": "Price",
+    "priceRange": "Price Range",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "image": "Image",
+    "getDirections": "Get Directions",
+    "buyTicket": "Buy Ticket",
+    "attending": "You're Attending",
+    "addToFavorites": "Add to Favorites",
+    "reportEvent": "Report Event"
+  },
+  "createEvent": {
+    "title": "Create New Event",
+    "basicInfo": "Basic Information",
+    "dateTime": "Date and Time",
+    "locationInfo": "Location Information",
+    "priceInfo": "Price Information",
+    "selectFromMap": "Select Location from Map",
+    "hideMap": "Hide Map",
+    "clickToSelect": "Click on the map to select location",
+    "coordinates": "Coordinates",
+    "uploadImage": "Upload Image",
+    "imageUrl": "or Image URL",
+    "imageRequirements": "Max 5MB • JPEG, PNG, WEBP formats",
+    "freeEvent": "Enter 0 in both fields for free events",
+    "submit": "Create Event",
+    "creating": "Creating...",
+    "success": "Event created successfully!",
+    "premiumRequired": "Premium Feature",
+    "premiumDesc": "Premium membership is required to create events.",
+    "upgradePremium": "Upgrade to Premium",
+    "validationError": {
+      "endBeforeStart": "End time cannot be before start time",
+      "fillRequired": "Please fill in all required fields",
+      "invalidAddress": "Please enter a valid address"
+    }
+  },
+  "categories": {
+    "Konser": "Concert",
+    "Spor": "Sports",
+    "Tiyatro": "Theatre",
+    "Festival": "Festival",
+    "Meetup": "Meetup",
+    "Sergi": "Exhibition"
+  },
+  "cities": {
+    "Istanbul": "Istanbul",
+    "Ankara": "Ankara",
+    "Izmir": "Izmir",
+    "Antalya": "Antalya",
+    "Bursa": "Bursa"
+  },
+  "profile": {
+    "myEvents": "My Events",
+    "favorites": "Favorites",
+    "attending": "Attending",
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
+  },
+  "moderation": {
+    "draft": "Draft",
+    "inReview": "In Review",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "spam": "Spam",
+    "inappropriate": "Inappropriate Content"
+  },
+  "safety": {
+    "nightEventWarning": "Please be careful about your safety when attending late-night events.",
+    "shareApproxLocation": "Share approximate location (for safety)"
+  }
+}
