@@ -1,11 +1,11 @@
--- Çeşitli küçük etkinlikler ekle (barlar, indirimler, atölyeler, vb.)
+-- Çeşitli eğlenceli etkinlikler ekle - App Store screenshot'ları için
 
 -- 1. Happy Hour - Bar İndirimi
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Happy Hour - %50 İndirim',
-  'Her Perşembe 18:00-20:00 arası tüm kokteyller yarı fiyatına! Canlı DJ performansı eşliğinde keyifli bir akşam geçirin.',
+  'Her Perşembe 18:00-20:00 arası tüm kokteyller yarı fiyatına! Canlı DJ performansı eşliğinde keyifli bir akşam geçirin. Craft biraları da indirimde!',
   'Moda Barlar Sokağı, No:15, Kadıköy',
   'İstanbul',
   40.9881,
@@ -15,11 +15,12 @@ VALUES (
   'nightlife',
   'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
 -- 2. Trivia Night
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Trivia Night - Bilgi Yarışması',
@@ -33,11 +34,12 @@ VALUES (
   'entertainment',
   'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
 -- 3. Stand-Up Comedy Gösterisi
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Stand-Up Comedy Gecesi',
@@ -51,11 +53,12 @@ VALUES (
   'entertainment',
   'https://images.unsplash.com/photo-1585699324551-f6c309eedeca?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
 -- 4. Sabah Yoga Dersi
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Sabah Yoga - Güne Enerjik Başlayın',
@@ -69,11 +72,12 @@ VALUES (
   'sports',
   'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 5. Resim Atölyesi
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 5. Sulu Boya Atölyesi
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Sulu Boya Resim Atölyesi',
@@ -87,11 +91,12 @@ VALUES (
   'arts',
   'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 6. Film Gösterimi & Tartışma
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 6. Film Gösterimi
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Klasik Film Gecesi: Casablanca',
@@ -105,11 +110,12 @@ VALUES (
   'arts',
   'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 7. Kitap Kulübü Buluşması
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 7. Kitap Kulübü
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Kitap Kulübü: Ayın Kitabı Tartışması',
@@ -123,11 +129,12 @@ VALUES (
   'education',
   'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 8. Board Game Night
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 8. Masa Oyunları Gecesi
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Masa Oyunları Gecesi',
@@ -141,11 +148,12 @@ VALUES (
   'entertainment',
   'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 9. Brunch Etkinliği
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 9. Hafta Sonu Brunch
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Hafta Sonu Brunch Keyfi',
@@ -159,11 +167,12 @@ VALUES (
   'food',
   'https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 10. Wine Tasting - Şarap Tadımı
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 10. Şarap Tadım Gecesi
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Şarap Tadım Gecesi - Anadolu Şarapları',
@@ -177,11 +186,12 @@ VALUES (
   'food',
   'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
 -- 11. Salsa Dans Dersi
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Başlangıç Salsa Dans Dersi',
@@ -195,11 +205,12 @@ VALUES (
   'sports',
   'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 12. Fotoğrafçılık Workshop'u
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 12. Fotoğrafçılık Workshop
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Sokak Fotoğrafçılığı Workshop',
@@ -213,11 +224,12 @@ VALUES (
   'education',
   'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 13. Vintage Market
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 13. Vintage Pazarı
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Vintage Pazarı - 2. El & Antika',
@@ -231,11 +243,12 @@ VALUES (
   'entertainment',
   'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 14. Meditasyon Seansı
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 14. Gün Batımı Meditasyonu
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Gün Batımı Meditasyonu',
@@ -249,11 +262,12 @@ VALUES (
   'sports',
   'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );
 
--- 15. Craft Beer Tasting
-INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, created_at)
+-- 15. Craft Beer Tadımı
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
 VALUES (
   gen_random_uuid()::text,
   'Craft Beer Tadım Etkinliği',
@@ -267,5 +281,101 @@ VALUES (
   'food',
   'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=800',
   'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
+  NOW()
+);
+
+-- 16. Akustik Konser
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
+VALUES (
+  gen_random_uuid()::text,
+  'Akustik Konser: Indie Rock',
+  'Yerel indie müzisyenlerden akustik performanslar. Samimi bir atmosferde canlı müzik deneyimi. Sınırlı kontenjan!',
+  'Babylon Bomonti, Şişli',
+  'İstanbul',
+  41.0582,
+  28.9856,
+  (NOW() + INTERVAL '8 days')::date::text,
+  '21:00',
+  'music',
+  'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800',
+  'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
+  NOW()
+);
+
+-- 17. Pilates Dersi
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
+VALUES (
+  gen_random_uuid()::text,
+  'Mat Pilates - Temel Seviye',
+  'Pilates instructoru eşliğinde mat pilates. Postür düzeltme ve core güçlendirme. Deneme dersi ücretsiz!',
+  'Fit Life Studio, Levent',
+  'İstanbul',
+  41.0795,
+  29.0114,
+  (NOW() + INTERVAL '1 day')::date::text,
+  '19:00',
+  'sports',
+  'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800',
+  'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
+  NOW()
+);
+
+-- 18. Sushi Workshop
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
+VALUES (
+  gen_random_uuid()::text,
+  'Sushi Yapım Workshop''u',
+  'Japon şef eşliğinde sushi yapımını öğrenin. Maki, nigiri ve sashimi teknikleri. Yaptıklarınızı yiyebilirsiniz!',
+  'Zuma Restaurant, Ortaköy',
+  'İstanbul',
+  41.0477,
+  29.0276,
+  (NOW() + INTERVAL '9 days')::date::text,
+  '17:00',
+  'food',
+  'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800',
+  'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
+  NOW()
+);
+
+-- 19. Rooftop Party
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
+VALUES (
+  gen_random_uuid()::text,
+  'Rooftop Sunset Party',
+  'Çatı katında gün batımı partisi! DJ performansı, kokteyller ve Boğaz manzarası. Dress code: Smart Casual',
+  '360 Istanbul, Beyoğlu',
+  'İstanbul',
+  41.0273,
+  28.9775,
+  (NOW() + INTERVAL '10 days')::date::text,
+  '18:00',
+  'nightlife',
+  'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800',
+  'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
+  NOW()
+);
+
+-- 20. Open Mic Night
+INSERT INTO events (id, title, description, location, city, latitude, longitude, date, time, category, image_url, organizer, creator_id, created_at)
+VALUES (
+  gen_random_uuid()::text,
+  'Open Mic Night - Herkes Sahnede',
+  'Müzik, şiir, stand-up... Sahnede yeteneklerini sergilemek isteyen herkes! İzleyiciler de ücretsiz.',
+  'Arkaoda, Cihangir',
+  'İstanbul',
+  41.0328,
+  28.9822,
+  (NOW() + INTERVAL '4 days')::date::text,
+  '20:30',
+  'entertainment',
+  'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800',
+  'EventMap',
+  (SELECT id FROM auth.users LIMIT 1),
   NOW()
 );

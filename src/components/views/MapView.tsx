@@ -85,11 +85,13 @@ export default function MapView({ events, onEventClick, onFilterClick }: MapView
 
   return (
     <div className="flex-1 flex flex-col">
-      <Header
-        title="Harita"
-        showFilter
-        onFilterClick={onFilterClick}
-      />
+      <div className="px-4 pt-4">
+        <Header
+          title="Harita"
+          eventCount={events.length}
+          onFilterClick={onFilterClick}
+        />
+      </div>
 
       <div className="flex-1 relative">
         {events.length === 0 ? (

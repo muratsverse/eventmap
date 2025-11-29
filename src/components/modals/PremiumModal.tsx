@@ -141,15 +141,19 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
       />
 
       {/* Modal */}
-      <div className="relative glassmorphism rounded-3xl max-w-2xl w-full p-8 card-shadow animate-slide-up max-h-[90vh] overflow-y-auto">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
-          aria-label="Kapat"
-        >
-          <X className="w-6 h-6" />
-        </button>
+      <div className="relative glassmorphism rounded-3xl max-w-2xl w-full card-shadow animate-slide-up max-h-[90vh] overflow-y-auto">
+        {/* Close Button - Sticky at top */}
+        <div className="sticky top-0 z-10 flex justify-end p-4 bg-gradient-to-b from-gray-900/90 to-transparent">
+          <button
+            onClick={onClose}
+            className="bg-white/10 hover:bg-white/20 rounded-full p-3 transition-all ring-2 ring-white/20 hover:ring-white/40"
+            aria-label="Kapat"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+        </div>
+
+        <div className="px-8 pb-8 -mt-8">
 
         {/* Header */}
         <div className="text-center mb-8">
@@ -294,6 +298,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
         <p className="text-center text-white/40 text-xs mt-6">
           7 gün ücretsiz deneme ile başlayın. İstediğiniz zaman iptal edebilirsiniz.
         </p>
+        </div>
       </div>
     </div>
   );

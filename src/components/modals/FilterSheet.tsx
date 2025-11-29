@@ -1,8 +1,8 @@
-import { X, Calendar, DollarSign, ArrowUpDown, MapPin, Search } from 'lucide-react';
+import { X, Calendar, DollarSign, ArrowUpDown, MapPin, Plus } from 'lucide-react';
 import { EventCategory } from '@/types';
 import { getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, KeyboardEvent } from 'react';
 
 export type SortOption = 'newest' | 'upcoming' | 'popular' | 'price-low' | 'price-high';
 
@@ -26,17 +26,6 @@ interface FilterSheetProps {
 }
 
 const categories: EventCategory[] = ['Konser', 'Spor', 'Tiyatro', 'Festival', 'Meetup', 'Sergi'];
-const cities: string[] = [
-  'İstanbul', 'Ankara', 'İzmir', 'Antalya', 'Bursa', 'Adana', 'Gaziantep', 'Konya',
-  'Mersin', 'Kayseri', 'Eskişehir', 'Diyarbakır', 'Samsun', 'Denizli', 'Şanlıurfa',
-  'Adapazarı', 'Malatya', 'Kahramanmaraş', 'Erzurum', 'Van', 'Batman', 'Elazığ',
-  'İzmit', 'Manisa', 'Sivas', 'Gebze', 'Balıkesir', 'Tarsus', 'Kütahya', 'Trabzon',
-  'Çorum', 'Çorlu', 'Adıyaman', 'Osmaniye', 'Kırıkkale', 'Antakya', 'Aydın', 'İskenderun',
-  'Uşak', 'Aksaray', 'Afyon', 'Isparta', 'İnegöl', 'Tekirdağ', 'Edirne', 'Darıca',
-  'Ordu', 'Karaman', 'Gölcük', 'Siirt', 'Körfez', 'Kızıltepe', 'Düzce', 'Tokat',
-  'Bolu', 'Derince', 'Turgutlu', 'Bandırma', 'Ceyhan', 'Zonguldak', 'Nazilli',
-  'Kırşehir', 'Niğde', 'Ereğli', 'Akhisar', 'Polatlı', 'Çanakkale', 'Yalova'
-];
 
 const sortOptions: { value: SortOption; label: string }[] = [
   { value: 'newest', label: 'En Yeni' },
@@ -66,14 +55,26 @@ export default function FilterSheet({
 }: FilterSheetProps) {
   const [localPriceMin, setLocalPriceMin] = useState(priceRange[0]);
   const [localPriceMax, setLocalPriceMax] = useState(priceRange[1]);
-  const [citySearch, setCitySearch] = useState('');
+  const [cityInput, setCityInput] = useState('');
 
   if (!isOpen) return null;
 
-  // Şehir aramaya göre filtrele
-  const filteredCities = cities.filter(city =>
-    city.toLowerCase().includes(citySearch.toLowerCase())
-  );
+  // Şehir ekleme fonksiyonu
+  const handleAddCity = () => {
+    const trimmedCity = cityInput.trim();
+    if (trimmedCity && !selectedCities.includes(trimmedCity)) {
+      onCityToggle(trimmedCity);
+      setCityInput('');
+    }
+  };
+
+  // Enter tuşuyla şehir ekleme
+  const handleCityKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddCity();
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center animate-fade-in">
@@ -84,7 +85,7 @@ export default function FilterSheet({
       />
 
       {/* Sheet */}
-      <div className="relative w-full max-w-mobile bg-gray-900 rounded-t-3xl overflow-hidden animate-slide-up">
+      <div className="relative w-full max-w-mobile bg-gray-900 rounded-t-3xl max-h-[90vh] overflow-y-auto animate-slide-up">
         <div className="p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
@@ -140,44 +141,55 @@ export default function FilterSheet({
               <h3 className="text-lg font-semibold text-white">Şehirler</h3>
             </div>
 
-            {/* City Search Input */}
-            <div className="relative mb-3">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-              <input
-                type="text"
-                placeholder="Şehir ara..."
-                value={citySearch}
-                onChange={(e) => setCitySearch(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
-              />
+            {/* City Input */}
+            <div className="glassmorphism rounded-2xl p-4 mb-3">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Şehir adı yazın (örn: London, Paris, Tokyo...)"
+                  value={cityInput}
+                  onChange={(e) => setCityInput(e.target.value)}
+                  onKeyDown={handleCityKeyDown}
+                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+                />
+                <button
+                  onClick={handleAddCity}
+                  disabled={!cityInput.trim()}
+                  className={cn(
+                    'px-4 rounded-xl font-medium transition-all flex items-center gap-1',
+                    cityInput.trim()
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:opacity-90'
+                      : 'bg-white/5 text-white/30 cursor-not-allowed'
+                  )}
+                >
+                  <Plus className="w-4 h-4" />
+                  Ekle
+                </button>
+              </div>
+              <p className="text-xs text-white/40 mt-2">
+                Herhangi bir şehir adı yazabilirsiniz. Enter tuşu ile de ekleyebilirsiniz.
+              </p>
             </div>
 
-            <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
-              {filteredCities.length > 0 ? (
-                filteredCities.map((city) => {
-                  const isSelected = selectedCities.includes(city);
-                  return (
+            {/* Selected Cities */}
+            {selectedCities.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {selectedCities.map((city) => (
+                  <div
+                    key={city}
+                    className="glassmorphism rounded-full px-4 py-2 flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 ring-1 ring-blue-500/30"
+                  >
+                    <span className="text-sm font-medium text-white">{city}</span>
                     <button
-                      key={city}
                       onClick={() => onCityToggle(city)}
-                      className={cn(
-                        'glassmorphism rounded-full px-4 py-2 text-sm font-medium transition-all',
-                        'hover:scale-105 active:scale-95',
-                        isSelected
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white ring-2 ring-blue-500/50'
-                          : 'text-white/70'
-                      )}
+                      className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
                     >
-                      {city}
+                      <X className="w-3.5 h-3.5 text-white/80" />
                     </button>
-                  );
-                })
-              ) : (
-                <p className="text-white/40 text-sm text-center w-full py-2">
-                  Şehir bulunamadı
-                </p>
-              )}
-            </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Nearby Filter */}
