@@ -15,10 +15,10 @@ platform :ios do
       git_basic_authorization: ENV["MATCH_GIT_BASIC_AUTHORIZATION"]
     )
 
-    # Increment build number
+    # Increment build number (manual, no Apple API call)
     increment_build_number(
       xcodeproj: "App.xcodeproj",
-      build_number: latest_testflight_build_number + 1
+      build_number: ENV['BUILD_NUMBER'] || (Time.now.to_i / 60).to_s
     )
 
     # Build the app

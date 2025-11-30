@@ -51,7 +51,7 @@ jobs:
           ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
         run: |
           cd ios/App
-          fastlane match appstore
+          fastlane certificates || echo "Certificates already exist, continuing..."
 
       - name: Build and upload to TestFlight
         env:
@@ -61,6 +61,7 @@ jobs:
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.GIT_AUTHORIZATION }}
           TEAM_ID: ${{ secrets.TEAM_ID }}
           ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
+          BUILD_NUMBER: ${{ github.run_number }}
         run: |
           cd ios/App
           fastlane beta
