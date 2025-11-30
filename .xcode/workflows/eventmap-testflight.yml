@@ -1,0 +1,25 @@
+version: 1
+workflows:
+  eventmap-testflight:
+    name: EventMap TestFlight Build
+    description: Build and upload EventMap to TestFlight
+    enabled: true
+    branch-patterns:
+      - main
+    actions:
+      - name: Build
+        platform: iOS
+        scheme: App
+        destination: generic/platform=iOS
+        build-settings:
+          ONLY_ACTIVE_ARCH: false
+      - name: Archive
+        platform: iOS
+        scheme: App
+        destination: generic/platform=iOS
+        archive-configuration: Release
+    post-actions:
+      - name: Upload to TestFlight
+        upload-to-testflight:
+          auto-notify: false
+          distribute-external: false
