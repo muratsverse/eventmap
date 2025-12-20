@@ -136,20 +136,20 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative glassmorphism rounded-3xl max-w-2xl w-full card-shadow animate-slide-up max-h-[90vh] overflow-y-auto">
+      <div className="relative rounded-3xl max-w-2xl w-full bg-[var(--surface)] border border-[var(--border)] shadow-sm animate-slide-up max-h-[90vh] overflow-y-auto">
         {/* Close Button - Sticky at top */}
-        <div className="sticky top-0 z-10 flex justify-end p-4 bg-gradient-to-b from-gray-900/90 to-transparent">
+        <div className="sticky top-0 z-10 flex justify-end p-4 bg-gradient-to-b from-[var(--surface)]/95 to-transparent">
           <button
             onClick={onClose}
-            className="bg-white/10 hover:bg-white/20 rounded-full p-3 transition-all ring-2 ring-white/20 hover:ring-white/40"
+            className="bg-[var(--surface-2)] hover:bg-[var(--surface)] rounded-full p-3 transition-all border border-[var(--border)]"
             aria-label="Kapat"
           >
-            <X className="w-6 h-6 text-white" />
+            <X className="w-6 h-6 text-[var(--text)]" />
           </button>
         </div>
 
@@ -157,11 +157,11 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-3xl mb-4">
-            <Crown className="w-10 h-10 text-white" />
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-3xl mb-4">
+            <Crown className="w-10 h-10 text-[var(--text)]" />
           </div>
-          <h2 className="text-3xl font-bold text-white mb-2">Premium'a Geçin</h2>
-          <p className="text-white/60">
+          <h2 className="text-3xl font-semibold text-[var(--text)] mb-2">Premium'a Geçin</h2>
+          <p className="text-[var(--muted)]">
             Daha fazla özellik, daha fazla görünürlük
           </p>
         </div>
@@ -173,14 +173,14 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
             return (
               <div
                 key={index}
-                className="flex items-start gap-4 bg-white/5 rounded-2xl p-4 hover:bg-white/10 transition-colors"
+                className="flex items-start gap-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 hover:bg-[var(--surface-2)] transition-colors"
               >
-                <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-3 flex-shrink-0">
-                  <Icon className="w-6 h-6 text-white" />
+                <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-3 flex-shrink-0">
+                  <Icon className="w-6 h-6 text-[var(--text)]" />
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold mb-1">{feature.text}</h3>
-                  <p className="text-white/60 text-sm">{feature.description}</p>
+                  <h3 className="text-[var(--text)] font-semibold mb-1">{feature.text}</h3>
+                  <p className="text-[var(--muted)] text-sm">{feature.description}</p>
                 </div>
               </div>
             );
@@ -189,35 +189,35 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
 
         {/* Payment Method Selection */}
         <div className="mb-6">
-          <h3 className="text-white font-semibold mb-3 text-center">Ödeme Yöntemi Seçin</h3>
+          <h3 className="text-[var(--text)] font-semibold mb-3 text-center">Ödeme Yöntemi Seçin</h3>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => setPaymentMethod('card')}
               className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
                 paymentMethod === 'card'
-                  ? 'border-purple-500 bg-purple-500/20'
-                  : 'border-white/10 bg-white/5 hover:bg-white/10'
+                  ? 'border-[var(--accent)] bg-[var(--accent-10)]'
+                  : 'border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-2)]'
               }`}
               disabled={loading}
             >
-              <CreditCard className="w-5 h-5 text-white" />
-              <span className="text-white font-medium">Kredi Kartı</span>
+              <CreditCard className="w-5 h-5 text-[var(--text)]" />
+              <span className="text-[var(--text)] font-medium">Kredi Kartı</span>
             </button>
             <button
               onClick={() => setPaymentMethod('invoice')}
               className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
                 paymentMethod === 'invoice'
-                  ? 'border-purple-500 bg-purple-500/20'
-                  : 'border-white/10 bg-white/5 hover:bg-white/10'
+                  ? 'border-[var(--accent)] bg-[var(--accent-10)]'
+                  : 'border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-2)]'
               }`}
               disabled={loading}
             >
-              <FileText className="w-5 h-5 text-white" />
-              <span className="text-white font-medium">Faturaya Yansıt</span>
+              <FileText className="w-5 h-5 text-[var(--text)]" />
+              <span className="text-[var(--text)] font-medium">Faturaya Yansıt</span>
             </button>
           </div>
           {paymentMethod === 'invoice' && (
-            <p className="text-white/60 text-xs mt-2 text-center">
+            <p className="text-[var(--muted)] text-xs mt-2 text-center">
               Fatura email adresinize gönderilecek. Ödeme linkine tıklayarak ödeyebilirsiniz.
             </p>
           )}
@@ -225,8 +225,8 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
 
         {/* Error Display */}
         {error && (
-          <div className="mb-4 bg-red-500/10 border border-red-500/20 rounded-xl p-4">
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="mb-4 bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+            <p className="text-red-300 text-sm">{error}</p>
           </div>
         )}
 
@@ -235,31 +235,31 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className="relative rounded-2xl p-6 border-2 transition-all bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-purple-500 max-w-sm w-full"
+              className="relative rounded-2xl p-6 border-2 transition-all bg-[var(--surface)] border-[var(--accent)] max-w-sm w-full"
             >
               {plan.recommended && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-4 py-1 rounded-full">
+                  <span className="bg-[var(--accent)] text-white text-xs font-bold px-4 py-1 rounded-full">
                     ÖNERİLEN
                   </span>
                 </div>
               )}
 
               <div className="text-center mb-4">
-                <h3 className="text-white font-semibold text-lg mb-2">{plan.name}</h3>
+                <h3 className="text-[var(--text)] font-semibold text-lg mb-2">{plan.name}</h3>
                 <div className="flex items-baseline justify-center">
-                  <span className="text-4xl font-bold text-white">{plan.price}</span>
-                  <span className="text-white/60 ml-1">{plan.period}</span>
+                  <span className="text-4xl font-bold text-[var(--text)]">{plan.price}</span>
+                  <span className="text-[var(--muted)] ml-1">{plan.period}</span>
                 </div>
                 {plan.savings && (
-                  <p className="text-green-400 text-sm mt-2 font-medium">{plan.savings}</p>
+                  <p className="text-[#4fb07a] text-sm mt-2 font-medium">{plan.savings}</p>
                 )}
               </div>
 
               <button
                 onClick={() => handlePurchase(plan.priceId)}
                 disabled={loading}
-                className="w-full font-semibold rounded-xl py-3 transition-all bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full font-semibold rounded-xl py-3 transition-all bg-[var(--accent)] text-white hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -275,8 +275,8 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
         </div>
 
         {/* Benefits List */}
-        <div className="bg-white/5 rounded-2xl p-6">
-          <h3 className="text-white font-semibold mb-4 text-center">Premium ile neler yapabilirsiniz?</h3>
+        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6">
+          <h3 className="text-[var(--text)] font-semibold mb-4 text-center">Premium ile neler yapabilirsiniz?</h3>
           <ul className="space-y-3">
             {[
               'Her ay sınırsız etkinlik paylaşın',
@@ -286,8 +286,8 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
               'Gelişmiş istatistikler ve analizler',
               'Özel rozet ve premium badge',
             ].map((benefit, index) => (
-              <li key={index} className="flex items-center gap-3 text-white/80">
-                <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
+              <li key={index} className="flex items-center gap-3 text-[var(--muted)]">
+                <Check className="w-5 h-5 text-[#4fb07a] flex-shrink-0" />
                 <span>{benefit}</span>
               </li>
             ))}
@@ -295,7 +295,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
         </div>
 
         {/* Footer Note */}
-        <p className="text-center text-white/40 text-xs mt-6">
+        <p className="text-center text-[var(--muted)] text-xs mt-6">
           7 gün ücretsiz deneme ile başlayın. İstediğiniz zaman iptal edebilirsiniz.
         </p>
         </div>

@@ -16,8 +16,8 @@ export default function EventCard({ event, onClick, variant = 'default' }: Event
     <div
       onClick={onClick}
       className={cn(
-        'group relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-300',
-        'hover:scale-105 active:scale-95 card-shadow',
+        'group relative overflow-hidden rounded-2xl cursor-pointer transition-all duration-300',
+        'hover:scale-[1.02] active:scale-[0.99] shadow-md border border-[var(--border)]',
         isCompact ? 'h-32' : 'h-64'
       )}
     >
@@ -32,9 +32,9 @@ export default function EventCard({ event, onClick, variant = 'default' }: Event
         <div className={cn(
           'absolute inset-0 bg-gradient-to-t',
           getCategoryColor(event.category),
-          'opacity-60 mix-blend-multiply'
+          'opacity-25'
         )} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
       </div>
 
       {/* Content */}
@@ -43,8 +43,8 @@ export default function EventCard({ event, onClick, variant = 'default' }: Event
         <div className="flex items-start justify-between">
           {/* Category Badge */}
           <div className={cn(
-            'glassmorphism rounded-full px-3 py-1.5 flex items-center gap-1.5',
-            'text-xs font-semibold text-white'
+            'rounded-full px-3 py-1.5 flex items-center gap-1.5',
+            'bg-[var(--surface)]/85 border border-[var(--border)] text-xs font-semibold text-[var(--text)]'
           )}>
             <span>{getCategoryIcon(event.category)}</span>
             <span>{event.category}</span>
@@ -52,9 +52,9 @@ export default function EventCard({ event, onClick, variant = 'default' }: Event
 
           {/* Attendees Badge */}
           {!isCompact && (
-            <div className="glassmorphism rounded-full px-3 py-1.5 flex items-center gap-1.5">
-              <Users className="w-3.5 h-3.5 text-white" />
-              <span className="text-xs font-semibold text-white">
+            <div className="rounded-full px-3 py-1.5 flex items-center gap-1.5 bg-[var(--surface)]/85 border border-[var(--border)]">
+              <Users className="w-3.5 h-3.5 text-[var(--text)]" />
+              <span className="text-xs font-semibold text-[var(--text)]">
                 {event.attendees.toLocaleString()}
               </span>
             </div>
@@ -64,14 +64,14 @@ export default function EventCard({ event, onClick, variant = 'default' }: Event
         {/* Bottom Section */}
         <div className="space-y-2">
           <h3 className={cn(
-            'font-bold text-white line-clamp-2',
+            'font-semibold text-[var(--text)] line-clamp-2',
             isCompact ? 'text-base' : 'text-xl'
           )}>
             {event.title}
           </h3>
 
           {!isCompact && (
-            <div className="flex items-center gap-4 text-sm text-white/90">
+            <div className="flex items-center gap-4 text-sm text-[var(--muted)]">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4" />
                 <span className="truncate">{event.location}</span>
@@ -80,18 +80,16 @@ export default function EventCard({ event, onClick, variant = 'default' }: Event
           )}
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-sm text-white/90">
+            <div className="flex items-center gap-1.5 text-sm text-[var(--muted)]">
               <Calendar className="w-4 h-4" />
               <span>{event.date} • {event.time}</span>
             </div>
 
             <div className={cn(
-              'font-bold',
+              'font-semibold text-[var(--accent)]',
               isCompact ? 'text-sm' : 'text-lg'
             )}>
-              <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                {formatPrice(event.price.min, event.price.max)}
-              </span>
+              {formatPrice(event.price.min, event.price.max)}
             </div>
           </div>
         </div>

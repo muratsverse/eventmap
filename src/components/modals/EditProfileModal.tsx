@@ -48,16 +48,16 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative glassmorphism rounded-3xl max-w-md w-full p-8 card-shadow animate-slide-up">
+      <div className="relative rounded-3xl max-w-md w-full p-8 bg-[var(--surface)] border border-[var(--border)] shadow-sm animate-slide-up">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-[var(--muted)] hover:text-[var(--text)] transition-colors"
           aria-label="Kapat"
         >
           <X className="w-6 h-6" />
@@ -65,11 +65,11 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
 
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4">
-            <User className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl mb-4">
+            <User className="w-8 h-8 text-[var(--text)]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Profili Düzenle</h2>
-          <p className="text-white/60 text-sm">
+          <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">Profili Düzenle</h2>
+          <p className="text-[var(--muted)] text-sm">
             İsminizi ve diğer bilgilerinizi güncelleyin
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
         <div className="space-y-4">
           {/* Name Input */}
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
+            <label className="block text-sm font-medium text-[var(--text)] mb-2">
               İsim / Kullanıcı Adı
             </label>
             <input
@@ -86,34 +86,34 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Örn: Ahmet Yılmaz"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
               maxLength={50}
             />
-            <p className="text-xs text-white/40 mt-1">
+            <p className="text-xs text-[var(--muted)] mt-1">
               {name.length}/50 karakter
             </p>
           </div>
 
           {/* Email (readonly) */}
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
+            <label className="block text-sm font-medium text-[var(--text)] mb-2">
               E-posta
             </label>
             <input
               type="email"
               value={user.email}
               disabled
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white/50 cursor-not-allowed"
+              className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--muted)] cursor-not-allowed"
             />
-            <p className="text-xs text-white/40 mt-1">
+            <p className="text-xs text-[var(--muted)] mt-1">
               E-posta adresi değiştirilemez
             </p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-3">
-              <p className="text-sm text-red-200">{error}</p>
+            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3">
+              <p className="text-sm text-red-300">{error}</p>
             </div>
           )}
 
@@ -121,7 +121,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
           <button
             onClick={handleSave}
             disabled={saving || !name.trim()}
-            className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white font-semibold rounded-2xl py-4 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-4 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Save className="w-5 h-5" />
             <span>{saving ? 'Kaydediliyor...' : 'Kaydet'}</span>

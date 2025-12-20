@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { MapPin } from 'lucide-react';
 
 const SLOGANS = [
   'Discover Every Moment',
@@ -35,31 +34,35 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
   }, [onFinish]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-blue-500 animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#0f1115] via-[#141826] to-[#0f1115] animate-fade-in">
       <div className="text-center space-y-8">
         {/* Animated Logo */}
         <div className="relative">
-          <div className="absolute inset-0 bg-white/20 rounded-full blur-3xl animate-pulse" />
-          <div className="relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 card-shadow">
-            <MapPin className="w-24 h-24 text-white mx-auto animate-bounce" strokeWidth={1.5} />
+          <div className="absolute inset-0 bg-[var(--accent-20)] rounded-full blur-3xl animate-pulse" />
+          <div className="relative">
+            <img
+              src="/logo.png"
+              alt="Eventify Logo"
+              className="w-32 h-32 mx-auto animate-bounce drop-shadow-2xl"
+            />
           </div>
         </div>
 
         {/* App Name */}
         <div className="space-y-2">
-          <h1 className="text-5xl font-bold text-white tracking-tight">
-            EventMap
+          <h1 className="text-5xl font-semibold text-[var(--text)] tracking-tight">
+            Eventify
           </h1>
-          <p className="text-white/80 text-lg">
+          <p className="text-[var(--muted)] text-lg">
             {slogan}
           </p>
         </div>
 
         {/* Loading Bar */}
         <div className="w-64 mx-auto">
-          <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-[var(--surface-2)] rounded-full overflow-hidden">
             <div
-              className="h-full bg-white rounded-full transition-all duration-300 ease-out"
+              className="h-full bg-[var(--accent)] rounded-full transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>

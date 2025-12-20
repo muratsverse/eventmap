@@ -93,16 +93,16 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative glassmorphism rounded-3xl max-w-md w-full p-8 card-shadow animate-slide-up">
+      <div className="relative rounded-3xl max-w-md w-full p-8 bg-[var(--surface)] border border-[var(--border)] shadow-sm animate-slide-up">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-[var(--muted)] hover:text-[var(--text)] transition-colors"
           aria-label="Kapat"
         >
           <X className="w-6 h-6" />
@@ -110,11 +110,11 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
 
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4">
-            <Camera className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl mb-4">
+            <Camera className="w-8 h-8 text-[var(--text)]" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Profil Resmi</h2>
-          <p className="text-white/60 text-sm">
+          <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">Profil Resmi</h2>
+          <p className="text-[var(--muted)] text-sm">
             Yeni bir profil resmi yükleyin
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
         {/* Preview */}
         {preview ? (
           <div className="mb-6">
-            <div className="w-40 h-40 mx-auto rounded-2xl overflow-hidden border-4 border-purple-500/50">
+            <div className="w-40 h-40 mx-auto rounded-2xl overflow-hidden border-2 border-[var(--accent-50)]">
               <img
                 src={preview}
                 alt="Preview"
@@ -132,8 +132,8 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
           </div>
         ) : (
           <div className="mb-6">
-            <div className="w-40 h-40 mx-auto rounded-2xl bg-white/5 border-2 border-dashed border-white/20 flex items-center justify-center">
-              <Upload className="w-12 h-12 text-white/40" />
+            <div className="w-40 h-40 mx-auto rounded-2xl bg-[var(--surface-2)] border-2 border-dashed border-[var(--border)] flex items-center justify-center">
+              <Upload className="w-12 h-12 text-[var(--muted)]" />
             </div>
           </div>
         )}
@@ -152,7 +152,7 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="w-full glassmorphism text-white font-semibold rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-white/10 active:scale-95 transition-all disabled:opacity-50"
+            className="w-full bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] font-semibold rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-[var(--surface-2)] active:scale-95 transition-all disabled:opacity-50"
           >
             <Upload className="w-5 h-5" />
             <span>Resim Seç</span>
@@ -162,7 +162,7 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
             <button
               onClick={handleUpload}
               disabled={uploading}
-              className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white font-semibold rounded-2xl py-4 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50"
+              className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-4 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50"
             >
               {uploading ? 'Yükleniyor...' : 'Profil Resmini Güncelle'}
             </button>
@@ -170,7 +170,7 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
         </div>
 
         {/* Info */}
-        <p className="text-center text-white/40 text-xs mt-4">
+        <p className="text-center text-[var(--muted)] text-xs mt-4">
           Maksimum dosya boyutu: 5MB
           <br />
           Desteklenen formatlar: JPG, PNG, GIF

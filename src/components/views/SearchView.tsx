@@ -42,17 +42,17 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
       <div className="max-w-mobile mx-auto px-4 py-4 safe-area-top">
         {/* Search Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white mb-4">Etkinlik Ara</h1>
+          <h1 className="text-2xl font-semibold text-[var(--text)] mb-4">Etkinlik Ara</h1>
 
           {/* Search Input */}
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
             <input
               type="text"
               placeholder="Etkinlik, mekan veya şehir ara..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full glassmorphism rounded-2xl pl-12 pr-4 py-4 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              className="w-full rounded-2xl pl-12 pr-4 py-4 bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
             />
           </div>
         </div>
@@ -63,8 +63,8 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
             {/* Categories */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp className="w-5 h-5 text-white/80" />
-                <h2 className="text-lg font-semibold text-white">Kategoriler</h2>
+                <TrendingUp className="w-5 h-5 text-[var(--muted)]" />
+                <h2 className="text-lg font-semibold text-[var(--text)]">Kategoriler</h2>
               </div>
               <div className="flex flex-wrap gap-2">
                 {popularCategories.map((category) => {
@@ -74,11 +74,11 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
                       key={category}
                       onClick={() => setActiveCategory(isActive ? null : category)}
                       className={cn(
-                        'rounded-full px-4 py-2 font-medium text-sm transition-all',
-                        'hover:scale-105 active:scale-95',
+                        'rounded-full px-4 py-2 font-medium text-sm transition-all border',
+                        'hover:scale-[1.02] active:scale-[0.99]',
                         isActive
-                          ? `bg-gradient-to-r ${getCategoryColor(category)} text-white`
-                          : 'glassmorphism text-white/80'
+                          ? 'bg-[var(--accent)] text-white border-transparent'
+                          : 'bg-[var(--surface)] text-[var(--muted)] border-[var(--border)]'
                       )}
                     >
                       <span className="mr-1.5">{getCategoryIcon(category)}</span>
@@ -92,8 +92,8 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
             {/* Cities */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp className="w-5 h-5 text-white/80" />
-                <h2 className="text-lg font-semibold text-white">Popüler Şehirler</h2>
+                <TrendingUp className="w-5 h-5 text-[var(--muted)]" />
+                <h2 className="text-lg font-semibold text-[var(--text)]">Popüler Şehirler</h2>
               </div>
               <div className="flex flex-wrap gap-2">
                 {popularCities.map((city) => {
@@ -103,11 +103,11 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
                       key={city}
                       onClick={() => setActiveCategory(isActive ? null : city)}
                       className={cn(
-                        'rounded-full px-4 py-2 font-medium text-sm transition-all',
-                        'hover:scale-105 active:scale-95',
+                        'rounded-full px-4 py-2 font-medium text-sm transition-all border',
+                        'hover:scale-[1.02] active:scale-[0.99]',
                         isActive
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                          : 'glassmorphism text-white/80'
+                          ? 'bg-[var(--accent)] text-white border-transparent'
+                          : 'bg-[var(--surface)] text-[var(--muted)] border-[var(--border)]'
                       )}
                     >
                       {city}
@@ -122,7 +122,7 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
         {/* Search Results */}
         {searchQuery !== '' && (
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-white mb-3">
+            <h2 className="text-lg font-semibold text-[var(--text)] mb-3">
               Arama Sonuçları ({filteredEvents.length})
             </h2>
             <div className="space-y-3">
@@ -135,8 +135,8 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
                 />
               ))}
               {filteredEvents.length === 0 && (
-                <div className="glassmorphism rounded-2xl p-8 text-center">
-                  <p className="text-white/60">Sonuç bulunamadı</p>
+                <div className="rounded-2xl p-8 text-center bg-[var(--surface)] border border-[var(--border)]">
+                  <p className="text-[var(--muted)]">Sonuç bulunamadı</p>
                 </div>
               )}
             </div>
@@ -146,7 +146,7 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
         {/* Upcoming Events */}
         {searchQuery === '' && !activeCategory && (
           <div>
-            <h2 className="text-lg font-semibold text-white mb-3">
+            <h2 className="text-lg font-semibold text-[var(--text)] mb-3">
               Yakında Başlayacaklar
             </h2>
             <div className="space-y-3">
@@ -165,7 +165,7 @@ export default function SearchView({ events, onEventClick }: SearchViewProps) {
         {/* Category Filtered Results */}
         {activeCategory && searchQuery === '' && (
           <div>
-            <h2 className="text-lg font-semibold text-white mb-3">
+            <h2 className="text-lg font-semibold text-[var(--text)] mb-3">
               {activeCategory} Etkinlikleri ({filteredEvents.length})
             </h2>
             <div className="space-y-3">

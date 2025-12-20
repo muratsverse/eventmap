@@ -6,6 +6,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import App from './App.tsx'
 import PremiumSuccessView from './components/views/PremiumSuccessView.tsx'
 import PremiumCancelledView from './components/views/PremiumCancelledView.tsx'
+import AuthCallbackView from './components/views/AuthCallbackView.tsx'
 import './index.css'
 import './i18n'
 
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App />} />
+            <Route path="/auth/callback" element={<AuthCallbackView />} />
             <Route path="/premium-success" element={<PremiumSuccessView />} />
             <Route path="/premium-cancelled" element={<PremiumCancelledView />} />
             {/* Catch-all route: Tüm bilinmeyen path'leri ana sayfaya yönlendir */}

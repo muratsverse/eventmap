@@ -199,7 +199,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen w-full max-w-mobile mx-auto flex flex-col bg-gray-900">
+    <div className="min-h-screen w-full max-w-mobile mx-auto flex flex-col bg-[var(--bg)]">
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {activeTab === 'liste' && (

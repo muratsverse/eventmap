@@ -147,7 +147,7 @@ export default function AdminPanel() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-[var(--accent)]" />
       </div>
     );
   }
@@ -156,46 +156,46 @@ export default function AdminPanel() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Erişim Reddedildi</h2>
-          <p className="text-gray-400">Bu sayfaya erişim yetkiniz yok.</p>
+          <AlertTriangle className="w-16 h-16 text-red-300 mx-auto mb-4" />
+          <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">Erişim Reddedildi</h2>
+          <p className="text-[var(--muted)]">Bu sayfaya erişim yetkiniz yok.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 p-6">
+    <div className="min-h-screen bg-[var(--bg)] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Admin Paneli</h1>
-          <p className="text-gray-300">Etkinlik onayları ve sistem yönetimi</p>
+          <h1 className="text-4xl font-semibold text-[var(--text)] mb-2">Admin Paneli</h1>
+          <p className="text-[var(--muted)]">Etkinlik onayları ve sistem yönetimi</p>
         </div>
 
         {/* Bildirimler */}
         {notifications.length > 0 && (
-          <div className="mb-8 glassmorphism rounded-2xl p-6">
-            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6 text-yellow-400" />
+          <div className="mb-8 rounded-2xl p-6 bg-[var(--surface)] border border-[var(--border)]">
+            <h2 className="text-2xl font-semibold text-[var(--text)] mb-4 flex items-center gap-2">
+              <AlertTriangle className="w-6 h-6 text-[#d3a253]" />
               Bildirimler ({notifications.length})
             </h2>
             <div className="space-y-3">
               {notifications.map((notif) => (
                 <div
                   key={notif.id}
-                  className="bg-white/5 rounded-xl p-4 flex items-start justify-between hover:bg-white/10 transition-colors"
+                  className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-4 flex items-start justify-between hover:bg-[var(--surface)] transition-colors"
                 >
                   <div className="flex-1">
-                    <h3 className="font-semibold text-white">{notif.title}</h3>
-                    <p className="text-sm text-gray-300">{notif.message}</p>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <h3 className="font-semibold text-[var(--text)]">{notif.title}</h3>
+                    <p className="text-sm text-[var(--muted)]">{notif.message}</p>
+                    <p className="text-xs text-[var(--muted)] mt-1">
                       {new Date(notif.created_at).toLocaleString('tr-TR')}
                     </p>
                   </div>
                   <button
                     onClick={() => markNotificationAsRead(notif.id)}
-                    className="ml-4 text-xs text-purple-400 hover:text-purple-300"
+                    className="ml-4 text-xs text-[var(--accent)] hover:opacity-80"
                   >
                     Okundu İşaretle
                   </button>
@@ -207,54 +207,54 @@ export default function AdminPanel() {
 
         {/* İstatistikler */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="glassmorphism rounded-2xl p-6">
+          <div className="rounded-2xl p-6 bg-[var(--surface)] border border-[var(--border)]">
             <div className="flex items-center gap-3">
-              <Clock className="w-10 h-10 text-yellow-400" />
+              <Clock className="w-10 h-10 text-[#d3a253]" />
               <div>
-                <p className="text-gray-300 text-sm">Onay Bekleyen</p>
-                <p className="text-3xl font-bold text-white">{pendingEvents.length}</p>
+                <p className="text-[var(--muted)] text-sm">Onay Bekleyen</p>
+                <p className="text-3xl font-semibold text-[var(--text)]">{pendingEvents.length}</p>
               </div>
             </div>
           </div>
 
-          <div className="glassmorphism rounded-2xl p-6">
+          <div className="rounded-2xl p-6 bg-[var(--surface)] border border-[var(--border)]">
             <div className="flex items-center gap-3">
-              <AlertTriangle className="w-10 h-10 text-red-400" />
+              <AlertTriangle className="w-10 h-10 text-red-300" />
               <div>
-                <p className="text-gray-300 text-sm">Raporlu Etkinlikler</p>
-                <p className="text-3xl font-bold text-white">
+                <p className="text-[var(--muted)] text-sm">Raporlu Etkinlikler</p>
+                <p className="text-3xl font-semibold text-[var(--text)]">
                   {pendingEvents.filter((e) => e.report_count > 0).length}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="glassmorphism rounded-2xl p-6">
+          <div className="rounded-2xl p-6 bg-[var(--surface)] border border-[var(--border)]">
             <div className="flex items-center gap-3">
-              <CheckCircle className="w-10 h-10 text-green-400" />
+              <CheckCircle className="w-10 h-10 text-[#4fb07a]" />
               <div>
-                <p className="text-gray-300 text-sm">Toplam İşlem</p>
-                <p className="text-3xl font-bold text-white">-</p>
+                <p className="text-[var(--muted)] text-sm">Toplam İşlem</p>
+                <p className="text-3xl font-semibold text-[var(--text)]">-</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Onay Bekleyen Etkinlikler */}
-        <div className="glassmorphism rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-white mb-6">Onay Bekleyen Etkinlikler</h2>
+        <div className="rounded-2xl p-6 bg-[var(--surface)] border border-[var(--border)]">
+          <h2 className="text-2xl font-semibold text-[var(--text)] mb-6">Onay Bekleyen Etkinlikler</h2>
 
           {pendingEvents.length === 0 ? (
             <div className="text-center py-12">
-              <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-              <p className="text-xl text-gray-300">Tüm etkinlikler onaylandı!</p>
+              <CheckCircle className="w-16 h-16 text-[#4fb07a] mx-auto mb-4" />
+              <p className="text-xl text-[var(--muted)]">Tüm etkinlikler onaylandı!</p>
             </div>
           ) : (
             <div className="space-y-4">
               {pendingEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-colors"
+                  className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-6 hover:bg-[var(--surface)] transition-colors"
                 >
                   <div className="flex gap-6">
                     {/* Görsel */}
@@ -268,8 +268,8 @@ export default function AdminPanel() {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <h3 className="text-xl font-bold text-white mb-1">{event.title}</h3>
-                          <div className="flex items-center gap-4 text-sm text-gray-300">
+                          <h3 className="text-xl font-semibold text-[var(--text)] mb-1">{event.title}</h3>
+                          <div className="flex items-center gap-4 text-sm text-[var(--muted)]">
                             <span>{event.category}</span>
                             <span>•</span>
                             <span>{event.city}</span>
@@ -279,18 +279,18 @@ export default function AdminPanel() {
                           </div>
                         </div>
                         {event.report_count > 0 && (
-                          <span className="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                          <span className="bg-red-500/10 text-red-300 px-3 py-1 rounded-full text-sm flex items-center gap-1 border border-red-500/30">
                             <AlertTriangle className="w-4 h-4" />
                             {event.report_count} Rapor
                           </span>
                         )}
                       </div>
 
-                      <p className="text-gray-300 text-sm mb-4 line-clamp-2">
+                      <p className="text-[var(--muted)] text-sm mb-4 line-clamp-2">
                         {event.description}
                       </p>
 
-                      <div className="flex items-center gap-3 text-xs text-gray-400 mb-4">
+                      <div className="flex items-center gap-3 text-xs text-[var(--muted)] mb-4">
                         <span>Organizatör: {event.organizer}</span>
                         <span>•</span>
                         <span>Konum: {event.location}</span>
@@ -304,21 +304,21 @@ export default function AdminPanel() {
                       <div className="flex gap-3">
                         <button
                           onClick={() => setSelectedEvent(event)}
-                          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center gap-2 transition-colors"
+                          className="px-4 py-2 bg-[var(--accent)] hover:opacity-90 text-white rounded-lg flex items-center gap-2 transition-colors"
                         >
                           <Eye className="w-4 h-4" />
                           Detayları Gör
                         </button>
                         <button
                           onClick={() => approveEvent(event.id)}
-                          className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg flex items-center gap-2 transition-colors"
+                          className="px-4 py-2 bg-[#4fb07a] hover:opacity-90 text-white rounded-lg flex items-center gap-2 transition-colors"
                         >
                           <CheckCircle className="w-4 h-4" />
                           Onayla
                         </button>
                         <button
                           onClick={() => setSelectedEvent(event)}
-                          className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center gap-2 transition-colors"
+                          className="px-4 py-2 bg-red-500/80 hover:bg-red-500 text-white rounded-lg flex items-center gap-2 transition-colors"
                         >
                           <XCircle className="w-4 h-4" />
                           Reddet
@@ -335,17 +335,17 @@ export default function AdminPanel() {
 
       {/* Detay Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="glassmorphism rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-[var(--surface)] border border-[var(--border)]">
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Etkinlik Detayları</h2>
+                <h2 className="text-2xl font-semibold text-[var(--text)]">Etkinlik Detayları</h2>
                 <button
                   onClick={() => {
                     setSelectedEvent(null);
                     setRejectionReason('');
                   }}
-                  className="text-gray-400 hover:text-white"
+                  className="text-[var(--muted)] hover:text-[var(--text)]"
                 >
                   <XCircle className="w-6 h-6" />
                 </button>
@@ -359,31 +359,31 @@ export default function AdminPanel() {
 
               <div className="space-y-4 mb-6">
                 <div>
-                  <label className="text-sm text-gray-400">Başlık</label>
-                  <p className="text-lg font-semibold text-white">{selectedEvent.title}</p>
+                  <label className="text-sm text-[var(--muted)]">Başlık</label>
+                  <p className="text-lg font-semibold text-[var(--text)]">{selectedEvent.title}</p>
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-400">Açıklama</label>
-                  <p className="text-white">{selectedEvent.description}</p>
+                  <label className="text-sm text-[var(--muted)]">Açıklama</label>
+                  <p className="text-[var(--text)]">{selectedEvent.description}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm text-gray-400">Kategori</label>
-                    <p className="text-white">{selectedEvent.category}</p>
+                    <label className="text-sm text-[var(--muted)]">Kategori</label>
+                    <p className="text-[var(--text)]">{selectedEvent.category}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-400">Şehir</label>
-                    <p className="text-white">{selectedEvent.city}</p>
+                    <label className="text-sm text-[var(--muted)]">Şehir</label>
+                    <p className="text-[var(--text)]">{selectedEvent.city}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-400">Tarih</label>
-                    <p className="text-white">{selectedEvent.date}</p>
+                    <label className="text-sm text-[var(--muted)]">Tarih</label>
+                    <p className="text-[var(--text)]">{selectedEvent.date}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-400">Saat</label>
-                    <p className="text-white">
+                    <label className="text-sm text-[var(--muted)]">Saat</label>
+                    <p className="text-[var(--text)]">
                       {selectedEvent.time}
                       {selectedEvent.end_time && ` - ${selectedEvent.end_time}`}
                     </p>
@@ -391,26 +391,26 @@ export default function AdminPanel() {
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-400">Konum</label>
-                  <p className="text-white">{selectedEvent.location}</p>
+                  <label className="text-sm text-[var(--muted)]">Konum</label>
+                  <p className="text-[var(--text)]">{selectedEvent.location}</p>
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-400">Organizatör</label>
-                  <p className="text-white">{selectedEvent.organizer}</p>
+                  <label className="text-sm text-[var(--muted)]">Organizatör</label>
+                  <p className="text-[var(--text)]">{selectedEvent.organizer}</p>
                 </div>
               </div>
 
               {/* Red Nedeni */}
               <div className="mb-6">
-                <label className="block text-sm text-gray-400 mb-2">
+                <label className="block text-sm text-[var(--muted)] mb-2">
                   Red Nedeni (opsiyonel, reddetme durumunda gerekli)
                 </label>
                 <textarea
                   value={rejectionReason}
                   onChange={(e) => setRejectionReason(e.target.value)}
                   placeholder="Etkinliğin neden reddedildiğini açıklayın..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
+                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[var(--accent)]"
                   rows={3}
                 />
               </div>
@@ -419,14 +419,14 @@ export default function AdminPanel() {
               <div className="flex gap-3">
                 <button
                   onClick={() => approveEvent(selectedEvent.id)}
-                  className="flex-1 px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors"
+                  className="flex-1 px-6 py-3 bg-[#4fb07a] hover:opacity-90 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors"
                 >
                   <CheckCircle className="w-5 h-5" />
                   Onayla
                 </button>
                 <button
                   onClick={() => rejectEvent(selectedEvent.id)}
-                  className="flex-1 px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors"
+                  className="flex-1 px-6 py-3 bg-red-500/80 hover:bg-red-500 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors"
                 >
                   <XCircle className="w-5 h-5" />
                   Reddet

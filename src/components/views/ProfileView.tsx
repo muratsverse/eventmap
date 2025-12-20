@@ -96,7 +96,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="text-white">Yükleniyor...</div>
+        <div className="text-[var(--text)]">Yükleniyor...</div>
       </div>
     );
   }
@@ -105,61 +105,61 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
     return (
       <div className="flex-1 overflow-y-auto pb-24">
         <div className="max-w-mobile mx-auto px-4 py-8 safe-area-top">
-          <div className="glassmorphism rounded-3xl p-8 card-shadow">
+          <div className="rounded-3xl p-8 bg-[var(--surface)] border border-[var(--border)] shadow-sm">
             {/* Logo */}
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl mb-4">
-                <UserIcon className="w-10 h-10 text-white" strokeWidth={2} />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-3xl mb-4">
+                <UserIcon className="w-10 h-10 text-[var(--text)]" strokeWidth={2} />
               </div>
-              <h1 className="text-2xl font-bold text-white mb-2">Hoş Geldiniz</h1>
-              <p className="text-white/60">Etkinliklere katılmaya devam edin</p>
+              <h1 className="text-2xl font-semibold text-[var(--text)] mb-2">Hoş Geldiniz</h1>
+              <p className="text-[var(--muted)]">Etkinliklere katılmaya devam edin</p>
             </div>
 
             {/* Login/Signup Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   E-posta
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="ornek@email.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl pl-12 pr-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Şifre
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl pl-12 pr-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     required
                   />
                 </div>
               </div>
 
               {loginError && (
-                <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-3">
-                  <p className="text-sm text-red-200">{loginError}</p>
+                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3">
+                  <p className="text-sm text-red-300">{loginError}</p>
                 </div>
               )}
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white font-semibold rounded-xl py-3 hover:opacity-90 active:scale-95 transition-all"
+                className="w-full bg-[var(--accent)] text-white font-semibold rounded-xl py-3 hover:opacity-90 active:scale-95 transition-all"
               >
                 {isSignUp ? 'Kayıt Ol' : 'Giriş Yap'}
               </button>
@@ -170,7 +170,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
               <div className="text-center mt-4">
                 <button
                   onClick={() => setShowPasswordReset(true)}
-                  className="text-purple-400 hover:text-purple-300 text-sm font-medium"
+                  className="text-[var(--accent)] hover:opacity-80 text-sm font-medium"
                 >
                   Şifremi Unuttum
                 </button>
@@ -180,10 +180,10 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
             {/* Divider */}
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10"></div>
+                <div className="w-full border-t border-[var(--border)]"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-gradient-to-br from-purple-900/80 via-blue-900/80 to-pink-900/80 text-white/60">
+                <span className="px-4 bg-[var(--surface)] text-[var(--muted)]">
                   veya
                 </span>
               </div>
@@ -193,7 +193,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
             <div className="space-y-3">
               <button
                 onClick={signInWithGoogle}
-                className="w-full bg-white hover:bg-gray-100 text-gray-900 font-semibold rounded-xl py-3 flex items-center justify-center gap-3 transition-colors"
+                className="w-full bg-[var(--surface-2)] hover:bg-[var(--surface)] text-[var(--text)] font-semibold rounded-xl py-3 flex items-center justify-center gap-3 transition-colors border border-[var(--border)]"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path
@@ -220,7 +220,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
             <div className="text-center mt-6">
               <button
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-purple-400 hover:text-purple-300 text-sm font-medium"
+                className="text-[var(--accent)] hover:opacity-80 text-sm font-medium"
               >
                 {isSignUp ? 'Zaten hesabınız var mı? Giriş yapın' : 'Hesabınız yok mu? Kayıt olun'}
               </button>
@@ -235,17 +235,17 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
 
           {/* Features */}
           <div className="mt-8 grid grid-cols-3 gap-4">
-            <div className="glassmorphism rounded-2xl p-4 text-center">
-              <Heart className="w-8 h-8 text-pink-400 mx-auto mb-2" />
-              <p className="text-xs font-medium text-white/80">Favorilere Ekle</p>
+            <div className="rounded-2xl p-4 text-center bg-[var(--surface)] border border-[var(--border)]">
+              <Heart className="w-8 h-8 text-[var(--accent)] mx-auto mb-2" />
+              <p className="text-xs font-medium text-[var(--muted)]">Favorilere Ekle</p>
             </div>
-            <div className="glassmorphism rounded-2xl p-4 text-center">
-              <Calendar className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-              <p className="text-xs font-medium text-white/80">Etkinlik Oluştur</p>
+            <div className="rounded-2xl p-4 text-center bg-[var(--surface)] border border-[var(--border)]">
+              <Calendar className="w-8 h-8 text-[var(--accent)] mx-auto mb-2" />
+              <p className="text-xs font-medium text-[var(--muted)]">Etkinlik Oluştur</p>
             </div>
-            <div className="glassmorphism rounded-2xl p-4 text-center">
-              <Bell className="w-8 h-8 text-purple-400 mx-auto mb-2" />
-              <p className="text-xs font-medium text-white/80">Bildirimler</p>
+            <div className="rounded-2xl p-4 text-center bg-[var(--surface)] border border-[var(--border)]">
+              <Bell className="w-8 h-8 text-[var(--accent)] mx-auto mb-2" />
+              <p className="text-xs font-medium text-[var(--muted)]">Bildirimler</p>
             </div>
           </div>
         </div>
@@ -263,17 +263,17 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
             alt="Cover"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70" />
         </div>
 
         {/* Profile Info */}
         <div className="px-4 -mt-16 relative z-10">
-          <div className="glassmorphism rounded-3xl p-6 card-shadow">
+          <div className="rounded-3xl p-6 bg-[var(--surface)] border border-[var(--border)] shadow-sm">
             <div className="flex items-start gap-4">
               {/* Avatar */}
               <button
                 onClick={() => setShowProfilePhoto(true)}
-                className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center flex-shrink-0 hover:opacity-90 active:scale-95 transition-all relative group"
+                className="w-20 h-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl flex items-center justify-center flex-shrink-0 hover:opacity-90 active:scale-95 transition-all relative group"
               >
                 {profile?.profile_photo ? (
                   <img
@@ -282,7 +282,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                     className="w-full h-full rounded-2xl object-cover"
                   />
                 ) : (
-                  <UserIcon className="w-10 h-10 text-white" strokeWidth={2} />
+                  <UserIcon className="w-10 h-10 text-[var(--text)]" strokeWidth={2} />
                 )}
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -292,34 +292,34 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
 
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <h1 className="text-xl font-bold text-white">
+                  <h1 className="text-xl font-semibold text-[var(--text)]">
                     {profile?.name || 'Kullanıcı'}
                   </h1>
                   <button
                     onClick={() => setShowEditProfile(true)}
-                    className="text-white/60 hover:text-white transition-colors p-1"
+                    className="text-[var(--muted)] hover:text-[var(--text)] transition-colors p-1"
                     aria-label="Profili Düzenle"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                 </div>
                 {emailVisible && (
-                  <p className="text-sm text-white/60 mb-3">{user.email}</p>
+                  <p className="text-sm text-[var(--muted)] mb-3">{user.email}</p>
                 )}
 
                 {/* Stats */}
                 <div className="flex gap-4">
                   <div>
-                    <p className="text-lg font-bold text-white">{favoriteEvents.length}</p>
-                    <p className="text-xs text-white/60">Favoriler</p>
+                    <p className="text-lg font-semibold text-[var(--text)]">{favoriteEvents.length}</p>
+                    <p className="text-xs text-[var(--muted)]">Favoriler</p>
                   </div>
                   <div>
-                    <p className="text-lg font-bold text-white">{attendingEvents.length}</p>
-                    <p className="text-xs text-white/60">Katılıyorum</p>
+                    <p className="text-lg font-semibold text-[var(--text)]">{attendingEvents.length}</p>
+                    <p className="text-xs text-[var(--muted)]">Katılıyorum</p>
                   </div>
                   <div>
-                    <p className="text-lg font-bold text-white">0</p>
-                    <p className="text-xs text-white/60">Oluşturdum</p>
+                    <p className="text-lg font-semibold text-[var(--text)]">0</p>
+                    <p className="text-xs text-[var(--muted)]">Oluşturdum</p>
                   </div>
                 </div>
               </div>
@@ -329,7 +329,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
 
         {/* Tabs */}
         <div className="px-4 mt-6">
-          <div className="glassmorphism rounded-2xl p-1 flex gap-1">
+          <div className="rounded-2xl p-1 flex gap-1 bg-[var(--surface)] border border-[var(--border)]">
             {[
               { id: 'favorites' as ProfileTab, label: 'Favoriler', icon: Heart },
               { id: 'attending' as ProfileTab, label: 'Katılıyorum', icon: Calendar },
@@ -343,8 +343,8 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-medium text-sm transition-all ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                      : 'text-white/60 hover:text-white/80'
+                      ? 'bg-[var(--accent)] text-white'
+                      : 'text-[var(--muted)] hover:text-[var(--text)]'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -360,9 +360,9 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
           {activeTab === 'favorites' && (
             <>
               {favoriteEvents.length === 0 ? (
-                <div className="glassmorphism rounded-2xl p-8 text-center">
-                  <Heart className="w-12 h-12 text-white/40 mx-auto mb-3" />
-                  <p className="text-white/60">Henüz favori etkinlik eklemediniz</p>
+                <div className="rounded-2xl p-8 text-center bg-[var(--surface)] border border-[var(--border)]">
+                  <Heart className="w-12 h-12 text-[var(--muted)] mx-auto mb-3" />
+                  <p className="text-[var(--muted)]">Henuz favori etkinlik eklemediniz</p>
                 </div>
               ) : (
                 favoriteEvents.map((event) => (
@@ -380,9 +380,9 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
           {activeTab === 'attending' && (
             <>
               {attendingEvents.length === 0 ? (
-                <div className="glassmorphism rounded-2xl p-8 text-center">
-                  <Calendar className="w-12 h-12 text-white/40 mx-auto mb-3" />
-                  <p className="text-white/60">Henüz katılacağınız etkinlik yok</p>
+                <div className="rounded-2xl p-8 text-center bg-[var(--surface)] border border-[var(--border)]">
+                  <Calendar className="w-12 h-12 text-[var(--muted)] mx-auto mb-3" />
+                  <p className="text-[var(--muted)]">Henuz katilacaginiz etkinlik yok</p>
                 </div>
               ) : (
                 attendingEvents.map((event) => (
@@ -407,7 +407,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
               {!profile?.is_premium && (
                 <button
                   onClick={() => setShowPremiumModal(true)}
-                  className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold rounded-2xl py-4 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
+                  className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-4 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
                 >
                   <Crown className="w-5 h-5" />
                   <span>Premium'a Geç</span>
@@ -415,65 +415,65 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
               )}
 
               {profile?.is_premium && (
-                <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/50 rounded-xl p-4">
+                <div className="bg-[#d3a253]/10 border border-[#d3a253]/40 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Crown className="w-6 h-6 text-yellow-400" />
-                    <span className="text-white font-semibold">Premium Üye</span>
+                    <Crown className="w-6 h-6 text-[#d3a253]" />
+                    <span className="text-[var(--text)] font-semibold">Premium Uye</span>
                   </div>
-                  <p className="text-sm text-white/70">Sınırsız etkinlik oluşturma ve reklamsız deneyimin keyfini çıkarıyorsunuz</p>
+                  <p className="text-sm text-[var(--muted)]">Sinirsiz etkinlik olusturma ve reklamsiz deneyimin keyfini cikariyorsunuz</p>
                 </div>
               )}
 
               {/* Settings */}
-              <div className="glassmorphism rounded-2xl p-6 space-y-4">
+              <div className="rounded-2xl p-6 space-y-4 bg-[var(--surface)] border border-[var(--border)]">
                 {/* Şifre Değiştir */}
                 <button
                   onClick={() => setShowUpdatePassword(true)}
-                  className="w-full flex items-center justify-between hover:bg-white/5 rounded-xl p-3 -mx-3 transition-all"
+                  className="w-full flex items-center justify-between hover:bg-[var(--surface-2)] rounded-xl p-3 -mx-3 transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <Lock className="w-5 h-5 text-white/60" />
-                    <span className="text-white">Şifre Değiştir</span>
+                    <Lock className="w-5 h-5 text-[var(--muted)]" />
+                    <span className="text-[var(--text)]">Şifre Değiştir</span>
                   </div>
-                  <span className="text-white/40">›</span>
+                  <span className="text-[var(--muted)]">›</span>
                 </button>
 
-                <div className="border-t border-white/10"></div>
+                <div className="border-t border-[var(--border)]"></div>
 
                 {/* Bildirim Ayarları */}
                 <button
                   onClick={() => setShowNotifSettings(true)}
-                  className="w-full flex items-center justify-between hover:bg-white/5 rounded-xl p-3 -mx-3 transition-all"
+                  className="w-full flex items-center justify-between hover:bg-[var(--surface-2)] rounded-xl p-3 -mx-3 transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <Bell className="w-5 h-5 text-white/60" />
-                    <span className="text-white">Bildirim Ayarları</span>
+                    <Bell className="w-5 h-5 text-[var(--muted)]" />
+                    <span className="text-[var(--text)]">Bildirim Ayarlari</span>
                   </div>
-                  <span className="text-white/40">›</span>
+                  <span className="text-[var(--muted)]">›</span>
                 </button>
 
-                <div className="border-t border-white/10"></div>
+                <div className="border-t border-[var(--border)]"></div>
 
                 {/* Email Görünürlüğü */}
                 <button
                   onClick={toggleEmailVisibility}
-                  className="w-full flex items-center justify-between hover:bg-white/5 rounded-xl p-3 -mx-3 transition-all"
+                  className="w-full flex items-center justify-between hover:bg-[var(--surface-2)] rounded-xl p-3 -mx-3 transition-all"
                 >
                   <div className="flex items-center gap-3">
                     {emailVisible ? (
-                      <Eye className="w-5 h-5 text-white/60" />
+                      <Eye className="w-5 h-5 text-[var(--muted)]" />
                     ) : (
-                      <EyeOff className="w-5 h-5 text-white/60" />
+                      <EyeOff className="w-5 h-5 text-[var(--muted)]" />
                     )}
                     <div className="text-left">
-                      <div className="text-white">Email Adresi Görünürlüğü</div>
-                      <div className="text-xs text-white/50">
-                        {emailVisible ? 'Profilimde görünür' : 'Profilimde gizli'}
+                      <div className="text-[var(--text)]">Email Adresi Görünürlüğü</div>
+                      <div className="text-xs text-[var(--muted)]">
+                        {emailVisible ? 'Profilimde gorunur' : 'Profilimde gizli'}
                       </div>
                     </div>
                   </div>
                   <div className={`w-12 h-6 rounded-full transition-colors ${
-                    emailVisible ? 'bg-green-500' : 'bg-white/20'
+                    emailVisible ? 'bg-[#4fb07a]' : 'bg-[var(--surface-2)]'
                   } relative`}>
                     <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
                       emailVisible ? 'translate-x-6' : ''
@@ -481,12 +481,12 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                   </div>
                 </button>
 
-                <div className="border-t border-white/10"></div>
+                <div className="border-t border-[var(--border)]"></div>
 
                 {/* Çıkış Yap */}
                 <button
                   onClick={() => signOut()}
-                  className="w-full flex items-center justify-center gap-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 font-medium rounded-xl py-3 transition-all"
+                  className="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-300 font-medium rounded-xl py-3 transition-all border border-red-500/30"
                 >
                   <LogOut className="w-5 h-5" />
                   <span>Çıkış Yap</span>

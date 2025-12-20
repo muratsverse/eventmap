@@ -71,12 +71,12 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
     <div className="fixed inset-0 z-50 flex items-end justify-center animate-fade-in">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Sheet */}
-      <div className="relative w-full max-w-mobile bg-gray-900 rounded-t-3xl overflow-hidden animate-slide-up max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-mobile bg-[var(--surface)] rounded-t-3xl overflow-hidden animate-slide-up max-h-[90vh] flex flex-col border border-[var(--border)]">
         {/* Header Image */}
         <div className="relative h-64 flex-shrink-0">
           <img
@@ -88,23 +88,23 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
           <div className={cn(
             'absolute inset-0 bg-gradient-to-t',
             getCategoryColor(event.category),
-            'opacity-40 mix-blend-multiply'
+            'opacity-25'
           )} />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 glassmorphism rounded-full p-2 hover:bg-white/20 active:scale-95 transition-all"
+            className="absolute top-4 right-4 rounded-full p-2 bg-[var(--surface)]/80 border border-[var(--border)] hover:bg-[var(--surface)] active:scale-95 transition-all"
           >
-            <X className="w-6 h-6 text-white" />
+            <X className="w-6 h-6 text-[var(--text)]" />
           </button>
 
           {/* Category Badge */}
           <div className="absolute top-4 left-4">
             <div className={cn(
-              'glassmorphism rounded-full px-4 py-2 flex items-center gap-2',
-              'text-sm font-semibold text-white'
+              'rounded-full px-4 py-2 flex items-center gap-2',
+              'bg-[var(--surface)]/80 border border-[var(--border)] text-sm font-semibold text-[var(--text)]'
             )}>
               <span className="text-lg">{getCategoryIcon(event.category)}</span>
               <span>{event.category}</span>
@@ -115,40 +115,40 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           {/* Title */}
-          <h1 className="text-2xl font-bold text-white mb-2">{event.title}</h1>
+          <h1 className="text-2xl font-semibold text-[var(--text)] mb-2">{event.title}</h1>
 
           {/* Description */}
-          <p className="text-white/70 leading-relaxed mb-6">{event.description}</p>
+          <p className="text-[var(--muted)] leading-relaxed mb-6">{event.description}</p>
 
           {/* Info Cards */}
           <div className="space-y-3 mb-6">
             {/* Date & Time */}
-            <div className="glassmorphism rounded-2xl p-4 flex items-center gap-4">
-              <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl p-3">
-                <Calendar className="w-6 h-6 text-white" />
+            <div className="rounded-2xl p-4 flex items-center gap-4 bg-[var(--surface)] border border-[var(--border)]">
+              <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-3">
+                <Calendar className="w-6 h-6 text-[var(--text)]" />
               </div>
               <div>
-                <p className="text-sm text-white/60">Tarih ve Saat</p>
-                <p className="text-white font-semibold">{event.date} • {event.time}</p>
+                <p className="text-sm text-[var(--muted)]">Tarih ve Saat</p>
+                <p className="text-[var(--text)] font-semibold">{event.date} • {event.time}</p>
               </div>
             </div>
 
             {/* Location */}
-            <div className="glassmorphism rounded-2xl p-4">
+            <div className="rounded-2xl p-4 bg-[var(--surface)] border border-[var(--border)]">
               <div className="flex items-center gap-4 mb-3">
-                <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-3">
-                  <MapPin className="w-6 h-6 text-white" />
+                <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-3">
+                  <MapPin className="w-6 h-6 text-[var(--text)]" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm text-white/60">Konum</p>
-                  <p className="text-white font-semibold">{event.location}</p>
-                  <p className="text-sm text-white/50">{event.city}</p>
+                  <p className="text-sm text-[var(--muted)]">Konum</p>
+                  <p className="text-[var(--text)] font-semibold">{event.location}</p>
+                  <p className="text-sm text-[var(--muted)]">{event.city}</p>
                 </div>
               </div>
               {/* Get Directions Button */}
               <button
                 onClick={handleGetDirections}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl py-2.5 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
+                className="w-full bg-[var(--accent)] text-white font-semibold rounded-xl py-2.5 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
               >
                 <Navigation className="w-4 h-4" />
                 <span>Yol Tarifi Al</span>
@@ -156,25 +156,25 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
             </div>
 
             {/* Organizer */}
-            <div className="glassmorphism rounded-2xl p-4 flex items-center gap-4">
-              <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-3">
-                <User className="w-6 h-6 text-white" />
+            <div className="rounded-2xl p-4 flex items-center gap-4 bg-[var(--surface)] border border-[var(--border)]">
+              <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-3">
+                <User className="w-6 h-6 text-[var(--text)]" />
               </div>
               <div>
-                <p className="text-sm text-white/60">Organizatör</p>
-                <p className="text-white font-semibold">{event.organizer}</p>
+                <p className="text-sm text-[var(--muted)]">Organizatör</p>
+                <p className="text-[var(--text)] font-semibold">{event.organizer}</p>
               </div>
             </div>
 
             {/* Attendees */}
-            <div className="glassmorphism rounded-2xl p-4">
+            <div className="rounded-2xl p-4 bg-[var(--surface)] border border-[var(--border)]">
               <div className="flex items-center gap-4 mb-3">
-                <div className="bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl p-3">
-                  <Users className="w-6 h-6 text-white" />
+                <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-3">
+                  <Users className="w-6 h-6 text-[var(--text)]" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm text-white/60">Katılımcılar</p>
-                  <p className="text-white font-semibold">
+                  <p className="text-sm text-[var(--muted)]">Katılımcılar</p>
+                  <p className="text-[var(--text)] font-semibold">
                     {attendeesCount > 0 ? `${attendeesCount} kişi katılıyor` : `${event.attendees.toLocaleString()} kişi`}
                   </p>
                 </div>
@@ -183,16 +183,16 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
               {/* Premium kullanıcılar için katılımcı listesi */}
               {isPremium && attendees.length > 0 && (
                 <div className="mt-4 space-y-2">
-                  <p className="text-xs text-white/50 font-medium uppercase tracking-wide mb-3">
+                  <p className="text-xs text-[var(--muted)] font-medium uppercase tracking-wide mb-3">
                     Katılan Kullanıcılar
                   </p>
                   <div className="space-y-2 max-h-48 overflow-y-auto">
                     {attendees.slice(0, 20).map((attendee: any) => (
                       <div
                         key={attendee.id}
-                        className="flex items-center gap-3 bg-white/5 rounded-xl p-2 hover:bg-white/10 transition-colors"
+                        className="flex items-center gap-3 bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-2 hover:bg-[var(--surface)] transition-colors"
                       >
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <div className="w-10 h-10 rounded-full bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {attendee.profile_photo ? (
                             <img
                               src={attendee.profile_photo}
@@ -200,14 +200,14 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <User className="w-5 h-5 text-white" />
+                            <User className="w-5 h-5 text-[var(--text)]" />
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-white truncate">
+                          <p className="text-sm font-medium text-[var(--text)] truncate">
                             {attendee.name}
                           </p>
-                          <p className="text-xs text-white/50 truncate">
+                          <p className="text-xs text-[var(--muted)] truncate">
                             {attendee.email}
                           </p>
                         </div>
@@ -215,7 +215,7 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                     ))}
                   </div>
                   {attendees.length > 20 && (
-                    <p className="text-xs text-white/40 text-center mt-2">
+                    <p className="text-xs text-[var(--muted)] text-center mt-2">
                       +{attendees.length - 20} kişi daha
                     </p>
                   )}
@@ -226,7 +226,7 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
               {!isPremium && attendeesCount > 0 && (
                 <button
                   onClick={() => setShowPremiumModal(true)}
-                  className="w-full mt-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
+                  className="w-full mt-3 bg-[var(--accent)] text-white font-semibold rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
                 >
                   <Crown className="w-5 h-5" />
                   <span>Katılımcıları Görmek İçin Premium Ol</span>
@@ -235,19 +235,19 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
             </div>
 
             {/* Price */}
-            <div className="glassmorphism rounded-2xl p-4 flex items-center gap-4">
-              <div className="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl p-3">
-                <DollarSign className="w-6 h-6 text-white" />
+            <div className="rounded-2xl p-4 flex items-center gap-4 bg-[var(--surface)] border border-[var(--border)]">
+              <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-3">
+                <DollarSign className="w-6 h-6 text-[var(--text)]" />
               </div>
               <div className="flex-1 flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-white/60">Fiyat</p>
-                  <p className="text-white font-semibold text-lg">
+                  <p className="text-sm text-[var(--muted)]">Fiyat</p>
+                  <p className="text-[var(--text)] font-semibold text-lg">
                     {formatPrice(event.price.min, event.price.max)}
                   </p>
                 </div>
                 {event.source && (
-                  <span className="text-xs text-white/40 uppercase">{event.source}</span>
+                  <span className="text-xs text-[var(--muted)] uppercase">{event.source}</span>
                 )}
               </div>
             </div>
@@ -262,11 +262,11 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
 
           {/* Attendance Status */}
           {user && isAttending(event.id) && (
-            <div className="mb-6 bg-green-500/20 border border-green-500/50 rounded-2xl p-4 flex items-center gap-3">
-              <Check className="w-6 h-6 text-green-400" />
+            <div className="mb-6 bg-[#4fb07a]/15 border border-[#4fb07a]/40 rounded-2xl p-4 flex items-center gap-3">
+              <Check className="w-6 h-6 text-[#4fb07a]" />
               <div>
-                <p className="text-white font-semibold">Katılıyorsunuz</p>
-                <p className="text-sm text-white/70">Bu etkinliğe katılım işaretlediniz</p>
+                <p className="text-[var(--text)] font-semibold">Katılıyorsunuz</p>
+                <p className="text-sm text-[var(--muted)]">Bu etkinliğe katılım işaretlediniz</p>
               </div>
             </div>
           )}
@@ -278,8 +278,8 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
               className={cn(
                 "flex-1 font-semibold rounded-2xl py-4 transition-all",
                 isAttending(event.id)
-                  ? "bg-green-500/20 text-green-400 border border-green-500/50"
-                  : "bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white hover:opacity-90 active:scale-95"
+                  ? "bg-[#4fb07a]/15 text-[#4fb07a] border border-[#4fb07a]/40"
+                  : "bg-[var(--accent)] text-white hover:opacity-90 active:scale-95"
               )}
             >
               {isAttending(event.id) ? 'Katılıyorsunuz' : 'Katıl'}
@@ -287,22 +287,22 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
             <button
               onClick={() => user ? toggleFavorite(event.id) : alert('Giriş yapmalısınız')}
               className={cn(
-                "glassmorphism rounded-2xl px-6 hover:bg-white/20 active:scale-95 transition-all",
-                isFavorite(event.id) && "bg-pink-500/20 border-pink-500/50"
+                "rounded-2xl px-6 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-2)] active:scale-95 transition-all",
+                isFavorite(event.id) && "bg-[#d07a6a]/15 border-[#d07a6a]/40"
               )}
             >
               <Heart
                 className={cn(
                   "w-6 h-6",
-                  isFavorite(event.id) ? "text-pink-400 fill-pink-400" : "text-white"
+                  isFavorite(event.id) ? "text-[#d07a6a] fill-[#d07a6a]" : "text-[var(--text)]"
                 )}
               />
             </button>
             <button
               onClick={handleShare}
-              className="glassmorphism rounded-2xl px-6 hover:bg-white/20 active:scale-95 transition-all"
+              className="rounded-2xl px-6 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-2)] active:scale-95 transition-all"
             >
-              <Share2 className="w-6 h-6 text-white" />
+              <Share2 className="w-6 h-6 text-[var(--text)]" />
             </button>
           </div>
         </div>

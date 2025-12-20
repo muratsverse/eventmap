@@ -15,50 +15,50 @@ export default function PremiumSuccessView() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-      <div className="glassmorphism rounded-3xl max-w-md w-full p-8 text-center card-shadow animate-fade-in">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--bg)]">
+      <div className="rounded-3xl max-w-md w-full p-8 text-center bg-[var(--surface)] border border-[var(--border)] shadow-sm animate-fade-in">
         <div className="mb-6 flex justify-center">
           <div className="relative">
-            <div className="w-24 h-24 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
-              <Crown className="w-12 h-12 text-white" />
+            <div className="w-24 h-24 bg-[var(--surface-2)] border border-[var(--border)] rounded-full flex items-center justify-center">
+              <Crown className="w-12 h-12 text-[var(--text)]" />
             </div>
-            <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-2">
+            <div className="absolute -top-2 -right-2 bg-[#4fb07a] rounded-full p-2">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-white mb-3">
+        <h1 className="text-3xl font-semibold text-[var(--text)] mb-3">
           Hoş Geldiniz, Premium Üye! 🎉
         </h1>
 
-        <p className="text-white/80 mb-6">
+        <p className="text-[var(--muted)] mb-6">
           Ödemeniz başarıyla tamamlandı. Premium özellikleriniz aktif edildi.
         </p>
 
-        <div className="bg-white/10 rounded-2xl p-4 mb-6">
-          <h2 className="text-white font-semibold mb-3">Premium Özellikleriniz:</h2>
-          <ul className="text-left text-white/70 space-y-2 text-sm">
+        <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl p-4 mb-6">
+          <h2 className="text-[var(--text)] font-semibold mb-3">Premium Özellikleriniz:</h2>
+          <ul className="text-left text-[var(--muted)] space-y-2 text-sm">
             <li className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-400" />
+              <CheckCircle className="w-4 h-4 text-[#4fb07a]" />
               Sınırsız etkinlik oluşturma
             </li>
             <li className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-400" />
+              <CheckCircle className="w-4 h-4 text-[#4fb07a]" />
               Reklamsız deneyim
             </li>
             <li className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-400" />
+              <CheckCircle className="w-4 h-4 text-[#4fb07a]" />
               Öncelikli gösterim
             </li>
             <li className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-400" />
+              <CheckCircle className="w-4 h-4 text-[#4fb07a]" />
               Premium rozet
             </li>
           </ul>
         </div>
 
-        <p className="text-white/60 text-sm">
+        <p className="text-[var(--muted)] text-sm">
           Profil sayfanıza yönlendiriliyorsunuz...
         </p>
       </div>

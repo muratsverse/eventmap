@@ -70,17 +70,17 @@ export default function UpdatePasswordModal({ isOpen, onClose }: UpdatePasswordM
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 animate-fade-in">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={!loading ? handleClose : undefined}
       />
 
       {/* Modal */}
-      <div className="relative glassmorphism rounded-3xl max-w-md w-full p-8 card-shadow animate-slide-up">
+      <div className="relative rounded-3xl max-w-md w-full p-8 bg-[var(--surface)] border border-[var(--border)] shadow-sm animate-slide-up">
         {/* Close Button */}
         {!loading && (
           <button
             onClick={handleClose}
-            className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
+            className="absolute top-4 right-4 text-[var(--muted)] hover:text-[var(--text)] transition-colors"
             aria-label="Kapat"
           >
             <X className="w-6 h-6" />
@@ -91,11 +91,11 @@ export default function UpdatePasswordModal({ isOpen, onClose }: UpdatePasswordM
           <>
             {/* Header */}
             <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4">
-                <Lock className="w-8 h-8 text-white" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl mb-4">
+                <Lock className="w-8 h-8 text-[var(--text)]" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">Yeni Şifre Belirle</h2>
-              <p className="text-white/60 text-sm">
+              <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">Yeni Şifre Belirle</h2>
+              <p className="text-[var(--muted)] text-sm">
                 Hesabınız için yeni bir şifre oluşturun
               </p>
             </div>
@@ -104,17 +104,17 @@ export default function UpdatePasswordModal({ isOpen, onClose }: UpdatePasswordM
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Yeni Şifre */}
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Yeni Şifre
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
                   <input
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl pl-12 pr-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[var(--accent)] transition-colors"
                     disabled={loading}
                     minLength={6}
                   />
@@ -123,17 +123,17 @@ export default function UpdatePasswordModal({ isOpen, onClose }: UpdatePasswordM
 
               {/* Şifre Tekrar */}
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Şifre Tekrar
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
                   <input
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl pl-12 pr-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[var(--accent)] transition-colors"
                     disabled={loading}
                     minLength={6}
                   />
@@ -141,15 +141,15 @@ export default function UpdatePasswordModal({ isOpen, onClose }: UpdatePasswordM
               </div>
 
               {error && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-                  <p className="text-red-400 text-sm">{error}</p>
+                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3">
+                  <p className="text-red-300 text-sm">{error}</p>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white font-semibold rounded-2xl py-3 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-3 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -166,11 +166,11 @@ export default function UpdatePasswordModal({ isOpen, onClose }: UpdatePasswordM
           <>
             {/* Success State */}
             <div className="text-center py-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/20 rounded-full mb-6">
-                <CheckCircle className="w-12 h-12 text-green-400" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-[#4fb07a]/15 rounded-full mb-6">
+                <CheckCircle className="w-12 h-12 text-[#4fb07a]" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-4">Şifre Güncellendi!</h2>
-              <p className="text-white/60 mb-8">
+              <h2 className="text-2xl font-semibold text-[var(--text)] mb-4">Şifre Güncellendi!</h2>
+              <p className="text-[var(--muted)] mb-8">
                 Şifreniz başarıyla güncellendi. Artık yeni şifrenizle giriş yapabilirsiniz.
               </p>
             </div>

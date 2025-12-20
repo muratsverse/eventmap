@@ -1,4 +1,4 @@
-import { MapPin, SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface HeaderProps {
@@ -11,16 +11,20 @@ interface HeaderProps {
 export default function Header({ title, eventCount, onFilterClick, className }: HeaderProps) {
   return (
     <header className={cn('safe-area-top', className)}>
-      <div className="glassmorphism rounded-3xl p-4 mb-4 card-shadow">
+      <div className="rounded-2xl p-4 mb-4 bg-[var(--surface)] border border-[var(--border)] shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-2">
-              <MapPin className="w-6 h-6 text-white" strokeWidth={2} />
+            <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl p-1.5">
+              <img
+                src="/logo.png"
+                alt="Eventify"
+                className="w-8 h-8"
+              />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">{title}</h1>
+              <h1 className="text-xl font-semibold text-[var(--text)]">{title}</h1>
               {eventCount !== undefined && (
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-[var(--muted)]">
                   {eventCount} etkinlik
                 </p>
               )}
@@ -30,10 +34,10 @@ export default function Header({ title, eventCount, onFilterClick, className }: 
           {onFilterClick && (
             <button
               onClick={onFilterClick}
-              className="glassmorphism rounded-xl p-2.5 hover:bg-white/20 active:scale-95 transition-all"
+              className="rounded-xl p-2.5 bg-[var(--surface-2)] border border-[var(--border)] hover:bg-[var(--surface)] active:scale-95 transition-all"
               aria-label="Filtrele"
             >
-              <SlidersHorizontal className="w-5 h-5 text-white" />
+              <SlidersHorizontal className="w-5 h-5 text-[var(--text)]" />
             </button>
           )}
         </div>

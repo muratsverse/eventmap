@@ -49,16 +49,16 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={handleClose}
       />
 
       {/* Modal */}
-      <div className="relative glassmorphism rounded-3xl max-w-md w-full p-8 card-shadow animate-slide-up">
+      <div className="relative rounded-3xl max-w-md w-full p-8 bg-[var(--surface)] border border-[var(--border)] shadow-sm animate-slide-up">
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-[var(--muted)] hover:text-[var(--text)] transition-colors"
           aria-label="Kapat"
         >
           <X className="w-6 h-6" />
@@ -68,11 +68,11 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
           <>
             {/* Header */}
             <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4">
-                <Mail className="w-8 h-8 text-white" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl mb-4">
+                <Mail className="w-8 h-8 text-[var(--text)]" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">Şifremi Unuttum</h2>
-              <p className="text-white/60 text-sm">
+              <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">Şifremi Unuttum</h2>
+              <p className="text-[var(--muted)] text-sm">
                 Email adresinizi girin, size şifre sıfırlama linki gönderelim
               </p>
             </div>
@@ -80,32 +80,32 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Email Adresi
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="ornek@email.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl pl-12 pr-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[var(--accent)] transition-colors"
                     disabled={loading}
                   />
                 </div>
               </div>
 
               {error && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-                  <p className="text-red-400 text-sm">{error}</p>
+                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3">
+                  <p className="text-red-300 text-sm">{error}</p>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white font-semibold rounded-2xl py-3 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-3 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -122,19 +122,19 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
           <>
             {/* Success State */}
             <div className="text-center py-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/20 rounded-full mb-6">
-                <CheckCircle className="w-12 h-12 text-green-400" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-[#4fb07a]/15 rounded-full mb-6">
+                <CheckCircle className="w-12 h-12 text-[#4fb07a]" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-4">Email Gönderildi!</h2>
-              <p className="text-white/60 mb-2">
-                Şifre sıfırlama linkini <span className="text-white font-semibold">{email}</span> adresine gönderdik.
+              <h2 className="text-2xl font-semibold text-[var(--text)] mb-4">Email Gönderildi!</h2>
+              <p className="text-[var(--muted)] mb-2">
+                Şifre sıfırlama linkini <span className="text-[var(--text)] font-semibold">{email}</span> adresine gönderdik.
               </p>
-              <p className="text-white/60 text-sm mb-8">
+              <p className="text-[var(--muted)] text-sm mb-8">
                 Lütfen email kutunuzu kontrol edin (spam klasörünü de kontrol etmeyi unutmayın).
               </p>
               <button
                 onClick={handleClose}
-                className="w-full bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl py-3 transition-colors"
+                className="w-full bg-[var(--surface-2)] hover:bg-[var(--surface)] text-[var(--text)] font-semibold rounded-2xl py-3 transition-colors border border-[var(--border)]"
               >
                 Tamam
               </button>

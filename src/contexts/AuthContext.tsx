@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase, supabaseHelpers } from '@/lib/supabase';
 import { Capacitor } from '@capacitor/core';
+import { Browser } from '@capacitor/browser';
 
 interface Profile {
   id: string;
@@ -220,16 +221,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Mobile için deep link, web için normal URL
       const redirectTo = Capacitor.isNativePlatform()
         ? 'eventmap://auth/callback'
-        : window.location.origin;
+        : `${window.location.origin}/auth/callback`;
 
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo,
-          skipBrowserRedirect: Capacitor.isNativePlatform(), // Mobile'da tarayıcı redirect'i atla
+          skipBrowserRedirect: true,
         },
       });
-      return { error };
+
+      if (error) return { error };
+
+      if (!data?.url) {
+        return { error: new Error('OAuth URL alınamadı') };
+      }
+
+      // Mobile'da Capacitor Browser, web'de tam sayfa yönlendirme
+      if (Capacitor.isNativePlatform()) {
+        await Browser.open({
+          url: data.url,
+          windowName: '_self',
+        });
+      } else {
+        window.location.assign(data.url);
+      }
+
+      return { error: null };
     } catch (error) {
       return { error: error as Error };
     }

@@ -17,12 +17,12 @@ export function formatDate(dateStr: string): string {
 
 export function getCategoryColor(category: string): string {
   const colors: Record<string, string> = {
-    Konser: 'from-purple-500 to-pink-500',
-    Spor: 'from-green-500 to-emerald-500',
-    Tiyatro: 'from-red-500 to-orange-500',
-    Festival: 'from-yellow-500 to-orange-500',
-    Meetup: 'from-blue-500 to-cyan-500',
-    Sergi: 'from-indigo-500 to-purple-500'
+    Konser: 'from-[#6d7cff] to-[#8a94ff]',
+    Spor: 'from-[#4fb07a] to-[#6bc59a]',
+    Tiyatro: 'from-[#d07a6a] to-[#e3a08d]',
+    Festival: 'from-[#d3a253] to-[#e1b86f]',
+    Meetup: 'from-[#5ea2d9] to-[#78b7ea]',
+    Sergi: 'from-[#8a7cd1] to-[#a195e6]'
   };
   return colors[category] || 'from-gray-500 to-gray-600';
 }

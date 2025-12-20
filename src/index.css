@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
 /* Leaflet CSS */
 @import 'leaflet/dist/leaflet.css';
 
@@ -5,11 +6,26 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: #0f1115;
+  --surface: #151821;
+  --surface-2: #1b1f2a;
+  --border: #2a2f3b;
+  --text: #e7eaf0;
+  --muted: #9aa3b2;
+  --accent: #6d7cff;
+  --accent-10: rgba(109, 124, 255, 0.1);
+  --accent-15: rgba(109, 124, 255, 0.15);
+  --accent-20: rgba(109, 124, 255, 0.2);
+  --accent-40: rgba(109, 124, 255, 0.4);
+  --accent-50: rgba(109, 124, 255, 0.5);
+}
+
 body {
-  background-color: rgb(17 24 39);
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -20,7 +36,7 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
-  background: linear-gradient(to bottom right, rgb(17 24 39), rgb(88 28 135), rgb(17 24 39));
+  background: linear-gradient(to bottom right, #0f1115, #141826, #0f1115);
 }
 
 /* Safe area for mobile devices */
@@ -37,34 +53,34 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgba(31, 41, 55, 0.5);
+  background-color: rgba(27, 31, 42, 0.7);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(168, 85, 247, 0.5);
+  background-color: rgba(109, 124, 255, 0.35);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(168, 85, 247, 0.7);
+  background-color: rgba(109, 124, 255, 0.55);
 }
 
 /* Custom Utilities */
 .glassmorphism {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .gradient-text {
-  background: linear-gradient(to right, rgb(192 132 252), rgb(244 114 182), rgb(96 165 250));
+  background: linear-gradient(to right, #9aa7ff, #6d7cff, #5b6bda);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }
 
 .card-shadow {
-  box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .safe-area-bottom {

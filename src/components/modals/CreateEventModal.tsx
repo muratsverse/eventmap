@@ -238,24 +238,24 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
   if (!isPremium) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-        <div className="relative w-full max-w-md bg-gray-900 rounded-3xl p-8 glassmorphism card-shadow">
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+        <div className="relative w-full max-w-md bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-8 shadow-sm">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 glassmorphism rounded-full p-2 hover:bg-white/20"
+            className="absolute top-4 right-4 bg-[var(--surface-2)] border border-[var(--border)] rounded-full p-2 hover:bg-[var(--surface)]"
           >
-            <X className="w-6 h-6 text-white" />
+            <X className="w-6 h-6 text-[var(--text)]" />
           </button>
 
           <div className="text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-3xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-20 h-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-3xl flex items-center justify-center mx-auto mb-4">
               <span className="text-4xl">👑</span>
             </div>
-            <h2 className="text-2xl font-bold text-white mb-3">Premium Özellik</h2>
-            <p className="text-white/70 mb-6">
+            <h2 className="text-2xl font-semibold text-[var(--text)] mb-3">Premium Özellik</h2>
+            <p className="text-[var(--muted)] mb-6">
               Etkinlik oluşturabilmek için premium üyelik gereklidir.
             </p>
-            <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold rounded-2xl py-4 hover:opacity-90 active:scale-95 transition-all">
+            <button className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-4 hover:opacity-90 active:scale-95 transition-all">
               Premium'a Geç
             </button>
           </div>
@@ -266,27 +266,27 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in overflow-y-auto">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative w-full max-w-mobile bg-gray-900 rounded-3xl my-8 animate-scale-in">
+      <div className="relative w-full max-w-mobile bg-[var(--surface)] border border-[var(--border)] rounded-3xl my-8 animate-scale-in">
         <form onSubmit={handleSubmit}>
           {/* Header */}
-          <div className="sticky top-0 glassmorphism rounded-t-3xl p-6 flex items-center justify-between border-b border-white/10 z-10">
-            <h2 className="text-2xl font-bold text-white">Yeni Etkinlik Oluştur</h2>
+          <div className="sticky top-0 bg-[var(--surface)] rounded-t-3xl p-6 flex items-center justify-between border-b border-[var(--border)] z-10">
+            <h2 className="text-2xl font-semibold text-[var(--text)]">Yeni Etkinlik Oluştur</h2>
             <button
               type="button"
               onClick={onClose}
-              className="glassmorphism rounded-full p-2 hover:bg-white/20"
+              className="bg-[var(--surface-2)] border border-[var(--border)] rounded-full p-2 hover:bg-[var(--surface)]"
               disabled={isCreating}
             >
-              <X className="w-6 h-6 text-white" />
+              <X className="w-6 h-6 text-[var(--text)]" />
             </button>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mx-6 mt-4 p-4 bg-red-500/20 border border-red-500/50 rounded-xl">
-              <p className="text-red-200 text-sm">{error.message}</p>
+            <div className="mx-6 mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+              <p className="text-red-300 text-sm">{error.message}</p>
             </div>
           )}
 
@@ -294,11 +294,11 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
           <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
             {/* Temel Bilgiler */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Temel Bilgiler</h3>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-4">Temel Bilgiler</h3>
 
               {/* Title */}
               <div className="mb-4">
-                <label htmlFor="event-title" className="block text-sm font-medium text-white/80 mb-2">
+                <label htmlFor="event-title" className="block text-sm font-medium text-[var(--text)] mb-2">
                   Etkinlik Başlığı *
                 </label>
                 <input
@@ -307,7 +307,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="Örn: Istanbul Jazz Festival 2025"
-                  className="w-full glassmorphism rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                   required
                   disabled={isCreating}
                   aria-required="true"
@@ -317,7 +317,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
 
               {/* Description */}
               <div className="mb-4">
-                <label htmlFor="event-description" className="block text-sm font-medium text-white/80 mb-2">
+                <label htmlFor="event-description" className="block text-sm font-medium text-[var(--text)] mb-2">
                   Açıklama *
                 </label>
                 <textarea
@@ -326,7 +326,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Etkinliğiniz hakkında detaylı bilgi verin..."
                   rows={4}
-                  className="w-full glassmorphism rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"
+                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)] resize-none"
                   required
                   disabled={isCreating}
                   aria-required="true"
@@ -336,7 +336,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
 
               {/* Category */}
               <div className="mb-4">
-                <label id="category-label" className="block text-sm font-medium text-white/80 mb-2">
+                <label id="category-label" className="block text-sm font-medium text-[var(--text)] mb-2">
                   Kategori *
                 </label>
                 <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="category-label">
@@ -346,8 +346,10 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                       type="button"
                       onClick={() => setFormData({ ...formData, category })}
                       className={cn(
-                        'glassmorphism rounded-xl p-3 flex flex-col items-center gap-1 transition-all',
-                        formData.category === category && 'ring-2 ring-white/40',
+                        'rounded-xl p-3 flex flex-col items-center gap-1 transition-all border',
+                        formData.category === category
+                          ? 'border-[var(--accent)] bg-[var(--accent-10)]'
+                          : 'bg-[var(--surface)] border-[var(--border)]',
                         isCreating && 'opacity-50 cursor-not-allowed'
                       )}
                       disabled={isCreating}
@@ -355,7 +357,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                       aria-pressed={formData.category === category}
                     >
                       <span className="text-2xl" aria-hidden="true">{getCategoryIcon(category)}</span>
-                      <span className="text-xs text-white/80">{category}</span>
+                      <span className="text-xs text-[var(--muted)]">{category}</span>
                     </button>
                   ))}
                 </div>
@@ -364,49 +366,49 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
 
             {/* Tarih ve Saat */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Tarih ve Saat</h3>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-4">Tarih ve Saat</h3>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Tarih *
                 </label>
                 <input
                   type="date"
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full glassmorphism rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                   required
                   disabled={isCreating}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-sm font-medium text-[var(--text)] mb-2">
                     Başlangıç Saati *
                   </label>
                   <input
                     type="time"
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="w-full glassmorphism rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     required
                     disabled={isCreating}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-sm font-medium text-[var(--text)] mb-2">
                     Bitiş Saati
                   </label>
                   <input
                     type="time"
                     value={formData.endTime}
                     onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
-                    className="w-full glassmorphism rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     disabled={isCreating}
                   />
                 </div>
               </div>
               {formData.endTime && formData.time && (
-                <p className="text-xs text-white/50 mt-2">
+                <p className="text-xs text-[var(--muted)] mt-2">
                   ⏱️ Süre: {(() => {
                     const start = new Date(`2000-01-01T${formData.time}`);
                     const end = new Date(`2000-01-01T${formData.endTime}`);
@@ -424,11 +426,11 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
 
             {/* Konum Bilgileri */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Konum Bilgileri</h3>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-4">Konum Bilgileri</h3>
 
               {/* Location */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Mekan Adı *
                 </label>
                 <input
@@ -436,7 +438,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   placeholder="Örn: Zorlu PSM"
-                  className="w-full glassmorphism rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                   required
                   disabled={isCreating}
                 />
@@ -444,7 +446,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
 
               {/* Address - TAM ADRES */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Tam Adres *
                 </label>
                 <input
@@ -452,18 +454,18 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   placeholder="Örn: Levazım Mahallesi, Koru Sokağı No:2 Beşiktaş"
-                  className="w-full glassmorphism rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                   required
                   disabled={isCreating}
                 />
-                <p className="text-xs text-white/50 mt-1">
+                <p className="text-xs text-[var(--muted)] mt-1">
                   Tam adres haritada doğru konumu göstermek için önemlidir
                 </p>
               </div>
 
               {/* City */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Şehir *
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -473,10 +475,10 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                       type="button"
                       onClick={() => setFormData({ ...formData, city })}
                       className={cn(
-                        'rounded-full px-4 py-2 font-medium text-sm transition-all',
+                        'rounded-full px-4 py-2 font-medium text-sm transition-all border',
                         formData.city === city
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                          : 'glassmorphism text-white/60',
+                          ? 'bg-[var(--accent)] text-white border-transparent'
+                          : 'bg-[var(--surface)] text-[var(--muted)] border-[var(--border)]',
                         isCreating && 'opacity-50 cursor-not-allowed'
                       )}
                       disabled={isCreating}
@@ -493,17 +495,17 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                   type="button"
                   onClick={handleGeocodeAddress}
                   disabled={isGeocoding || isCreating || !formData.address || !formData.city}
-                  className="w-full glassmorphism rounded-xl p-3 flex items-center justify-center gap-2 hover:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 flex items-center justify-center gap-2 hover:bg-[var(--surface-2)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isGeocoding ? (
                     <>
-                      <Loader2 className="w-5 h-5 text-white/60 animate-spin" />
-                      <span className="text-white/80">Konum aranıyor...</span>
+                      <Loader2 className="w-5 h-5 text-[var(--muted)] animate-spin" />
+                      <span className="text-[var(--muted)]">Konum aranıyor...</span>
                     </>
                   ) : (
                     <>
-                      <Navigation2 className="w-5 h-5 text-white/60" />
-                      <span className="text-white/80">🔍 Adresten Konum Bul</span>
+                      <Navigation2 className="w-5 h-5 text-[var(--muted)]" />
+                      <span className="text-[var(--muted)]">🔍 Adresten Konum Bul</span>
                     </>
                   )}
                 </button>
@@ -514,11 +516,11 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                 <button
                   type="button"
                   onClick={() => setShowMap(!showMap)}
-                  className="w-full glassmorphism rounded-xl p-3 flex items-center justify-center gap-2 hover:bg-white/10 transition-all"
+                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 flex items-center justify-center gap-2 hover:bg-[var(--surface-2)] transition-all"
                   disabled={isCreating}
                 >
-                  <Map className="w-5 h-5 text-white/60" />
-                  <span className="text-white/80">
+                  <Map className="w-5 h-5 text-[var(--muted)]" />
+                  <span className="text-[var(--muted)]">
                     {showMap ? 'Haritayı Gizle' : '📍 Haritadan Konum Seç'}
                   </span>
                 </button>
@@ -544,24 +546,24 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                     />
                     <Marker position={[formData.latitude, formData.longitude]} icon={customIcon} />
                   </MapContainer>
-                  <p className="text-xs text-white/50 mt-2">
+                  <p className="text-xs text-[var(--muted)] mt-2">
                     🖱️ Haritaya tıklayarak konumu seçin
                   </p>
                 </div>
               )}
 
               {/* Koordinatlar (opsiyonel gösterim) */}
-              <div className="text-xs text-white/40">
+              <div className="text-xs text-[var(--muted)]">
                 📍 Koordinatlar: {formData.latitude.toFixed(4)}, {formData.longitude.toFixed(4)}
               </div>
             </div>
 
             {/* Fiyat */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Fiyat Bilgisi</h3>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-4">Fiyat Bilgisi</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-sm font-medium text-[var(--text)] mb-2">
                     Min Fiyat (₺)
                   </label>
                   <input
@@ -569,13 +571,13 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                     value={formData.priceMin}
                     onChange={(e) => setFormData({ ...formData, priceMin: e.target.value })}
                     placeholder="0"
-                    className="w-full glassmorphism rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     min="0"
                     disabled={isCreating}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-sm font-medium text-[var(--text)] mb-2">
                     Max Fiyat (₺)
                   </label>
                   <input
@@ -583,20 +585,20 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                     value={formData.priceMax}
                     onChange={(e) => setFormData({ ...formData, priceMax: e.target.value })}
                     placeholder="0"
-                    className="w-full glassmorphism rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     min="0"
                     disabled={isCreating}
                   />
                 </div>
               </div>
-              <p className="text-xs text-white/50 mt-2">
+              <p className="text-xs text-[var(--muted)] mt-2">
                 Ücretsiz etkinlikler için her iki alana da 0 yazın
               </p>
             </div>
 
             {/* Image Upload */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Etkinlik Görseli</h3>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-4">Etkinlik Görseli</h3>
 
               {/* Image Preview */}
               {imagePreview && (
@@ -636,41 +638,41 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full glassmorphism rounded-xl p-4 flex items-center justify-center gap-3 hover:bg-white/10 transition-all"
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-center gap-3 hover:bg-[var(--surface-2)] transition-all"
                 disabled={isCreating}
               >
-                <Upload className="w-5 h-5 text-white/60" />
-                <span className="text-white/80">
+                <Upload className="w-5 h-5 text-[var(--muted)]" />
+                <span className="text-[var(--muted)]">
                   {imageFile ? 'Başka Görsel Seç' : 'Görsel Yükle'}
                 </span>
               </button>
 
               {/* URL Input as Alternative */}
               <div className="mt-4">
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   veya Görsel URL
                 </label>
                 <div className="relative">
-                  <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
                   <input
                     type="url"
                     value={formData.imageUrl}
                     onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                     placeholder="https://example.com/image.jpg"
-                    className="w-full glassmorphism rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl pl-12 pr-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     disabled={isCreating}
                   />
                 </div>
               </div>
 
-              <p className="text-xs text-white/50 mt-2">
+              <p className="text-xs text-[var(--muted)] mt-2">
                 Max 5MB • JPEG, PNG, WEBP formatları
               </p>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="sticky bottom-0 glassmorphism rounded-b-3xl p-6 border-t border-white/10 space-y-4">
+          <div className="sticky bottom-0 bg-[var(--surface)] rounded-b-3xl p-6 border-t border-[var(--border)] space-y-4">
             {/* ReCAPTCHA - Only show if configured */}
             {isRecaptchaConfigured() && (
               <div className="flex justify-center">
@@ -685,7 +687,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
             )}
 
             {/* Rate Limit Info */}
-            <div className="text-xs text-gray-400 text-center flex items-center justify-center gap-2">
+            <div className="text-xs text-[var(--muted)] text-center flex items-center justify-center gap-2">
               <Shield className="w-4 h-4" aria-hidden="true" />
               <span>Spam koruması aktif: Saatte maksimum 5 etkinlik</span>
             </div>
@@ -693,7 +695,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
             <button
               type="submit"
               disabled={isCreating || (isRecaptchaConfigured() && !recaptchaToken)}
-              className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white font-semibold rounded-2xl py-4 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-4 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               aria-label="Etkinliği oluştur"
             >
               {isCreating ? (

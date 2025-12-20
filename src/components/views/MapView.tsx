@@ -40,12 +40,12 @@ function MapCenterController({ center }: { center: [number, number] }) {
 // Custom marker icons based on category
 function getCategoryColor(category: EventCategory): string {
   const colors: Record<EventCategory, string> = {
-    Konser: '#ec4899',      // pink
-    Spor: '#3b82f6',        // blue
-    Tiyatro: '#8b5cf6',     // purple
-    Festival: '#f59e0b',    // amber
-    Meetup: '#10b981',      // green
-    Sergi: '#ef4444',       // red
+    Konser: '#6d7cff',      // accent
+    Spor: '#4fb07a',        // green
+    Tiyatro: '#d07a6a',     // warm
+    Festival: '#d3a253',    // amber
+    Meetup: '#5ea2d9',      // blue
+    Sergi: '#8a7cd1',       // violet
   };
   return colors[category] || '#6b7280';
 }
@@ -97,11 +97,11 @@ export default function MapView({ events, onEventClick, onFilterClick }: MapView
         {events.length === 0 ? (
           <div className="h-full flex items-center justify-center">
             <div className="text-center px-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-3xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-3xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-4xl">🗺️</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Henüz Etkinlik Yok</h3>
-              <p className="text-white/60">
+              <h3 className="text-xl font-semibold text-[var(--text)] mb-2">Henüz Etkinlik Yok</h3>
+              <p className="text-[var(--muted)]">
                 Lütfen Supabase'e örnek etkinlikler ekleyin veya Admin panelden sync yapın
               </p>
             </div>
@@ -149,8 +149,8 @@ export default function MapView({ events, onEventClick, onFilterClick }: MapView
 
         {/* Event count indicator */}
         {events.length > 0 && (
-          <div className="absolute top-4 left-4 z-10 glassmorphism rounded-2xl px-4 py-2">
-            <span className="text-white font-semibold">
+          <div className="absolute top-4 left-4 z-10 rounded-2xl px-4 py-2 bg-[var(--surface)] border border-[var(--border)]">
+            <span className="text-[var(--text)] font-semibold">
               📍 {events.length} Etkinlik
             </span>
           </div>
@@ -158,8 +158,8 @@ export default function MapView({ events, onEventClick, onFilterClick }: MapView
 
         {/* Legend */}
         {events.length > 0 && (
-          <div className="absolute bottom-4 left-4 z-10 glassmorphism rounded-2xl p-3 max-w-[200px]">
-            <div className="text-white text-xs font-semibold mb-2">Kategoriler:</div>
+          <div className="absolute bottom-4 left-4 z-10 rounded-2xl p-3 max-w-[200px] bg-[var(--surface)] border border-[var(--border)]">
+            <div className="text-[var(--text)] text-xs font-semibold mb-2">Kategoriler:</div>
             <div className="grid grid-cols-2 gap-1">
               {['Konser', 'Spor', 'Tiyatro', 'Festival', 'Meetup', 'Sergi'].map((cat) => {
                 const category = cat as EventCategory;
@@ -172,7 +172,7 @@ export default function MapView({ events, onEventClick, onFilterClick }: MapView
                       className="w-2 h-2 rounded-full"
                       style={{ backgroundColor: getCategoryColor(category) }}
                     />
-                    <span className="text-white/80 text-xs">
+                    <span className="text-[var(--muted)] text-xs">
                       {category} ({count})
                     </span>
                   </div>

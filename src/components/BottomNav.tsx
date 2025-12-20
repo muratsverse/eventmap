@@ -20,15 +20,15 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 safe-area-bottom">
       <div className="max-w-mobile mx-auto px-4 pb-2">
-        <div className="bg-gray-900/90 backdrop-blur-md rounded-3xl shadow-md border border-white/10">
-          <div className="relative flex items-center justify-around h-16 px-2">
+        <div className="bg-[var(--surface)]/95 backdrop-blur-md rounded-3xl shadow-md border border-[var(--border)]">
+          <div className="relative flex items-center justify-around h-16 px-4">
             {tabs.map((tab) => {
               if (tab.label === '') {
                 return (
                   <button
                     key={tab.id}
                     onClick={onCreateClick}
-                    className="absolute left-1/2 -translate-x-1/2 -top-6 w-14 h-14 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+                    className="absolute left-1/2 -translate-x-1/2 -top-6 w-14 h-14 bg-[var(--accent)] rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
                     aria-label="Etkinlik Oluştur"
                   >
                     <Plus className="w-7 h-7 text-white" strokeWidth={2.5} />
@@ -44,8 +44,8 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
                   key={tab.id}
                   onClick={() => onTabChange(tab.id)}
                   className={cn(
-                    'flex flex-col items-center justify-center gap-1 py-2 px-3 rounded-xl transition-all',
-                    isActive ? 'text-white' : 'text-white/60 hover:text-white/80'
+                    'flex flex-col items-center justify-center gap-1 py-2 px-4 rounded-xl transition-all',
+                    isActive ? 'text-[var(--text)]' : 'text-[var(--muted)] hover:text-[var(--text)]'
                   )}
                   aria-label={tab.label}
                 >
@@ -63,7 +63,7 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
                     {tab.label}
                   </span>
                   {isActive && (
-                    <div className="absolute -bottom-0.5 w-1 h-1 bg-white rounded-full" />
+                    <div className="absolute -bottom-0.5 w-1 h-1 bg-[var(--accent)] rounded-full" />
                   )}
                 </button>
               );
