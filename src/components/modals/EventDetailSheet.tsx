@@ -190,16 +190,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                 </div>
               </div>
 
-              {/* DEBUG INFO */}
-              <div className="mt-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-3 text-xs space-y-1">
-                <p className="text-yellow-300 font-mono text-[10px]">
-                  isPremium={String(isPremium)} | len={attendees.length} | count={attendeesCount} | static={event.attendees}
-                </p>
-                {attendees.length === 0 && (
-                  <p className="text-red-300">❌ RLS: SQL çalıştır!</p>
-                )}
-              </div>
-
               {/* Premium kullanıcılar için katılımcı listesi */}
               {isPremium && attendees.length > 0 && (
                 <div className="mt-4 space-y-2">
