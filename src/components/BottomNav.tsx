@@ -21,17 +21,20 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
     <nav className="fixed bottom-0 left-0 right-0 z-40 safe-area-bottom">
       <div className="max-w-mobile mx-auto px-4 pb-2">
         <div className="bg-[var(--surface)]/95 backdrop-blur-md rounded-3xl shadow-md border border-[var(--border)]">
-          <div className="grid grid-cols-5 items-center h-16 px-2">
+          <div className="grid grid-cols-5 items-center h-16 px-1">
             {tabs.map((tab) => {
               if (tab.label === '') {
                 return (
                   <button
                     key={tab.id}
                     onClick={onCreateClick}
-                    className="mx-auto w-11 h-11 bg-[var(--brand)] rounded-full shadow-md flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+                    className="mx-auto mt-1 flex flex-col items-center justify-center w-full"
                     aria-label="Etkinlik Oluştur"
                   >
-                    <Plus className="w-5 h-5 text-white" strokeWidth={2.5} />
+                    <span className="w-10 h-10 bg-[var(--brand)] rounded-full shadow-md flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
+                      <Plus className="w-5 h-5 text-white" strokeWidth={2.5} />
+                    </span>
+                    <span className="text-xs font-medium opacity-0 select-none">+</span>
                   </button>
                 );
               }
@@ -44,7 +47,7 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
                   key={tab.id}
                   onClick={() => onTabChange(tab.id)}
                   className={cn(
-                    'flex flex-col items-center justify-center gap-1 py-2 px-4 rounded-xl transition-all',
+                    'flex flex-col items-center justify-center gap-1 py-2 px-0 rounded-xl transition-all w-full',
                     isActive ? 'text-[var(--text)]' : 'text-[var(--muted)] hover:text-[var(--text)]'
                   )}
                   aria-label={tab.label}
