@@ -190,9 +190,18 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                 </div>
               </div>
 
+              {/* DEBUG INFO */}
+              <div className="mt-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-3 text-xs space-y-1">
+                <p className="text-yellow-300 font-mono text-[10px]">
+                  isPremium={String(isPremium)} | len={attendees.length} | count={attendeesCount} | static={event.attendees}
+                </p>
+                {attendees.length === 0 && (
+                  <p className="text-red-300">❌ RLS: SQL çalıştır!</p>
+                )}
+              </div>
+
               {/* Premium kullanıcılar için katılımcı listesi */}
-              {/* TEMPORARY: Removed premium check for testing */}
-              {attendees.length > 0 && (
+              {isPremium && attendees.length > 0 && (
                 <div className="mt-4 space-y-2">
                   <p className="text-xs text-[var(--muted)] font-medium uppercase tracking-wide mb-3">
                     Katılan Kullanıcılar
@@ -234,8 +243,7 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
               )}
 
               {/* Premium olmayanlara katılımcı görme butonu */}
-              {/* TEMPORARY: Hidden for testing */}
-              {false && !isPremium && attendeesCount > 0 && (
+              {!isPremium && attendeesCount > 0 && (
                 <button
                   onClick={() => setShowPremiumModal(true)}
                   className="w-full mt-3 bg-[var(--accent)] text-white font-semibold rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
