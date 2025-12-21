@@ -160,9 +160,12 @@ export function useAttendances() {
       });
 
       if (error) throw error;
+      return eventId;
     },
-    onSuccess: () => {
+    onSuccess: (eventId) => {
       queryClient.invalidateQueries({ queryKey: ['attendances', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['event-attendees', eventId] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
     },
   });
 
@@ -179,9 +182,12 @@ export function useAttendances() {
         .eq('event_id', eventId);
 
       if (error) throw error;
+      return eventId;
     },
-    onSuccess: () => {
+    onSuccess: (eventId) => {
       queryClient.invalidateQueries({ queryKey: ['attendances', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['event-attendees', eventId] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
     },
   });
 

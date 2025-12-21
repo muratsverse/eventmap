@@ -21,7 +21,8 @@ const dbToEvent = (dbEvent: any): Event => ({
     max: dbEvent.price_max,
   },
   organizer: dbEvent.organizer,
-  attendees: dbEvent.attendees,
+  // Use real attendee count if available, otherwise fallback to static count
+  attendees: dbEvent.attendee_count ?? dbEvent.attendees,
   latitude: dbEvent.latitude,
   longitude: dbEvent.longitude,
   isPremium: dbEvent.is_premium,
@@ -51,8 +52,8 @@ export function useEvents(filters?: {
         return events;
       }
 
-      // Query from Supabase
-      let query = supabase.from('events').select('*').order('date', { ascending: true });
+      // Query from Supabase - use view with attendee count
+      let query = supabase.from('events_with_attendee_count').select('*').order('date', { ascending: true });
 
       if (filters?.categories && filters.categories.length > 0) {
         query = query.in('category', filters.categories);
