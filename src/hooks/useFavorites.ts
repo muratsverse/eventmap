@@ -88,6 +88,9 @@ export function useFavorites() {
 export function useEventAttendees(eventId: string | null) {
   const query = useQuery({
     queryKey: ['event-attendees', eventId],
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+    staleTime: 0,
     queryFn: async () => {
       if (!eventId || !supabaseHelpers.isConfigured()) {
         return [];
