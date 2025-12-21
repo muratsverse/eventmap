@@ -21,17 +21,17 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
     <nav className="fixed bottom-0 left-0 right-0 z-40 safe-area-bottom">
       <div className="max-w-mobile mx-auto px-4 pb-2">
         <div className="bg-[var(--surface)]/95 backdrop-blur-md rounded-3xl shadow-md border border-[var(--border)]">
-          <div className="relative flex items-center justify-around h-16 px-4">
+          <div className="grid grid-cols-5 items-center h-16 px-2">
             {tabs.map((tab) => {
               if (tab.label === '') {
                 return (
                   <button
                     key={tab.id}
                     onClick={onCreateClick}
-                    className="absolute left-1/2 -translate-x-1/2 -top-6 w-14 h-14 bg-[var(--accent)] rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+                    className="mx-auto w-11 h-11 bg-[var(--brand)] rounded-full shadow-md flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
                     aria-label="Etkinlik Oluştur"
                   >
-                    <Plus className="w-7 h-7 text-white" strokeWidth={2.5} />
+                    <Plus className="w-5 h-5 text-white" strokeWidth={2.5} />
                   </button>
                 );
               }
@@ -62,9 +62,6 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
                   )}>
                     {tab.label}
                   </span>
-                  {isActive && (
-                    <div className="absolute -bottom-0.5 w-1 h-1 bg-[var(--accent)] rounded-full" />
-                  )}
                 </button>
               );
             })}
