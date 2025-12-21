@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { useCreateEvent } from '@/hooks/useCreateEvent';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { Icon as LeafletIcon } from 'leaflet';
-import { geocodeAddress } from '@/lib/geocoding';
+import { geocodeAddress, reverseGeocode } from '@/lib/geocoding';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { RECAPTCHA_SITE_KEY, isRecaptchaConfigured, checkRateLimit, formatRemainingTime } from '@/lib/recaptcha';
 import { useAuth } from '@/contexts/AuthContext';
@@ -540,8 +540,17 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     <LocationPicker
-                      onLocationSelect={(lat, lng) => {
+                      onLocationSelect={async (lat, lng) => {
                         setFormData({ ...formData, latitude: lat, longitude: lng });
+                        // Reverse geocoding - koordinatlardan adres al
+                        try {
+                          const address = await reverseGeocode(lat, lng);
+                          if (address) {
+                            setFormData(prev => ({ ...prev, address, latitude: lat, longitude: lng }));
+                          }
+                        } catch (error) {
+                          console.error('Reverse geocoding error:', error);
+                        }
                       }}
                     />
                     <Marker position={[formData.latitude, formData.longitude]} icon={customIcon} />
@@ -560,7 +569,9 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
 
             {/* Fiyat */}
             <div>
-              <h3 className="text-lg font-semibold text-[var(--text)] mb-4">Fiyat Bilgisi</h3>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-4">
+                Fiyat Bilgisi <span className="text-sm font-normal text-[var(--muted)]">(Opsiyonel)</span>
+              </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[var(--text)] mb-2">
@@ -570,7 +581,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                     type="number"
                     value={formData.priceMin}
                     onChange={(e) => setFormData({ ...formData, priceMin: e.target.value })}
-                    placeholder="0"
+                    placeholder="Ücretsiz ise boş bırakın"
                     className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     min="0"
                     disabled={isCreating}
@@ -584,7 +595,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                     type="number"
                     value={formData.priceMax}
                     onChange={(e) => setFormData({ ...formData, priceMax: e.target.value })}
-                    placeholder="0"
+                    placeholder="Ücretsiz ise boş bırakın"
                     className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
                     min="0"
                     disabled={isCreating}
@@ -592,7 +603,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                 </div>
               </div>
               <p className="text-xs text-[var(--muted)] mt-2">
-                Ücretsiz etkinlikler için her iki alana da 0 yazın
+                ℹ️ Ücretsiz etkinlikler için boş bırakabilir veya 0 yazabilirsiniz
               </p>
             </div>
 
