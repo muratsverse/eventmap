@@ -21,6 +21,16 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   const isPremium = profile?.is_premium || false;
   const [showPremiumModal, setShowPremiumModal] = useState(false);
 
+  // Debug logs
+  console.log('👥 Attendees Debug:', {
+    eventId: event?.id,
+    attendeesCount,
+    attendeesLength: attendees.length,
+    attendees,
+    isPremium,
+    userId: user?.id,
+  });
+
   if (!event) return null;
 
   const handleShare = async () => {
@@ -181,7 +191,8 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
               </div>
 
               {/* Premium kullanıcılar için katılımcı listesi */}
-              {isPremium && attendees.length > 0 && (
+              {/* TEMPORARY: Removed premium check for testing */}
+              {attendees.length > 0 && (
                 <div className="mt-4 space-y-2">
                   <p className="text-xs text-[var(--muted)] font-medium uppercase tracking-wide mb-3">
                     Katılan Kullanıcılar
@@ -223,7 +234,8 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
               )}
 
               {/* Premium olmayanlara katılımcı görme butonu */}
-              {!isPremium && attendeesCount > 0 && (
+              {/* TEMPORARY: Hidden for testing */}
+              {false && !isPremium && attendeesCount > 0 && (
                 <button
                   onClick={() => setShowPremiumModal(true)}
                   className="w-full mt-3 bg-[var(--accent)] text-white font-semibold rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"

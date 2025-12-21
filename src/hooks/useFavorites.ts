@@ -106,14 +106,31 @@ export function useEventAttendees(eventId: string | null) {
         `)
         .eq('event_id', eventId);
 
-      if (error) throw error;
+      console.log('🔍 useEventAttendees query result:', {
+        eventId,
+        data,
+        error,
+        dataLength: data?.length,
+      });
 
-      return data.map((a: any) => ({
-        id: a.profiles.id,
-        name: a.profiles.name || 'Kullanıcı',
-        email: a.profiles.email,
-        profile_photo: a.profiles.profile_photo,
-      }));
+      if (error) {
+        console.error('❌ Error fetching attendees:', error);
+        throw error;
+      }
+
+      // Filter out null profiles and map
+      const attendees = data
+        .filter((a: any) => a.profiles !== null)
+        .map((a: any) => ({
+          id: a.profiles?.id || a.user_id,
+          name: a.profiles?.name || 'Kullanıcı',
+          email: a.profiles?.email || '',
+          profile_photo: a.profiles?.profile_photo || null,
+        }));
+
+      console.log('✅ Mapped attendees:', attendees);
+
+      return attendees;
     },
     enabled: Boolean(eventId),
   });
