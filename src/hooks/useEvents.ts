@@ -52,8 +52,8 @@ export function useEvents(filters?: {
         return events;
       }
 
-      // Query from Supabase - use view with attendee count
-      let query = supabase.from('events_with_attendee_count').select('*').order('date', { ascending: true });
+      // Query from Supabase
+      let query = supabase.from('events').select('*').order('date', { ascending: true });
 
       if (filters?.categories && filters.categories.length > 0) {
         query = query.in('category', filters.categories);
@@ -62,11 +62,28 @@ export function useEvents(filters?: {
         query = query.in('city', filters.cities);
       }
 
-      const { data, error } = await query;
+      const { data: eventsData, error } = await query;
 
       if (error) throw error;
 
-      return data.map(dbToEvent);
+      // Get attendee counts for all events
+      const { data: attendancesData } = await supabase
+        .from('attendances')
+        .select('event_id');
+
+      // Count attendees per event
+      const attendeeCounts: Record<string, number> = {};
+      attendancesData?.forEach((attendance) => {
+        attendeeCounts[attendance.event_id] = (attendeeCounts[attendance.event_id] || 0) + 1;
+      });
+
+      // Merge attendee counts with events
+      return eventsData.map((event) =>
+        dbToEvent({
+          ...event,
+          attendee_count: attendeeCounts[event.id] || 0,
+        })
+      );
     },
   });
 }
