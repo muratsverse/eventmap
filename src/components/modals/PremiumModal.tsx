@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Crown, Check, Zap, Calendar, TrendingUp, Shield, CreditCard, FileText, Loader2 } from 'lucide-react';
+import { X, Crown, Check, Zap, Calendar, TrendingUp, Shield, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { Browser } from '@capacitor/browser';
@@ -10,11 +10,8 @@ interface PremiumModalProps {
   onClose: () => void;
 }
 
-type PaymentMethod = 'card' | 'invoice';
-
 export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
   const { user } = useAuth();
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -30,7 +27,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
   const plans = [
     {
       name: 'Aylık',
-      price: '€3.99',
+      price: '€4.99',
       period: '/ay',
       priceId: import.meta.env.VITE_STRIPE_PRICE_MONTHLY || 'price_monthly',
       savings: null,
@@ -61,16 +58,11 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
         throw new Error('Supabase yapılandırması eksik. Lütfen .env dosyasını kontrol edin.');
       }
 
-      // Ödeme metoduna göre endpoint seç
-      const endpoint = paymentMethod === 'invoice'
-        ? 'create-invoice-session'
-        : 'create-checkout-session';
-
+      const endpoint = 'create-checkout-session';
       const functionUrl = `${supabaseUrl}/functions/v1/${endpoint}`;
 
       console.log('🔄 Ödeme isteği gönderiliyor:', {
         endpoint,
-        paymentMethod,
         priceId,
         userId: user.id,
       });
@@ -85,7 +77,6 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
           priceId,
           userId: user.id,
           userEmail: user.email,
-          paymentMethod,
         }),
       });
 
@@ -102,14 +93,6 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
 
       if (data.error) {
         throw new Error(data.error);
-      }
-
-      // Invoice için özel mesaj
-      if (paymentMethod === 'invoice') {
-        setError('');
-        alert(`Fatura email adresinize gönderildi: ${user.email}\n\nLütfen email kutunuzu kontrol edin ve ödeme linkine tıklayın.`);
-        onClose();
-        return;
       }
 
       // Stripe Checkout URL'ine yönlendir
@@ -187,42 +170,6 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
           })}
         </div>
 
-        {/* Payment Method Selection */}
-        <div className="mb-6">
-          <h3 className="text-[var(--text)] font-semibold mb-3 text-center">Ödeme Yöntemi Seçin</h3>
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => setPaymentMethod('card')}
-              className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                paymentMethod === 'card'
-                  ? 'border-[var(--accent)] bg-[var(--accent-10)]'
-                  : 'border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-2)]'
-              }`}
-              disabled={loading}
-            >
-              <CreditCard className="w-5 h-5 text-[var(--text)]" />
-              <span className="text-[var(--text)] font-medium">Kredi Kartı</span>
-            </button>
-            <button
-              onClick={() => setPaymentMethod('invoice')}
-              className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                paymentMethod === 'invoice'
-                  ? 'border-[var(--accent)] bg-[var(--accent-10)]'
-                  : 'border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-2)]'
-              }`}
-              disabled={loading}
-            >
-              <FileText className="w-5 h-5 text-[var(--text)]" />
-              <span className="text-[var(--text)] font-medium">Faturaya Yansıt</span>
-            </button>
-          </div>
-          {paymentMethod === 'invoice' && (
-            <p className="text-[var(--muted)] text-xs mt-2 text-center">
-              Fatura email adresinize gönderilecek. Ödeme linkine tıklayarak ödeyebilirsiniz.
-            </p>
-          )}
-        </div>
-
         {/* Error Display */}
         {error && (
           <div className="mb-4 bg-red-500/10 border border-red-500/30 rounded-xl p-4">
@@ -267,7 +214,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
                     İşleniyor...
                   </>
                 ) : (
-                  paymentMethod === 'invoice' ? 'Fatura Gönder' : "Premium'a Geç"
+                  "Premium'a Geç"
                 )}
               </button>
             </div>
