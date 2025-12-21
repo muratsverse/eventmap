@@ -75,14 +75,14 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
   if (!isOpen) return null;
 
   const handleGeocodeAddress = async () => {
-    if (!formData.address || !formData.city) {
-      alert('⚠️ Lütfen önce adres ve şehir bilgilerini girin');
+    if (!formData.address) {
+      alert('⚠️ Lütfen önce adres bilgisini girin');
       return;
     }
 
     setIsGeocoding(true);
     try {
-      const result = await geocodeAddress(formData.address, formData.city);
+      const result = await geocodeAddress(formData.address, formData.city || 'Türkiye');
 
       if (result) {
         setFormData({
@@ -130,8 +130,8 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.category || !formData.city) {
-      alert('Lütfen tüm zorunlu alanları doldurun');
+    if (!formData.category) {
+      alert('Lütfen kategori seçin');
       return;
     }
 
@@ -466,7 +466,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
               {/* City */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-[var(--text)] mb-2">
-                  Şehir *
+                  Şehir <span className="text-sm font-normal text-[var(--muted)]">(Opsiyonel)</span>
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {cities.map((city) => (
@@ -487,6 +487,9 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                     </button>
                   ))}
                 </div>
+                <p className="text-xs text-[var(--muted)] mt-2">
+                  💡 Haritadan konum seçtiğinizde şehir otomatik belirlenecektir
+                </p>
               </div>
 
               {/* Geocode Button */}
