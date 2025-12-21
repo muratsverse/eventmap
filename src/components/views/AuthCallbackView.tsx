@@ -10,7 +10,11 @@ export default function AuthCallbackView() {
 
     const finalizeAuth = async () => {
       try {
-        await supabase.auth.getSession();
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        if (code) {
+          await supabase.auth.exchangeCodeForSession(code);
+        }
       } catch (error) {
         console.error('Auth callback error:', error);
       } finally {

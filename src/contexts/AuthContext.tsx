@@ -3,6 +3,7 @@ import { Session, User } from '@supabase/supabase-js';
 import { supabase, supabaseHelpers } from '@/lib/supabase';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
+import { App } from '@capacitor/app';
 
 interface Profile {
   id: string;
@@ -74,6 +75,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => subscription.unsubscribe();
+  }, [isSupabaseConfigured]);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured || !Capacitor.isNativePlatform()) {
+      return;
+    }
+
+    const handler = App.addListener('appUrlOpen', async ({ url }) => {
+      try {
+        if (!url) return;
+        const parsedUrl = new URL(url);
+        if (!parsedUrl.pathname.includes('/auth/callback')) return;
+
+        const code = parsedUrl.searchParams.get('code');
+        if (!code) return;
+
+        await supabase.auth.exchangeCodeForSession(code);
+      } catch (error) {
+        console.error('Native OAuth callback error:', error);
+      }
+    });
+
+    return () => {
+      handler.remove();
+    };
   }, [isSupabaseConfigured]);
 
   const loadProfile = async (userId: string) => {
