@@ -544,15 +544,19 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                     />
                     <LocationPicker
                       onLocationSelect={async (lat, lng) => {
-                        setFormData({ ...formData, latitude: lat, longitude: lng });
+                        // Önce koordinatları set et
+                        setFormData(prev => ({ ...prev, latitude: lat, longitude: lng }));
                         // Reverse geocoding - koordinatlardan adres al
                         try {
                           const address = await reverseGeocode(lat, lng);
                           if (address) {
-                            setFormData(prev => ({ ...prev, address, latitude: lat, longitude: lng }));
+                            console.log('✅ Reverse geocoding success:', address);
+                            setFormData(prev => ({ ...prev, address }));
+                          } else {
+                            console.log('❌ No address found');
                           }
                         } catch (error) {
-                          console.error('Reverse geocoding error:', error);
+                          console.error('❌ Reverse geocoding error:', error);
                         }
                       }}
                     />
