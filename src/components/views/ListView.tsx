@@ -21,7 +21,7 @@ export default function ListView({ events, onEventClick, onFilterClick, isLoadin
     <div className="flex-1 overflow-y-auto pb-24">
       <div className="max-w-mobile mx-auto px-4 py-4">
         <Header
-          title="EventMap"
+          title="Eventify"
           eventCount={events.length}
           onFilterClick={onFilterClick}
         />
