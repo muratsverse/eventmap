@@ -33,16 +33,27 @@ function App() {
     console.log('🔐 showUpdatePasswordModal state changed:', showUpdatePasswordModal);
   }, [showUpdatePasswordModal]);
 
-  // Deep Link & URL Handler - Şifre sıfırlama için
+  // Deep Link & URL Handler - OAuth ve şifre sıfırlama için
   useEffect(() => {
     // Mobile deep link handler
     if (Capacitor.isNativePlatform()) {
-      const handleAppUrlOpen = CapacitorApp.addListener('appUrlOpen', (data) => {
+      const handleAppUrlOpen = CapacitorApp.addListener('appUrlOpen', async (data) => {
         const url = data.url;
-        console.log('Deep link received:', url);
+        console.log('🔗 Deep link received:', url);
 
-        // eventmap://reset-password veya benzeri link geldiğinde
-        if (url.includes('reset-password') || url.includes('type=recovery')) {
+        // Google OAuth callback - access_token veya code içeriyorsa
+        if (url.includes('access_token=') || url.includes('code=')) {
+          console.log('✅ OAuth callback detected');
+          // URL'i parse et ve Supabase'e gönder
+          const hashPart = url.split('#')[1] || url.split('?')[1];
+          if (hashPart) {
+            // Hash'i window.location.hash'e set et ki Supabase otomatik handle etsin
+            window.location.hash = hashPart;
+          }
+        }
+        // Şifre sıfırlama
+        else if (url.includes('reset-password') || url.includes('type=recovery')) {
+          console.log('✅ Password reset detected');
           setShowUpdatePasswordModal(true);
         }
       });

@@ -267,7 +267,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (Capacitor.isNativePlatform()) {
         await Browser.open({
           url: data.url,
-          windowName: '_self',
+          presentationStyle: 'popover',
+          toolbarColor: '#A855F7',
         });
       } else {
         window.location.assign(data.url);
