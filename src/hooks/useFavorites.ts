@@ -121,17 +121,21 @@ export function useEventAttendees(eventId: string | null) {
         throw error;
       }
 
-      // Filter out null profiles and map
-      const attendees = data
-        .filter((a: any) => a.profiles !== null)
-        .map((a: any) => ({
-          id: a.profiles?.id || a.user_id,
-          name: a.profiles?.name || 'Kullanıcı',
-          email: a.profiles?.email || '',
-          profile_photo: a.profiles?.profile_photo || null,
-        }));
+      // Map all attendees, even if profiles is null
+      const attendees = data.map((a: any, index: number) => ({
+        id: a.profiles?.id || a.user_id,
+        name: a.profiles?.name || `Kullanıcı ${index + 1}`,
+        email: a.profiles?.email || '',
+        profile_photo: a.profiles?.profile_photo || null,
+        hasProfile: a.profiles !== null,
+      }));
 
       console.log('✅ Mapped attendees:', attendees);
+      console.log('📊 Profiles stats:', {
+        total: data.length,
+        withProfile: attendees.filter((a: any) => a.hasProfile).length,
+        withoutProfile: attendees.filter((a: any) => !a.hasProfile).length,
+      });
 
       return attendees;
     },

@@ -190,6 +190,22 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                 </div>
               </div>
 
+              {/* DEBUG: Show console output on screen */}
+              {attendeesCount > 0 && (
+                <div className="mt-3 bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 text-xs">
+                  <p className="text-blue-300 font-bold mb-1">DEBUG INFO (geçici):</p>
+                  <p className="text-blue-200 font-mono text-[10px]">
+                    Premium: {String(isPremium)} | Katılımcı Sayısı: {attendeesCount} | Liste Uzunluğu: {attendees.length}
+                  </p>
+                  {attendees.length === 0 && (
+                    <p className="text-red-300 mt-1 text-[10px]">⚠️ Profiles RLS sorunu! Chrome inspect ile console'a bak</p>
+                  )}
+                  {attendees.length > 0 && (
+                    <p className="text-green-300 mt-1 text-[10px]">✅ {attendees.length} katılımcı verisi var</p>
+                  )}
+                </div>
+              )}
+
               {/* Premium kullanıcılar için katılımcı listesi */}
               {isPremium && attendees.length > 0 && (
                 <div className="mt-4 space-y-2">
