@@ -269,12 +269,12 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
           {/* Actions */}
           <div className="flex gap-3 mb-6">
             <button
-              onClick={() => isAttending(event.id) ? null : toggleAttendance(event.id)}
+              onClick={() => toggleAttendance(event.id)}
               className={cn(
-                "flex-1 font-semibold rounded-2xl py-4 transition-all",
+                "flex-1 font-semibold rounded-2xl py-4 transition-all hover:opacity-90 active:scale-95",
                 isAttending(event.id)
                   ? "bg-[#4fb07a]/15 text-[#4fb07a] border border-[#4fb07a]/40"
-                  : "bg-[var(--accent)] text-white hover:opacity-90 active:scale-95"
+                  : "bg-[var(--accent)] text-white"
               )}
             >
               {isAttending(event.id) ? 'Katılıyorsunuz' : 'Katıl'}
