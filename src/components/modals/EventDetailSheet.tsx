@@ -182,19 +182,27 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
 
               {/* DEBUG BOX */}
               <div className="mt-3 bg-purple-500/10 border border-purple-500/30 rounded-xl p-3 text-xs space-y-1">
-                <p className="text-purple-300 font-bold">DEBUG BİLGİ:</p>
-                <p className="text-purple-200 font-mono text-[10px]">
-                  isPremium: {String(isPremium)} | profile?.is_premium: {String(profile?.is_premium)}
+                <p className="text-purple-300 font-bold">DEBUG:</p>
+                <p className="text-purple-200 font-mono text-[9px]">
+                  Event ID: {event?.id?.substring(0, 20)}...
                 </p>
-                <p className="text-purple-200 font-mono text-[10px]">
-                  attendeesCount: {attendeesCount} | attendees.length: {attendees.length}
+                <p className="text-purple-200 font-mono text-[9px]">
+                  Event Title: {event?.title}
                 </p>
-                <p className="text-purple-200 font-mono text-[10px]">
-                  Attendees data: {JSON.stringify(attendees).substring(0, 100)}...
+                <p className="text-purple-200 font-mono text-[9px]">
+                  isPremium: {String(isPremium)} | Count: {attendeesCount} | Len: {attendees.length}
                 </p>
-                {!isPremium && <p className="text-red-300 text-[10px]">❌ Premium değil!</p>}
-                {attendees.length === 0 && <p className="text-yellow-300 text-[10px]">⚠️ attendees boş!</p>}
-                {isPremium && attendees.length > 0 && <p className="text-green-300 text-[10px]">✅ Liste gösterilmeli!</p>}
+                <button
+                  onClick={() => {
+                    console.log('Full attendees data:', attendees);
+                    console.log('Event ID:', event?.id);
+                    alert('Consolea yazildi, Chrome inspect ile bak!');
+                  }}
+                  className="bg-purple-500 text-white px-2 py-1 rounded text-[9px]"
+                >
+                  Consolea Yaz
+                </button>
+                {attendees.length === 0 && <p className="text-yellow-300 text-[10px]">⚠️ attendees boş - uygulamayı sil ve yeniden yükle!</p>}
               </div>
 
               {/* Premium kullanıcılar için katılımcı listesi */}
