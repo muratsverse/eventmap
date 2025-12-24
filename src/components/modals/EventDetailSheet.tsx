@@ -21,16 +21,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   const isPremium = profile?.is_premium || false;
   const [showPremiumModal, setShowPremiumModal] = useState(false);
 
-  // Debug logs
-  console.log('👥 Attendees Debug:', {
-    eventId: event?.id,
-    attendeesCount,
-    attendeesLength: attendees.length,
-    attendees,
-    isPremium,
-    userId: user?.id,
-  });
-
   if (!event) return null;
 
   const handleShare = async () => {
@@ -188,23 +178,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                     {attendeesCount > 0 ? `${attendeesCount} kişi katılıyor` : `${event.attendees.toLocaleString()} kişi`}
                   </p>
                 </div>
-              </div>
-
-              {/* DEBUG: Always show debug info */}
-              <div className="mt-3 bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 text-xs">
-                <p className="text-blue-300 font-bold mb-1">DEBUG:</p>
-                <p className="text-blue-200 font-mono text-[10px]">
-                  Premium: {String(isPremium)} | Count: {attendeesCount} | Len: {attendees.length} | Static: {event.attendees}
-                </p>
-                {attendeesCount === 0 && (
-                  <p className="text-red-300 mt-1 text-[10px]">❌ attendances tablosu boş veya RLS sorunu!</p>
-                )}
-                {attendeesCount > 0 && attendees.length === 0 && (
-                  <p className="text-yellow-300 mt-1 text-[10px]">⚠️ Katılımcı var ama profiles çekilemiyor (RLS)</p>
-                )}
-                {attendees.length > 0 && (
-                  <p className="text-green-300 mt-1 text-[10px]">✅ {attendees.length} katılımcı verisi var!</p>
-                )}
               </div>
 
               {/* Premium kullanıcılar için katılımcı listesi */}

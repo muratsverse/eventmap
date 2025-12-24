@@ -109,15 +109,7 @@ export function useEventAttendees(eventId: string | null) {
         `)
         .eq('event_id', eventId);
 
-      console.log('🔍 useEventAttendees query result:', {
-        eventId,
-        data,
-        error,
-        dataLength: data?.length,
-      });
-
       if (error) {
-        console.error('❌ Error fetching attendees:', error);
         throw error;
       }
 
@@ -129,13 +121,6 @@ export function useEventAttendees(eventId: string | null) {
         profile_photo: a.profiles?.profile_photo || null,
         hasProfile: a.profiles !== null,
       }));
-
-      console.log('✅ Mapped attendees:', attendees);
-      console.log('📊 Profiles stats:', {
-        total: data.length,
-        withProfile: attendees.filter((a: any) => a.hasProfile).length,
-        withoutProfile: attendees.filter((a: any) => !a.hasProfile).length,
-      });
 
       return attendees;
     },
