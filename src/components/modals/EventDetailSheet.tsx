@@ -180,38 +180,19 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                 </div>
               </div>
 
-              {/* DEBUG BOX */}
-              <div className="mt-3 bg-purple-500/10 border border-purple-500/30 rounded-xl p-3 text-xs space-y-1">
-                <p className="text-purple-300 font-bold">DEBUG:</p>
-                <p className="text-purple-200 font-mono text-[8px] break-all">
-                  ID: {event?.id}
-                </p>
-                <p className="text-purple-200 font-mono text-[9px]">
-                  Title: {event?.title}
-                </p>
-                <p className="text-purple-200 font-mono text-[9px]">
-                  Premium: {String(isPremium)} | Count: {attendeesCount} | Len: {attendees.length}
-                </p>
-                {attendees.length === 0 && (
-                  <p className="text-red-300 text-[10px] font-bold">
-                    ❌ SORUN: attendees bos geliyor! Event icin attendances var mi kontrol et.
-                  </p>
-                )}
-              </div>
-
               {/* Premium kullanıcılar için katılımcı listesi */}
               {isPremium && attendees.length > 0 && (
                 <div className="mt-4 space-y-2">
                   <p className="text-xs text-[var(--muted)] font-medium uppercase tracking-wide mb-3">
                     Katılan Kullanıcılar
                   </p>
-                  <div className="space-y-2 max-h-48 overflow-y-auto">
-                    {attendees.slice(0, 20).map((attendee: any) => (
+                  <div className="space-y-2 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[var(--border)] scrollbar-track-transparent pr-1">
+                    {attendees.map((attendee: any) => (
                       <div
                         key={attendee.id}
-                        className="flex items-center gap-3 bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-2 hover:bg-[var(--surface)] transition-colors"
+                        className="flex items-center gap-3 bg-[var(--surface-2)] border border-[var(--border)] rounded-xl p-3 hover:bg-[var(--surface)] transition-colors"
                       >
-                        <div className="w-10 h-10 rounded-full bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--surface-2)] border-2 border-[var(--border)] flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {attendee.profile_photo ? (
                             <img
                               src={attendee.profile_photo}
@@ -219,7 +200,7 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <User className="w-5 h-5 text-[var(--text)]" />
+                            <User className="w-6 h-6 text-[var(--muted)]" />
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -233,11 +214,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                       </div>
                     ))}
                   </div>
-                  {attendees.length > 20 && (
-                    <p className="text-xs text-[var(--muted)] text-center mt-2">
-                      +{attendees.length - 20} kişi daha
-                    </p>
-                  )}
                 </div>
               )}
 
