@@ -106,7 +106,7 @@ export function useEventAttendees(eventId: string | null) {
         .from('attendances')
         .select(`
           user_id,
-          profiles (
+          profiles!user_id (
             id,
             name,
             email,
