@@ -180,6 +180,23 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                 </div>
               </div>
 
+              {/* DEBUG BOX */}
+              <div className="mt-3 bg-purple-500/10 border border-purple-500/30 rounded-xl p-3 text-xs space-y-1">
+                <p className="text-purple-300 font-bold">DEBUG BİLGİ:</p>
+                <p className="text-purple-200 font-mono text-[10px]">
+                  isPremium: {String(isPremium)} | profile?.is_premium: {String(profile?.is_premium)}
+                </p>
+                <p className="text-purple-200 font-mono text-[10px]">
+                  attendeesCount: {attendeesCount} | attendees.length: {attendees.length}
+                </p>
+                <p className="text-purple-200 font-mono text-[10px]">
+                  Attendees data: {JSON.stringify(attendees).substring(0, 100)}...
+                </p>
+                {!isPremium && <p className="text-red-300 text-[10px]">❌ Premium değil!</p>}
+                {attendees.length === 0 && <p className="text-yellow-300 text-[10px]">⚠️ attendees boş!</p>}
+                {isPremium && attendees.length > 0 && <p className="text-green-300 text-[10px]">✅ Liste gösterilmeli!</p>}
+              </div>
+
               {/* Premium kullanıcılar için katılımcı listesi */}
               {isPremium && attendees.length > 0 && (
                 <div className="mt-4 space-y-2">
