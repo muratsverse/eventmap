@@ -53,6 +53,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
     title: '',
     description: '',
     category: '' as EventCategory | '',
+    customCategory: '', // Kullanıcı kendi kategorisini yazabilir
     date: '',
     time: '',
     endTime: '', // End time for validation
@@ -130,8 +131,10 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.category) {
-      alert('Lütfen kategori seçin');
+    // Kategori kontrolü - ya hazır kategori ya da özel kategori seçilmeli
+    const finalCategory = formData.customCategory.trim() || formData.category;
+    if (!finalCategory) {
+      alert('Lütfen bir kategori seçin veya yazın');
       return;
     }
 
@@ -184,7 +187,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
       await createEvent({
         title: formData.title,
         description: formData.description,
-        category: formData.category,
+        category: finalCategory as EventCategory,
         date: formData.date,
         time: formData.time,
         endTime: formData.endTime, // Bitiş saati eklendi
@@ -208,6 +211,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
         title: '',
         description: '',
         category: '',
+        customCategory: '',
         date: '',
         time: '',
         endTime: '',
@@ -339,15 +343,15 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                 <label id="category-label" className="block text-sm font-medium text-[var(--text)] mb-2">
                   Kategori *
                 </label>
-                <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="category-label">
+                <div className="grid grid-cols-3 gap-2 mb-3" role="group" aria-labelledby="category-label">
                   {categories.map((category) => (
                     <button
                       key={category}
                       type="button"
-                      onClick={() => setFormData({ ...formData, category })}
+                      onClick={() => setFormData({ ...formData, category, customCategory: '' })}
                       className={cn(
                         'rounded-xl p-3 flex flex-col items-center gap-1 transition-all border',
-                        formData.category === category
+                        formData.category === category && !formData.customCategory
                           ? 'border-[var(--accent)] bg-[var(--accent-10)]'
                           : 'bg-[var(--surface)] border-[var(--border)]',
                         isCreating && 'opacity-50 cursor-not-allowed'
@@ -360,6 +364,29 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
                       <span className="text-xs text-[var(--muted)]">{category}</span>
                     </button>
                   ))}
+                </div>
+
+                {/* Custom Category Input */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formData.customCategory}
+                    onChange={(e) => setFormData({ ...formData, customCategory: e.target.value, category: '' })}
+                    placeholder="veya kendi kategorinizi yazın..."
+                    className={cn(
+                      "w-full px-4 py-2.5 rounded-xl bg-[var(--surface)] border transition-all text-[var(--text)] placeholder:text-[var(--muted)]",
+                      formData.customCategory
+                        ? "border-[var(--accent)] bg-[var(--accent-10)]"
+                        : "border-[var(--border)]"
+                    )}
+                    disabled={isCreating}
+                    maxLength={30}
+                  />
+                  {formData.customCategory && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--muted)]">
+                      {formData.customCategory.length}/30
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
