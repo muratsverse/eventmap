@@ -183,26 +183,20 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
               {/* DEBUG BOX */}
               <div className="mt-3 bg-purple-500/10 border border-purple-500/30 rounded-xl p-3 text-xs space-y-1">
                 <p className="text-purple-300 font-bold">DEBUG:</p>
-                <p className="text-purple-200 font-mono text-[9px]">
-                  Event ID: {event?.id?.substring(0, 20)}...
+                <p className="text-purple-200 font-mono text-[8px] break-all">
+                  ID: {event?.id}
                 </p>
                 <p className="text-purple-200 font-mono text-[9px]">
-                  Event Title: {event?.title}
+                  Title: {event?.title}
                 </p>
                 <p className="text-purple-200 font-mono text-[9px]">
-                  isPremium: {String(isPremium)} | Count: {attendeesCount} | Len: {attendees.length}
+                  Premium: {String(isPremium)} | Count: {attendeesCount} | Len: {attendees.length}
                 </p>
-                <button
-                  onClick={() => {
-                    console.log('Full attendees data:', attendees);
-                    console.log('Event ID:', event?.id);
-                    alert('Consolea yazildi, Chrome inspect ile bak!');
-                  }}
-                  className="bg-purple-500 text-white px-2 py-1 rounded text-[9px]"
-                >
-                  Consolea Yaz
-                </button>
-                {attendees.length === 0 && <p className="text-yellow-300 text-[10px]">⚠️ attendees boş - uygulamayı sil ve yeniden yükle!</p>}
+                {attendees.length === 0 && (
+                  <p className="text-red-300 text-[10px] font-bold">
+                    ❌ SORUN: attendees bos geliyor! Event icin attendances var mi kontrol et.
+                  </p>
+                )}
               </div>
 
               {/* Premium kullanıcılar için katılımcı listesi */}

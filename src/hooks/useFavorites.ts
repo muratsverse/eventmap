@@ -92,10 +92,16 @@ export function useEventAttendees(eventId: string | null) {
     refetchOnWindowFocus: true,
     staleTime: 0,
     queryFn: async () => {
+      console.log('🔍 [useEventAttendees] Query başladı');
+      console.log('🔍 [useEventAttendees] Event ID:', eventId);
+      console.log('🔍 [useEventAttendees] Supabase configured:', supabaseHelpers.isConfigured());
+
       if (!eventId || !supabaseHelpers.isConfigured()) {
+        console.log('❌ [useEventAttendees] Event ID yok veya Supabase yapılandırılmamış');
         return [];
       }
 
+      console.log('📡 [useEventAttendees] Supabase query başlatılıyor...');
       const { data, error } = await supabase
         .from('attendances')
         .select(`
@@ -109,22 +115,46 @@ export function useEventAttendees(eventId: string | null) {
         `)
         .eq('event_id', eventId);
 
+      console.log('📡 [useEventAttendees] Supabase response:', { data, error });
+
       if (error) {
+        console.error('❌ [useEventAttendees] Supabase error:', error);
         throw error;
       }
 
+      console.log('✅ [useEventAttendees] Veri alındı, kayıt sayısı:', data?.length || 0);
+
+      if (data && data.length > 0) {
+        console.log('📋 [useEventAttendees] İlk kayıt örneği:', data[0]);
+      }
+
       // Map all attendees, even if profiles is null
-      const attendees = data.map((a: any, index: number) => ({
-        id: a.profiles?.id || a.user_id,
-        name: a.profiles?.name || `Kullanıcı ${index + 1}`,
-        email: a.profiles?.email || '',
-        profile_photo: a.profiles?.profile_photo || null,
-        hasProfile: a.profiles !== null,
-      }));
+      const attendees = data.map((a: any, index: number) => {
+        const attendee = {
+          id: a.profiles?.id || a.user_id,
+          name: a.profiles?.name || `Kullanıcı ${index + 1}`,
+          email: a.profiles?.email || '',
+          profile_photo: a.profiles?.profile_photo || null,
+          hasProfile: a.profiles !== null,
+        };
+        console.log(`👤 [useEventAttendees] Attendee ${index + 1}:`, attendee);
+        return attendee;
+      });
+
+      console.log('✅ [useEventAttendees] Final attendees array:', attendees);
+      console.log('✅ [useEventAttendees] Total count:', attendees.length);
 
       return attendees;
     },
     enabled: Boolean(eventId),
+  });
+
+  console.log('🎯 [useEventAttendees] Hook return:', {
+    attendees: query.data || [],
+    count: query.data?.length || 0,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    error: query.error,
   });
 
   return {
