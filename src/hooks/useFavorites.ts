@@ -92,16 +92,9 @@ export function useEventAttendees(eventId: string | null) {
     refetchOnWindowFocus: true,
     staleTime: 0,
     queryFn: async () => {
-      console.log('🔍 [useEventAttendees] Query başladı');
-      console.log('🔍 [useEventAttendees] Event ID:', eventId);
-      console.log('🔍 [useEventAttendees] Supabase configured:', supabaseHelpers.isConfigured());
-
       if (!eventId || !supabaseHelpers.isConfigured()) {
-        console.log('❌ [useEventAttendees] Event ID yok veya Supabase yapılandırılmamış');
         return [];
       }
-
-      console.log('📡 [useEventAttendees] Supabase query başlatılıyor...');
 
       // Step 1: Get all attendances for this event
       const { data: attendancesData, error: attendancesError } = await supabase
@@ -109,23 +102,16 @@ export function useEventAttendees(eventId: string | null) {
         .select('user_id')
         .eq('event_id', eventId);
 
-      console.log('📡 [useEventAttendees] Attendances response:', { attendancesData, attendancesError });
-
       if (attendancesError) {
-        console.error('❌ [useEventAttendees] Attendances error:', attendancesError);
         throw attendancesError;
       }
 
       if (!attendancesData || attendancesData.length === 0) {
-        console.log('⚠️ [useEventAttendees] No attendances found for this event');
         return [];
       }
 
-      console.log('✅ [useEventAttendees] Found attendances:', attendancesData.length);
-
       // Step 2: Get user_ids
       const userIds = attendancesData.map((a: any) => a.user_id);
-      console.log('👥 [useEventAttendees] User IDs:', userIds);
 
       // Step 3: Get profiles for these users
       const { data: profilesData, error: profilesError } = await supabase
@@ -133,41 +119,25 @@ export function useEventAttendees(eventId: string | null) {
         .select('id, name, email, profile_photo')
         .in('id', userIds);
 
-      console.log('📡 [useEventAttendees] Profiles response:', { profilesData, profilesError });
-
       if (profilesError) {
-        console.error('❌ [useEventAttendees] Profiles error:', profilesError);
         // Don't throw - return attendees without profile data
       }
 
       // Step 4: Map attendances with profile data
       const attendees = attendancesData.map((attendance: any, index: number) => {
         const profile = profilesData?.find((p: any) => p.id === attendance.user_id);
-        const attendee = {
+        return {
           id: profile?.id || attendance.user_id,
           name: profile?.name || `Kullanıcı ${index + 1}`,
           email: profile?.email || '',
           profile_photo: profile?.profile_photo || null,
           hasProfile: profile !== null && profile !== undefined,
         };
-        console.log(`👤 [useEventAttendees] Attendee ${index + 1}:`, attendee);
-        return attendee;
       });
-
-      console.log('✅ [useEventAttendees] Final attendees array:', attendees);
-      console.log('✅ [useEventAttendees] Total count:', attendees.length);
 
       return attendees;
     },
     enabled: Boolean(eventId),
-  });
-
-  console.log('🎯 [useEventAttendees] Hook return:', {
-    attendees: query.data || [],
-    count: query.data?.length || 0,
-    isLoading: query.isLoading,
-    isError: query.isError,
-    error: query.error,
   });
 
   return {
