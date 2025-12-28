@@ -48,7 +48,7 @@ export async function geocodeAddress(
 
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Eventify/1.0',
+        'User-Agent': 'Socia/1.0',
       },
     });
 
@@ -106,7 +106,7 @@ export async function reverseGeocode(
 
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Eventify/1.0',
+        'User-Agent': 'Socia/1.0',
       },
     });
 

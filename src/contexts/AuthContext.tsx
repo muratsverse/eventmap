@@ -325,7 +325,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      // Supabase RPC function çağır (SQL'de oluşturduğunuz)
+      // Supabase RPC function çağır - bu kullanıcı verilerini siler
       const { error: rpcError } = await supabase.rpc('delete_user_account', {
         p_user_id: user.id,
       });
@@ -335,15 +335,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { error: rpcError };
       }
 
-      // Auth user'ı sil
-      const { error: authError } = await supabase.auth.admin.deleteUser(user.id);
-
-      if (authError) {
-        console.error('Delete auth user error:', authError);
-        // RPC başarılı oldu ama auth silinmedi - yine de devam et
-      }
-
-      // Sign out
+      // Sign out - kullanıcıyı çıkış yaptır
       await signOut();
 
       return { error: null };
