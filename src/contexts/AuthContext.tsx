@@ -86,16 +86,61 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const handler = App.addListener('appUrlOpen', async ({ url }) => {
       try {
+        console.log('🔗 Deep link received:', url);
+
         if (!url) return;
+
+        // eventmap://auth/callback?code=xxx formatını parse et
         const parsedUrl = new URL(url);
-        if (!parsedUrl.pathname.includes('/auth/callback')) return;
 
+        // Hem pathname hem de hash kontrolü (Supabase farklı format kullanabilir)
+        const isAuthCallback =
+          parsedUrl.pathname.includes('/auth/callback') ||
+          parsedUrl.pathname.includes('auth/callback') ||
+          url.includes('auth/callback');
+
+        if (!isAuthCallback) {
+          console.log('❌ Not an auth callback URL');
+          return;
+        }
+
+        // Code veya access_token al (PKCE flow)
         const code = parsedUrl.searchParams.get('code');
-        if (!code) return;
+        const access_token = parsedUrl.searchParams.get('access_token');
+        const refresh_token = parsedUrl.searchParams.get('refresh_token');
 
-        await supabase.auth.exchangeCodeForSession(code);
+        console.log('📝 OAuth params:', { code: !!code, access_token: !!access_token });
+
+        if (code) {
+          // PKCE flow - code'u session'a çevir
+          console.log('✅ Exchanging code for session...');
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) {
+            console.error('❌ Exchange code error:', error);
+          } else {
+            console.log('✅ Session exchange successful');
+            // Browser'ı kapat
+            await Browser.close();
+          }
+        } else if (access_token && refresh_token) {
+          // Implicit flow - doğrudan token var
+          console.log('✅ Setting session with tokens...');
+          const { error } = await supabase.auth.setSession({
+            access_token,
+            refresh_token,
+          });
+          if (error) {
+            console.error('❌ Set session error:', error);
+          } else {
+            console.log('✅ Session set successful');
+            // Browser'ı kapat
+            await Browser.close();
+          }
+        } else {
+          console.log('❌ No code or tokens found in URL');
+        }
       } catch (error) {
-        console.error('Native OAuth callback error:', error);
+        console.error('❌ Native OAuth callback error:', error);
       }
     });
 
@@ -255,7 +300,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         provider: 'google',
         options: {
           redirectTo,
-          skipBrowserRedirect: Capacitor.isNativePlatform(),
+          skipBrowserRedirect: false, // FALSE - redirect'e izin ver
         },
       });
 
@@ -265,19 +310,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { error: new Error('OAuth URL alınamadı') };
       }
 
-      // Mobile'da Capacitor Browser, web'de tam sayfa yönlendirme
+      // Mobile'da Capacitor Browser ile aç
       if (Capacitor.isNativePlatform()) {
         await Browser.open({
           url: data.url,
-          presentationStyle: 'popover',
-          toolbarColor: '#A855F7',
+          windowName: '_blank',
         });
+
+        // Browser açıldı, callback listener zaten çalışıyor
+        // Browser kapandığında otomatik olarak deep link yakalanacak
       } else {
+        // Web'de tam sayfa yönlendirme
         window.location.assign(data.url);
       }
 
       return { error: null };
     } catch (error) {
+      console.error('Google sign-in error:', error);
       return { error: error as Error };
     }
   };
