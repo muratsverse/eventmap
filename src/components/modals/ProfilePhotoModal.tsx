@@ -1,7 +1,9 @@
-import { X, Upload, Camera } from 'lucide-react';
+import { X, Upload, Camera as CameraIcon } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
 
 interface ProfilePhotoModalProps {
   isOpen: boolean;
@@ -16,8 +18,28 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
 
   if (!isOpen || !user) return null;
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileSelect = async (e?: React.ChangeEvent<HTMLInputElement>) => {
+    // Mobil cihazda Camera API kullan
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: CameraResultType.DataUrl,
+          source: CameraSource.Photos, // Galeri
+        });
+
+        if (image.dataUrl) {
+          setPreview(image.dataUrl);
+        }
+      } catch (error) {
+        console.error('Camera error:', error);
+      }
+      return;
+    }
+
+    // Web'de FileReader kullan
+    const file = e?.target.files?.[0];
     if (!file) return;
 
     // Dosya türü kontrolü
@@ -41,23 +63,39 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
   };
 
   const handleUpload = async () => {
-    const file = fileInputRef.current?.files?.[0];
-    if (!file || !user) return;
+    if (!preview || !user) return;
 
     setUploading(true);
 
     try {
+      let fileToUpload: File | Blob;
+
+      // Mobilde dataUrl'den Blob oluştur
+      if (Capacitor.isNativePlatform()) {
+        const response = await fetch(preview);
+        const blob = await response.blob();
+        fileToUpload = blob;
+      } else {
+        // Web'de file input'tan al
+        const file = fileInputRef.current?.files?.[0];
+        if (!file) {
+          alert('Lütfen bir resim seçin');
+          return;
+        }
+        fileToUpload = file;
+      }
+
       // Benzersiz dosya adı oluştur
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+      const fileName = `${user.id}-${Date.now()}.jpg`;
       const filePath = `profiles/${fileName}`;
 
       // Supabase Storage'a yükle
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file, {
+        .upload(filePath, fileToUpload, {
           cacheControl: '3600',
-          upsert: false
+          upsert: false,
+          contentType: 'image/jpeg',
         });
 
       if (uploadError) {
@@ -111,7 +149,7 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
         {/* Header */}
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl mb-4">
-            <Camera className="w-8 h-8 text-[var(--text)]" />
+            <CameraIcon className="w-8 h-8 text-[var(--text)]" />
           </div>
           <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">Profil Resmi</h2>
           <p className="text-[var(--muted)] text-sm">
@@ -150,7 +188,13 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
         {/* Buttons */}
         <div className="space-y-3">
           <button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => {
+              if (Capacitor.isNativePlatform()) {
+                handleFileSelect();
+              } else {
+                fileInputRef.current?.click();
+              }
+            }}
             disabled={uploading}
             className="w-full bg-[var(--surface)] border border-[var(--border)] text-[var(--text)] font-semibold rounded-2xl py-4 flex items-center justify-center gap-2 hover:bg-[var(--surface-2)] active:scale-95 transition-all disabled:opacity-50"
           >

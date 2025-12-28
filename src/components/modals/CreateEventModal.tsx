@@ -4,6 +4,7 @@ import { EventCategory, City } from '@/types';
 import { getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useCreateEvent } from '@/hooks/useCreateEvent';
+import { useEventCount } from '@/hooks/useEventCount';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { Icon as LeafletIcon } from 'leaflet';
 import { geocodeAddress, reverseGeocode } from '@/lib/geocoding';
@@ -48,6 +49,11 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const { createEvent, isCreating, error } = useCreateEvent();
   const { user } = useAuth();
+  const { data: eventCount = 0 } = useEventCount(user?.id);
+
+  // Free kullanıcılar max 5 etkinlik oluşturabilir
+  const FREE_EVENT_LIMIT = 5;
+  const canCreateEvent = isPremium || eventCount < FREE_EVENT_LIMIT;
 
   const [formData, setFormData] = useState({
     title: '',
@@ -62,6 +68,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
     city: '' as City | '',
     priceMin: '',
     priceMax: '',
+    maxAttendees: '', // Katılımcı kapasitesi
     imageUrl: '',
     latitude: 41.0082,
     longitude: 28.9784,
@@ -138,22 +145,12 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
       return;
     }
 
-    // Kota Kontrolü (Premium olmayanlara)
-    if (user && !isPremium && supabaseHelpers.isConfigured()) {
-      try {
-        const { data: canCreate, error: quotaError } = await supabase
-          .rpc('can_create_event', { p_user_id: user.id });
-
-        if (quotaError) {
-          console.error('Kota kontrol hatası:', quotaError);
-        } else if (!canCreate) {
-          alert('⚠️ Aylık etkinlik kotanız doldu!\n\nPremium üye olarak sınırsız etkinlik oluşturabilirsiniz.');
-          return;
-        }
-      } catch (error) {
-        console.error('Kota kontrol hatası:', error);
-        // Hata durumunda devam et (güvenlik için)
-      }
+    // 5 Etkinlik Limiti Kontrolü (Free kullanıcılar için)
+    if (!canCreateEvent) {
+      alert(`⚠️ Maksimum ${FREE_EVENT_LIMIT} etkinlik oluşturabilirsiniz!\n\n` +
+            `Şu anda ${eventCount}/${FREE_EVENT_LIMIT} etkinliğiniz var.\n\n` +
+            `Premium üye olarak sınırsız etkinlik oluşturabilirsiniz.`);
+      return;
     }
 
     // Rate limiting check
@@ -196,6 +193,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
         city: formData.city,
         priceMin: Number(formData.priceMin) || 0,
         priceMax: Number(formData.priceMax) || 0,
+        maxAttendees: formData.maxAttendees ? Number(formData.maxAttendees) : undefined, // Katılımcı kapasitesi
         imageFile: imageFile || undefined,
         imageUrl: formData.imageUrl || undefined,
         latitude: formData.latitude,
@@ -220,6 +218,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
         city: '',
         priceMin: '',
         priceMax: '',
+        maxAttendees: '', // Katılımcı kapasitesi reset
         imageUrl: '',
         latitude: 41.0082,
         longitude: 28.9784,
@@ -639,6 +638,30 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
               <p className="text-xs text-[var(--muted)] mt-2">
                 ℹ️ Ücretsiz etkinlikler için boş bırakabilir veya 0 yazabilirsiniz
               </p>
+            </div>
+
+            {/* Katılımcı Kapasitesi */}
+            <div>
+              <h3 className="text-lg font-semibold text-[var(--text)] mb-4">
+                Katılımcı Kapasitesi <span className="text-sm font-normal text-[var(--muted)]">(Opsiyonel)</span>
+              </h3>
+              <div>
+                <label className="block text-sm font-medium text-[var(--text)] mb-2">
+                  Maksimum Katılımcı Sayısı
+                </label>
+                <input
+                  type="number"
+                  value={formData.maxAttendees}
+                  onChange={(e) => setFormData({ ...formData, maxAttendees: e.target.value })}
+                  placeholder="Örn: 100 (Boş bırakabilirsiniz)"
+                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
+                  min="1"
+                  disabled={isCreating}
+                />
+                <p className="text-xs text-[var(--muted)] mt-2">
+                  👥 Etkinliğe katılabilecek maksimum kişi sayısını belirleyin. Boş bırakırsanız sınırsız katılım olur.
+                </p>
+              </div>
             </div>
 
             {/* Image Upload */}

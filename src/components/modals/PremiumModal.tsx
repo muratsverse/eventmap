@@ -18,7 +18,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
   if (!isOpen) return null;
 
   const features = [
-    { icon: Calendar, text: 'Sınırsız Etkinlik Oluşturma', description: 'Ayda istediğiniz kadar etkinlik paylaşın' },
+    { icon: Calendar, text: 'Sınırsız Etkinlik Oluşturma', description: 'Ücretsiz hesaplarda ayda 5 etkinlik hakkınız var, Premium ile sınırsız paylaşın' },
     { icon: Zap, text: 'Reklamsız Deneyim', description: 'Hiç reklam görmeden uygulamayı kullanın' },
     { icon: TrendingUp, text: 'Öncelikli Gösterim', description: 'Etkinlikleriniz listelerde üstte görünsün' },
     { icon: Shield, text: 'Hızlı Onay', description: 'Etkinlikleriniz öncelikle onaylanır' },
@@ -27,7 +27,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
   const plans = [
     {
       name: 'Aylık',
-      price: '€4.99',
+      price: '₺250',
       period: '/ay',
       priceId: import.meta.env.VITE_STRIPE_PRICE_MONTHLY || 'price_monthly',
       savings: null,
@@ -226,7 +226,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
           <h3 className="text-[var(--text)] font-semibold mb-4 text-center">Premium ile neler yapabilirsiniz?</h3>
           <ul className="space-y-3">
             {[
-              'Her ay sınırsız etkinlik paylaşın',
+              'Ayda 5 etkinlik hakkından sınırsız etkinliğe yükseltin',
               'Etkinlikleriniz listelerde öne çıksın',
               'Reklamsız deneyimin keyfini çıkarın',
               'Öncelikli müşteri desteği',

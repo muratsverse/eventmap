@@ -20,6 +20,7 @@ export interface Event {
   };
   organizer: string;
   attendees: number;
+  maxAttendees?: number; // Maximum attendee capacity (optional)
   latitude: number;
   longitude: number;
   isPremium?: boolean;

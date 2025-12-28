@@ -16,6 +16,7 @@ interface CreateEventData {
   city: City;
   priceMin: number;
   priceMax: number;
+  maxAttendees?: number; // Katılımcı kapasitesi (opsiyonel)
   imageFile?: File;
   imageUrl?: string;
   latitude: number;
@@ -92,6 +93,7 @@ export function useCreateEvent() {
           city: data.city,
           price_min: data.priceMin,
           price_max: data.priceMax,
+          max_attendees: data.maxAttendees || null, // Katılımcı kapasitesi
           organizer: user.email || 'Kullanıcı',
           attendees: 0,
           latitude: data.latitude || coords.lat, // Kullanıcının seçtiği koordinatlar

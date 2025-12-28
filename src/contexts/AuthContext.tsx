@@ -30,6 +30,8 @@ interface AuthContextType {
   // Password reset
   resetPassword: (email: string) => Promise<{ error: Error | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
+  // Delete account
+  deleteAccount: () => Promise<{ error: Error | null }>;
   isSupabaseConfigured: boolean;
 }
 
@@ -317,6 +319,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const deleteAccount = async () => {
+    if (!isSupabaseConfigured || !user) {
+      return { error: new Error('Kullanıcı oturumu bulunamadı') };
+    }
+
+    try {
+      // Supabase RPC function çağır (SQL'de oluşturduğunuz)
+      const { error: rpcError } = await supabase.rpc('delete_user_account', {
+        p_user_id: user.id,
+      });
+
+      if (rpcError) {
+        console.error('Delete account RPC error:', rpcError);
+        return { error: rpcError };
+      }
+
+      // Auth user'ı sil
+      const { error: authError } = await supabase.auth.admin.deleteUser(user.id);
+
+      if (authError) {
+        console.error('Delete auth user error:', authError);
+        // RPC başarılı oldu ama auth silinmedi - yine de devam et
+      }
+
+      // Sign out
+      await signOut();
+
+      return { error: null };
+    } catch (error) {
+      console.error('Delete account error:', error);
+      return { error: error as Error };
+    }
+  };
+
   const value = {
     user,
     profile,
@@ -329,6 +365,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signInWithGoogle,
     resetPassword,
     updatePassword,
+    deleteAccount,
     isSupabaseConfigured,
   };
 

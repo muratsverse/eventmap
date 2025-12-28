@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Crown, Edit2, Eye, EyeOff } from 'lucide-react';
+import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Crown, Edit2, Eye, EyeOff, Trash2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites, useAttendances } from '@/hooks/useFavorites';
 import { useEvents } from '@/hooks/useEvents';
@@ -30,6 +30,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
     signOut,
     loading,
     signInWithGoogle,
+    deleteAccount,
   } = useAuth();
   const { favorites } = useFavorites();
   const { attendances } = useAttendances();
@@ -47,6 +48,8 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showUpdatePassword, setShowUpdatePassword] = useState(false);
   const [emailVisible, setEmailVisible] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Email görünürlük durumunu yükle
   useEffect(() => {
@@ -71,6 +74,19 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
       console.error('Email görünürlük güncellenirken hata:', error);
       setEmailVisible(!newVisibility); // Revert on error
     }
+  };
+
+  // Hesabı silme işlemi
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    const { error } = await deleteAccount();
+
+    if (error) {
+      alert('Hesap silinirken hata oluştu: ' + error.message);
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+    // Başarılı olursa signOut çağrılır ve kullanıcı login ekranına gider
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -483,6 +499,17 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
 
                 <div className="border-t border-[var(--border)]"></div>
 
+                {/* Hesabı Sil */}
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="w-full flex items-center justify-center gap-2 bg-red-600/10 hover:bg-red-600/20 text-red-400 font-medium rounded-xl py-3 transition-all border border-red-600/30"
+                >
+                  <Trash2 className="w-5 h-5" />
+                  <span>Hesabı Sil</span>
+                </button>
+
+                <div className="border-t border-[var(--border)]"></div>
+
                 {/* Çıkış Yap */}
                 <button
                   onClick={() => signOut()}
@@ -521,6 +548,40 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
           isOpen={showUpdatePassword}
           onClose={() => setShowUpdatePassword(false)}
         />
+
+        {/* Delete Account Confirmation Modal */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-6 max-w-sm w-full">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-red-600/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Trash2 className="w-8 h-8 text-red-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-[var(--text)] mb-2">Hesabı Sil</h3>
+                <p className="text-[var(--muted)] text-sm">
+                  Hesabınızı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz ve tüm verileriniz silinecektir.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting}
+                  className="w-full bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-semibold rounded-xl py-3 transition-all"
+                >
+                  {isDeleting ? 'Siliniyor...' : 'Evet, Hesabımı Sil'}
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={isDeleting}
+                  className="w-full bg-[var(--surface-2)] hover:bg-[var(--surface)] text-[var(--text)] font-semibold rounded-xl py-3 transition-all border border-[var(--border)]"
+                >
+                  İptal
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
