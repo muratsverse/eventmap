@@ -85,8 +85,12 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
       alert('Hesap silinirken hata oluştu: ' + error.message);
       setIsDeleting(false);
       setShowDeleteConfirm(false);
+    } else {
+      // Başarılı - modal'ı kapat
+      setShowDeleteConfirm(false);
+      setIsDeleting(false);
+      // signOut çağrılır ve kullanıcı login ekranına gider
     }
-    // Başarılı olursa signOut çağrılır ve kullanıcı login ekranına gider
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
