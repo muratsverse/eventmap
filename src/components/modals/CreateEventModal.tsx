@@ -12,6 +12,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { RECAPTCHA_SITE_KEY, isRecaptchaConfigured, checkRateLimit, formatRemainingTime } from '@/lib/recaptcha';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase, supabaseHelpers } from '@/lib/supabase';
+import PremiumModal from './PremiumModal';
 import 'leaflet/dist/leaflet.css';
 
 interface CreateEventModalProps {
@@ -79,6 +80,7 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
   const [showMap, setShowMap] = useState(false);
   const [isGeocoding, setIsGeocoding] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   if (!isOpen) return null;
 
@@ -147,9 +149,8 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
 
     // 5 Etkinlik Limiti Kontrolü (Free kullanıcılar için)
     if (!canCreateEvent) {
-      alert(`⚠️ Maksimum ${FREE_EVENT_LIMIT} etkinlik oluşturabilirsiniz!\n\n` +
-            `Şu anda ${eventCount}/${FREE_EVENT_LIMIT} etkinliğiniz var.\n\n` +
-            `Premium üye olarak sınırsız etkinlik oluşturabilirsiniz.`);
+      // Premium modal aç
+      setShowPremiumModal(true);
       return;
     }
 
@@ -778,6 +779,12 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
           </div>
         </form>
       </div>
+
+      {/* Premium Modal - 5 etkinlik limitine ulaşınca göster */}
+      <PremiumModal
+        isOpen={showPremiumModal}
+        onClose={() => setShowPremiumModal(false)}
+      />
     </div>
   );
 }
