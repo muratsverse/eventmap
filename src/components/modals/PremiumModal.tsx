@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Crown, Check, Zap, Calendar, TrendingUp, Shield, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
-import { Browser } from '@capacitor/browser';
-import { Capacitor } from '@capacitor/core';
+
+// Paddle SDK type declaration
+declare global {
+  interface Window {
+    Paddle: any;
+  }
+}
 
 interface PremiumModalProps {
   isOpen: boolean;
@@ -14,6 +18,49 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [paddleInitialized, setPaddleInitialized] = useState(false);
+
+  // Paddle.js initialize
+  useEffect(() => {
+    const clientToken = import.meta.env.VITE_PADDLE_CLIENT_TOKEN;
+    const environment = import.meta.env.VITE_PADDLE_ENVIRONMENT || 'sandbox';
+
+    if (!clientToken || clientToken === 'your_paddle_client_token_here') {
+      console.warn('⚠️ Paddle client token bulunamadı. Lütfen .env dosyasını kontrol edin.');
+      return;
+    }
+
+    if (window.Paddle) {
+      try {
+        window.Paddle.Environment.set(environment);
+        window.Paddle.Initialize({
+          token: clientToken,
+          eventCallback: (data: any) => {
+            console.log('🔔 Paddle Event:', data);
+
+            // Checkout tamamlandığında
+            if (data.name === 'checkout.completed') {
+              console.log('✅ Ödeme tamamlandı!', data);
+              onClose();
+              // Sayfa yenileme (premium durumu güncellensin)
+              setTimeout(() => window.location.reload(), 1000);
+            }
+
+            // Checkout kapatıldığında
+            if (data.name === 'checkout.closed') {
+              console.log('❌ Checkout kapatıldı');
+              setLoading(false);
+            }
+          },
+        });
+        setPaddleInitialized(true);
+        console.log('✅ Paddle initialized:', environment);
+      } catch (error) {
+        console.error('❌ Paddle initialization error:', error);
+        setError('Ödeme sistemi yüklenemedi. Lütfen sayfayı yenileyin.');
+      }
+    }
+  }, [onClose]);
 
   if (!isOpen) return null;
 
@@ -29,9 +76,9 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
       name: 'Aylık',
       price: '₺250',
       period: '/ay',
-      priceId: import.meta.env.VITE_STRIPE_PRICE_MONTHLY || 'price_monthly',
+      priceId: import.meta.env.VITE_PADDLE_PRICE_ID || 'pri_your_price_id',
       savings: null,
-      recommended: true, // Tek plan olduğu için recommended
+      recommended: true,
     },
   ];
 
@@ -41,76 +88,46 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
       return;
     }
 
+    if (!paddleInitialized || !window.Paddle) {
+      setError('Ödeme sistemi yüklenemedi. Lütfen sayfayı yenileyin.');
+      return;
+    }
+
+    if (priceId === 'pri_your_price_id' || !priceId.startsWith('pri_')) {
+      setError('Fiyat bilgisi eksik. Lütfen .env dosyasında VITE_PADDLE_PRICE_ID ayarlayın.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     try {
-      // User session token al
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if (!session) {
-        throw new Error('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
-      }
-
-      // Supabase URL kontrolü
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      if (!supabaseUrl) {
-        throw new Error('Supabase yapılandırması eksik. Lütfen .env dosyasını kontrol edin.');
-      }
-
-      const endpoint = 'create-checkout-session';
-      const functionUrl = `${supabaseUrl}/functions/v1/${endpoint}`;
-
-      console.log('🔄 Ödeme isteği gönderiliyor:', {
-        endpoint,
+      console.log('🔄 Paddle Checkout açılıyor:', {
         priceId,
         userId: user.id,
+        email: user.email,
       });
 
-      const response = await fetch(functionUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+      // Paddle Checkout Overlay aç
+      window.Paddle.Checkout.open({
+        items: [
+          {
+            priceId: priceId,
+            quantity: 1,
+          },
+        ],
+        customer: {
+          email: user.email || undefined,
         },
-        body: JSON.stringify({
-          priceId,
+        customData: {
           userId: user.id,
-          userEmail: user.email,
-        }),
+        },
       });
 
-      console.log('📥 Yanıt durumu:', response.status, response.statusText);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ Hata detayı:', errorText);
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log('✅ Başarılı yanıt:', data);
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      // Stripe Checkout URL'ine yönlendir
-      if (data.url) {
-        // Mobilde Browser plugin kullan, web'de normal redirect
-        if (Capacitor.isNativePlatform()) {
-          await Browser.open({ url: data.url });
-        } else {
-          window.location.href = data.url;
-        }
-      } else {
-        throw new Error('Ödeme sayfası URL\'i alınamadı.');
-      }
     } catch (error) {
-      console.error('❌ Ödeme hatası:', error);
+      console.error('❌ Paddle Checkout hatası:', error);
       const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen bir hata oluştu';
       setError(errorMessage);
-    } finally {
       setLoading(false);
     }
   };
@@ -205,7 +222,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
 
               <button
                 onClick={() => handlePurchase(plan.priceId)}
-                disabled={loading}
+                disabled={loading || !paddleInitialized}
                 className="w-full font-semibold rounded-xl py-3 transition-all bg-[var(--accent)] text-white hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
@@ -213,6 +230,8 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
                     <Loader2 className="w-5 h-5 animate-spin" />
                     İşleniyor...
                   </>
+                ) : !paddleInitialized ? (
+                  'Yükleniyor...'
                 ) : (
                   "Premium'a Geç"
                 )}
@@ -243,7 +262,7 @@ export default function PremiumModal({ isOpen, onClose }: PremiumModalProps) {
 
         {/* Footer Note */}
         <p className="text-center text-[var(--muted)] text-xs mt-6">
-          7 gün ücretsiz deneme ile başlayın. İstediğiniz zaman iptal edebilirsiniz.
+          Güvenli ödeme Paddle tarafından sağlanmaktadır. İstediğiniz zaman iptal edebilirsiniz.
         </p>
         </div>
       </div>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesap Silme - Eventify</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .important {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .contact-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .contact-box a {
+            color: #1976d2;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-decoration: none;
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        .steps {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .steps ol {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin: 10px 0;
+            padding: 8px 0;
+        }
+
+        .data-info {
+            margin: 20px 0;
+        }
+
+        .data-info ul {
+            margin-left: 20px;
+        }
+
+        .data-info li {
+            margin: 8px 0;
+        }
+
+        .warning {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hesap Silme Talebi</h1>
+        <p><strong>Uygulama:</strong> Eventify</p>
+
+        <div class="important">
+            <strong>Önemli:</strong> Hesabınızı silerseniz, tüm verileriniz kalıcı olarak silinecek ve bu işlem geri alınamaz. Devam etmeden önce lütfen bu sayfayı dikkatlice okuyun.
+        </div>
+
+        <h2>Hesabınızı Nasıl Silebilirsiniz?</h2>
+
+        <div class="steps">
+            <p><strong>Hesap silme talebi için aşağıdaki adımları izleyin:</strong></p>
+            <ol>
+                <li>Aşağıdaki e-posta adresine bir mesaj gönderin</li>
+                <li>E-posta konusu olarak "Eventify - Hesap Silme Talebi" yazın</li>
+                <li>E-postanızda kayıtlı e-posta adresinizi belirtin</li>
+                <li>Talebiniz 30 gün içinde işleme alınacak ve size bilgilendirme yapılacaktır</li>
+            </ol>
+        </div>
+
+        <div class="contact-box">
+            <p><strong>İletişim:</strong></p>
+            <p>E-posta: <a href="mailto:muratveozturk@gmail.com?subject=Eventify%20-%20Hesap%20Silme%20Talebi">muratveozturk@gmail.com</a></p>
+            <p><strong>Veri Sorumlusu:</strong> Murat Öztürk</p>
+        </div>
+
+        <h2>Hangi Veriler Silinir?</h2>
+
+        <div class="data-info">
+            <p>Hesabınız silindiğinde aşağıdaki veriler kalıcı olarak silinir:</p>
+            <ul>
+                <li>Hesap bilgileriniz (ad, soyad, e-posta)</li>
+                <li>Profil fotoğrafınız</li>
+                <li>Oluşturduğunuz tüm etkinlikler</li>
+                <li>Katıldığınız etkinlik kayıtları</li>
+                <li>Favorilere eklediğiniz etkinlikler</li>
+                <li>Uygulama içi tercihleriniz</li>
+            </ul>
+        </div>
+
+        <h2>Hangi Veriler Saklanır?</h2>
+
+        <div class="data-info">
+            <p>Yasal yükümlülükler gereği aşağıdaki veriler belirli bir süre saklanabilir:</p>
+            <ul>
+                <li><strong>Ödeme kayıtları:</strong> Vergi mevzuatı gereği 10 yıl süreyle saklanır</li>
+                <li><strong>Fatura bilgileri:</strong> Mali mevzuat gereği saklanır</li>
+            </ul>
+            <p>Bu veriler sadece yasal yükümlülükler için saklanır ve başka amaçla kullanılmaz.</p>
+        </div>
+
+        <div class="warning">
+            <strong>Uyarı:</strong> Hesabınız silindikten sonra:
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li>Oluşturduğunuz etkinliklere artık erişemezsiniz</li>
+                <li>Premium üyeliğiniz iptal edilir ve iade yapılmaz</li>
+                <li>Aynı e-posta adresiyle tekrar kayıt olabilirsiniz, ancak eski verileriniz geri yüklenmez</li>
+            </ul>
+        </div>
+
+        <h2>İşlem Süresi</h2>
+        <p>Hesap silme talebiniz <strong>30 gün</strong> içinde işleme alınır ve size e-posta ile bilgilendirme yapılır.</p>
+
+        <h2>Daha Fazla Bilgi</h2>
+        <p>Veri işleme politikalarımız ve haklarınız hakkında daha fazla bilgi için <a href="https://muratsverse.github.io/eventify-privacy-policy/privacy-policy.html" style="color: #667eea;">Gizlilik Politikamızı</a> inceleyebilirsiniz.</p>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #f0f0f0;">
+
+        <p style="text-align: center; color: #999; font-size: 0.9em;">
+            © 2024 Eventify. Tüm hakları saklıdır.
+        </p>
+    </div>
+</body>
+</html>
