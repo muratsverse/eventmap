@@ -51,3 +51,20 @@ ios/App/fastlane/README.md
 # Ruby
 ios/App/Gemfile.lock
 ios/App/.bundle/
+
+# Android
+android/app/build/
+android/app/release/
+android/app/*.aab
+android/app/*.apk
+android/.gradle/
+android/build/
+android/local.properties
+
+# Temporary & Development Files
+*.sql
+*.html
+Screenshot_*.png
+Reklam Fotograflari/
+nul
+*.tmp

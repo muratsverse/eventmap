@@ -1,8 +1,9 @@
 {
-  "name": "eventmap",
+  "name": "socia",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Sosyal Etkinlik Platformu - Türkiye'nin etkinlik ağı",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

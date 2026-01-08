@@ -12,9 +12,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'EventMap - Türkiye Etkinlik Rehberi',
-        short_name: 'EventMap',
-        description: 'Türkiye\'deki tüm etkinlikleri keşfedin',
+        name: 'Socia - Sosyal Etkinlik Platformu',
+        short_name: 'Socia',
+        description: 'Türkiye\'nin sosyal etkinlik platformu',
         theme_color: '#8B5CF6',
         background_color: '#1F2937',
         display: 'standalone',
