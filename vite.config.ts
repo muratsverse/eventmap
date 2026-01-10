@@ -4,8 +4,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: '/eventmap/', // GitHub Pages için base path
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? '/eventmap/' : '/', // Prod: GitHub Pages, Dev: root
   plugins: [
     react(),
     VitePWA({
@@ -96,4 +96,4 @@ export default defineConfig({
       }
     }
   }
-})
+}))
