@@ -9,7 +9,7 @@ interface EditProfileModalProps {
 }
 
 export default function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
-  const { user, profile } = useAuth();
+  const { user, profile, updateProfile } = useAuth();
   const [name, setName] = useState(profile?.name || '');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -26,17 +26,14 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
     setError('');
 
     try {
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ name: name.trim() })
-        .eq('id', user.id);
+      const { error: updateError } = await updateProfile({ name: name.trim() });
 
       if (updateError) {
         throw updateError;
       }
 
-      // Başarılı - sayfayı yenile
-      window.location.reload();
+      // Başarılı - modal'ı kapat
+      onClose();
     } catch (err: any) {
       console.error('Update error:', err);
       setError(`Güncelleme hatası: ${err.message}`);

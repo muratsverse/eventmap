@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 import { Capacitor } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
@@ -23,7 +23,7 @@ const capacitorStorage = {
 // Use native storage for mobile, localStorage for web
 const storage = Capacitor.isNativePlatform() ? capacitorStorage : undefined;
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+export const supabase: SupabaseClient<Database> = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     storage,
     persistSession: true,

@@ -5,7 +5,6 @@ import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 import { App } from '@capacitor/app';
 import { RestoreAccountModal } from '@/components/auth/RestoreAccountModal';
-import { CreateAccountModal } from '@/components/auth/CreateAccountModal';
 
 interface Profile {
   id: string;
@@ -47,7 +46,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [showRestoreModal, setShowRestoreModal] = useState(false);
-  const [showCreateModal, setShowCreateModal] = useState(false);
   const [pendingProfile, setPendingProfile] = useState<Profile | null>(null);
   const isSupabaseConfigured = supabaseHelpers.isConfigured();
 
@@ -173,54 +171,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', userId)
         .maybeSingle();
 
-      if (error) {
-        console.error('Error loading profile:', {
-          code: error.code,
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
+      // Profil bulunamadı - otomatik oluştur
+      if (!data || error) {
+        console.log('🔵 Profil bulunamadı, otomatik oluşturuluyor...');
+
+        // Yeni profil oluştur
+        const { error: insertError } = await supabase.from('profiles').insert({
+          id: userId,
+          email: currentUser.email || '',
+          name: currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'Kullanıcı',
+          profile_photo: currentUser.user_metadata?.avatar_url || null,
+          cover_photo: null,
+          is_premium: false,
+          is_admin: false,
+          email_visible: false,
         });
 
-        // Profil yoksa yeni kullanıcı - create modal göster
-        if (checkDeleted) {
-          setPendingProfile({
-            id: userId,
-            email: currentUser.email || '',
-            name: currentUser.user_metadata?.name || null,
-            profile_photo: null,
-            cover_photo: null,
-            is_premium: false,
-            is_admin: false,
-          } as Profile);
-          setShowCreateModal(true);
-          // Modal gösterildiğinde loading'i false yap
-          setLoading(false);
-        } else {
+        if (insertError) {
+          console.error('❌ Profil oluşturma hatası:', insertError);
           setProfile(null);
           setLoading(false);
+          return;
         }
-        return;
-      }
 
-      // Profil bulunamadı - yeni kullanıcı
-      if (!data) {
-        if (checkDeleted) {
-          setPendingProfile({
-            id: userId,
-            email: currentUser.email || '',
-            name: currentUser.user_metadata?.name || null,
-            profile_photo: null,
-            cover_photo: null,
-            is_premium: false,
-            is_admin: false,
-          } as Profile);
-          setShowCreateModal(true);
-          // Modal gösterildiğinde loading'i false yap
-          setLoading(false);
-        } else {
-          setProfile(null);
-          setLoading(false);
+        console.log('✅ Profil otomatik oluşturuldu');
+
+        // Yeni oluşturulan profili yükle
+        const { data: newProfile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .single();
+
+        if (newProfile) {
+          setProfile(newProfile as Profile);
         }
+        setLoading(false);
         return;
       }
 
@@ -233,22 +219,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // 30 gün geçmemişse restore modal göster
         if (diffDays <= 30) {
+          console.log('⚠️ Silinmiş hesap bulundu, restore modal gösteriliyor');
           setPendingProfile(data as Profile);
           setShowRestoreModal(true);
           setProfile(null);
           setLoading(false);
           return;
+        } else {
+          // 30 gün geçmiş, yeni profil oluştur
+          console.log('🔵 30 gün geçmiş silinmiş hesap, yeni profil oluşturuluyor');
+          const { error: insertError } = await supabase.from('profiles').insert({
+            id: userId,
+            email: currentUser.email || '',
+            name: currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'Kullanıcı',
+            profile_photo: currentUser.user_metadata?.avatar_url || null,
+            cover_photo: null,
+            is_premium: false,
+            is_admin: false,
+            email_visible: false,
+          });
+
+          if (!insertError) {
+            const { data: newProfile } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', userId)
+              .single();
+            if (newProfile) setProfile(newProfile as Profile);
+          }
+          setLoading(false);
+          return;
         }
       }
 
-      // Normal aktif hesap veya silme kontrolü yapılmıyor
+      // Normal aktif hesap
       if (!data.deleted_at) {
+        console.log('✅ Profil yüklendi');
         setProfile(data as Profile);
       } else {
         setProfile(null);
       }
     } catch (error) {
-      console.error('Error loading profile (catch):', error);
+      console.error('❌ Profil yükleme hatası:', error);
       setProfile(null);
     } finally {
       setLoading(false);
@@ -507,54 +519,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await signOut();
   };
 
-  // Create new account handler
-  const handleCreateAccount = async () => {
-    if (!pendingProfile) return;
-
-    try {
-      console.log('🚀 Creating profile for:', pendingProfile.id, pendingProfile.email);
-
-      // Insert new profile
-      const { error } = await supabase.from('profiles').insert({
-        id: pendingProfile.id,
-        email: pendingProfile.email,
-        name: pendingProfile.name,
-        profile_photo: null,
-        cover_photo: null,
-        is_premium: false,
-        is_admin: false,
-        email_visible: false,
-      });
-
-      if (error) {
-        console.error('❌ Create account error:', error);
-        await signOut();
-        return;
-      }
-
-      console.log('✅ Profile created successfully');
-
-      // Get fresh session
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        await loadProfile(session.user.id, session.user, false);
-      }
-
-      setShowCreateModal(false);
-      setPendingProfile(null);
-    } catch (error) {
-      console.error('❌ Create account error (catch):', error);
-      await signOut();
-    }
-  };
-
-  // Cancel create account handler
-  const handleCancelCreate = async () => {
-    setShowCreateModal(false);
-    setPendingProfile(null);
-    await signOut();
-  };
-
   const value = {
     user,
     profile,
@@ -574,29 +538,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext.Provider value={value}>
       {children}
-      {pendingProfile && (
-        <>
-          <RestoreAccountModal
-            isOpen={showRestoreModal}
-            daysAgo={
-              pendingProfile.deleted_at
-                ? Math.ceil(
-                    (new Date().getTime() - new Date(pendingProfile.deleted_at).getTime()) /
-                      (1000 * 60 * 60 * 24)
-                  )
-                : 0
-            }
-            onRestore={handleRestoreAccount}
-            onDecline={handleDeclineRestore}
-          />
-          <CreateAccountModal
-            isOpen={showCreateModal}
-            email={pendingProfile.email}
-            name={pendingProfile.name}
-            onConfirm={handleCreateAccount}
-            onCancel={handleCancelCreate}
-          />
-        </>
+      {pendingProfile && showRestoreModal && (
+        <RestoreAccountModal
+          isOpen={showRestoreModal}
+          daysAgo={
+            pendingProfile.deleted_at
+              ? Math.ceil(
+                  (new Date().getTime() - new Date(pendingProfile.deleted_at).getTime()) /
+                    (1000 * 60 * 60 * 24)
+                )
+              : 0
+          }
+          onRestore={handleRestoreAccount}
+          onDecline={handleDeclineRestore}
+        />
       )}
     </AuthContext.Provider>
   );
