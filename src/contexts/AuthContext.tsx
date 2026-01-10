@@ -4,6 +4,8 @@ import { supabase, supabaseHelpers } from '@/lib/supabase';
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 import { App } from '@capacitor/app';
+import { RestoreAccountModal } from '@/components/auth/RestoreAccountModal';
+import { CreateAccountModal } from '@/components/auth/CreateAccountModal';
 
 interface Profile {
   id: string;
@@ -14,6 +16,8 @@ interface Profile {
   is_premium: boolean;
   is_admin: boolean;
   email_visible?: boolean;
+  deleted_at?: string | null;
+  deletion_reason?: string | null;
 }
 
 interface AuthContextType {
@@ -31,7 +35,7 @@ interface AuthContextType {
   resetPassword: (email: string) => Promise<{ error: Error | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
   // Delete account
-  deleteAccount: () => Promise<{ error: Error | null }>;
+  deleteAccount: (reason?: string) => Promise<{ error: Error | null }>;
   isSupabaseConfigured: boolean;
 }
 
@@ -42,6 +46,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showRestoreModal, setShowRestoreModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [pendingProfile, setPendingProfile] = useState<Profile | null>(null);
   const isSupabaseConfigured = supabaseHelpers.isConfigured();
 
   useEffect(() => {
@@ -84,78 +91,87 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const handler = App.addListener('appUrlOpen', async ({ url }) => {
-      try {
-        console.log('🔗 Deep link received:', url);
+    let listenerHandle: any;
 
-        if (!url) return;
+    const setupListener = async () => {
+      listenerHandle = await App.addListener('appUrlOpen', async ({ url }) => {
+        try {
+          console.log('🔗 Deep link received:', url);
 
-        // eventmap://auth/callback?code=xxx formatını parse et
-        const parsedUrl = new URL(url);
+          if (!url) return;
 
-        // Hem pathname hem de hash kontrolü (Supabase farklı format kullanabilir)
-        const isAuthCallback =
-          parsedUrl.pathname.includes('/auth/callback') ||
-          parsedUrl.pathname.includes('auth/callback') ||
-          url.includes('auth/callback');
+          // eventmap://auth/callback?code=xxx formatını parse et
+          const parsedUrl = new URL(url);
 
-        if (!isAuthCallback) {
-          console.log('❌ Not an auth callback URL');
-          return;
-        }
+          // Hem pathname hem de hash kontrolü (Supabase farklı format kullanabilir)
+          const isAuthCallback =
+            parsedUrl.pathname.includes('/auth/callback') ||
+            parsedUrl.pathname.includes('auth/callback') ||
+            url.includes('auth/callback');
 
-        // Code veya access_token al (PKCE flow)
-        const code = parsedUrl.searchParams.get('code');
-        const access_token = parsedUrl.searchParams.get('access_token');
-        const refresh_token = parsedUrl.searchParams.get('refresh_token');
-
-        console.log('📝 OAuth params:', { code: !!code, access_token: !!access_token });
-
-        if (code) {
-          // PKCE flow - code'u session'a çevir
-          console.log('✅ Exchanging code for session...');
-          const { error } = await supabase.auth.exchangeCodeForSession(code);
-          if (error) {
-            console.error('❌ Exchange code error:', error);
-          } else {
-            console.log('✅ Session exchange successful');
-            // Browser'ı kapat
-            await Browser.close();
+          if (!isAuthCallback) {
+            console.log('❌ Not an auth callback URL');
+            return;
           }
-        } else if (access_token && refresh_token) {
-          // Implicit flow - doğrudan token var
-          console.log('✅ Setting session with tokens...');
-          const { error } = await supabase.auth.setSession({
-            access_token,
-            refresh_token,
-          });
-          if (error) {
-            console.error('❌ Set session error:', error);
+
+          // Code veya access_token al (PKCE flow)
+          const code = parsedUrl.searchParams.get('code');
+          const access_token = parsedUrl.searchParams.get('access_token');
+          const refresh_token = parsedUrl.searchParams.get('refresh_token');
+
+          console.log('📝 OAuth params:', { code: !!code, access_token: !!access_token });
+
+          if (code) {
+            // PKCE flow - code'u session'a çevir
+            console.log('✅ Exchanging code for session...');
+            const { error } = await supabase.auth.exchangeCodeForSession(code);
+            if (error) {
+              console.error('❌ Exchange code error:', error);
+            } else {
+              console.log('✅ Session exchange successful');
+              // Browser'ı kapat
+              await Browser.close();
+            }
+          } else if (access_token && refresh_token) {
+            // Implicit flow - doğrudan token var
+            console.log('✅ Setting session with tokens...');
+            const { error } = await supabase.auth.setSession({
+              access_token,
+              refresh_token,
+            });
+            if (error) {
+              console.error('❌ Set session error:', error);
+            } else {
+              console.log('✅ Session set successful');
+              // Browser'ı kapat
+              await Browser.close();
+            }
           } else {
-            console.log('✅ Session set successful');
-            // Browser'ı kapat
-            await Browser.close();
+            console.log('❌ No code or tokens found in URL');
           }
-        } else {
-          console.log('❌ No code or tokens found in URL');
+        } catch (error) {
+          console.error('❌ Native OAuth callback error:', error);
         }
-      } catch (error) {
-        console.error('❌ Native OAuth callback error:', error);
-      }
-    });
+      });
+    };
+
+    setupListener();
 
     return () => {
-      handler.remove();
+      if (listenerHandle) {
+        listenerHandle.remove();
+      }
     };
   }, [isSupabaseConfigured]);
 
-  const loadProfile = async (userId: string) => {
+  const loadProfile = async (userId: string, checkDeleted = true) => {
     try {
+      // Silinen hesaplar dahil tüm profilleri getir
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error loading profile:', {
@@ -165,13 +181,67 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           hint: error.hint,
         });
 
-        // Profil yoksa bile loading'i false yap
+        // Profil yoksa yeni kullanıcı - create modal göster
+        if (checkDeleted && user) {
+          setPendingProfile({
+            id: userId,
+            email: user.email || '',
+            name: user.user_metadata?.name || null,
+            profile_photo: null,
+            cover_photo: null,
+            is_premium: false,
+            is_admin: false,
+          } as Profile);
+          setShowCreateModal(true);
+        }
+
         setProfile(null);
         setLoading(false);
         return;
       }
 
-      setProfile(data);
+      // Profil bulunamadı - yeni kullanıcı
+      if (!data) {
+        if (checkDeleted && user) {
+          setPendingProfile({
+            id: userId,
+            email: user.email || '',
+            name: user.user_metadata?.name || null,
+            profile_photo: null,
+            cover_photo: null,
+            is_premium: false,
+            is_admin: false,
+          } as Profile);
+          setShowCreateModal(true);
+        }
+        setProfile(null);
+        setLoading(false);
+        return;
+      }
+
+      // Hesap silinmiş mi kontrol et (30 gün içinde)
+      if (data.deleted_at && checkDeleted) {
+        const deletedDate = new Date(data.deleted_at);
+        const now = new Date();
+        const diffTime = Math.abs(now.getTime() - deletedDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        // 30 gün geçmemişse restore modal göster
+        if (diffDays <= 30) {
+          setPendingProfile(data as Profile);
+          setShowRestoreModal(true);
+          setProfile(null);
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Normal aktif hesap veya silme kontrolü yapılmıyor
+      if (!data.deleted_at) {
+        setProfile(data as Profile);
+      } else {
+        setProfile(null);
+      }
     } catch (error) {
       console.error('Error loading profile (catch):', error);
       setProfile(null);
@@ -191,6 +261,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         profile_photo: null,
         cover_photo: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=300&fit=crop',
         is_premium: false,
+        is_admin: false,
       });
       return { error: null };
     }
@@ -368,19 +439,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const deleteAccount = async () => {
+  const deleteAccount = async (reason?: string) => {
     if (!isSupabaseConfigured || !user) {
       return { error: new Error('Kullanıcı oturumu bulunamadı') };
     }
 
     try {
-      // Supabase RPC function çağır - bu kullanıcı verilerini siler
-      const { error: rpcError } = await supabase.rpc('delete_user_account', {
+      // Soft delete: Hesabı sil olarak işaretle (30 gün içinde geri yüklenebilir)
+      const { error: rpcError } = await supabase.rpc('soft_delete_user_account', {
         p_user_id: user.id,
+        p_reason: reason || null,
       });
 
       if (rpcError) {
-        console.error('Delete account RPC error:', rpcError);
+        console.error('Soft delete account RPC error:', rpcError);
         return { error: rpcError };
       }
 
@@ -392,6 +464,78 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Delete account error:', error);
       return { error: error as Error };
     }
+  };
+
+  // Restore account handler
+  const handleRestoreAccount = async () => {
+    if (!pendingProfile || !user) return;
+
+    try {
+      const { error } = await supabase.rpc('restore_account', {
+        p_user_id: user.id,
+      });
+
+      if (error) {
+        console.error('Restore account error:', error);
+        await signOut();
+        return;
+      }
+
+      // Reload profile without checking deleted status
+      await loadProfile(user.id, false);
+      setShowRestoreModal(false);
+      setPendingProfile(null);
+    } catch (error) {
+      console.error('Restore account error:', error);
+      await signOut();
+    }
+  };
+
+  // Decline restore account handler
+  const handleDeclineRestore = async () => {
+    setShowRestoreModal(false);
+    setPendingProfile(null);
+    await signOut();
+  };
+
+  // Create new account handler
+  const handleCreateAccount = async () => {
+    if (!pendingProfile || !user) return;
+
+    try {
+      // Insert new profile
+      const { error } = await supabase.from('profiles').insert({
+        id: user.id,
+        email: user.email || '',
+        name: user.user_metadata?.name || null,
+        profile_photo: null,
+        cover_photo: null,
+        is_premium: false,
+        is_admin: false,
+        email_visible: false,
+      });
+
+      if (error) {
+        console.error('Create account error:', error);
+        await signOut();
+        return;
+      }
+
+      // Reload profile
+      await loadProfile(user.id, false);
+      setShowCreateModal(false);
+      setPendingProfile(null);
+    } catch (error) {
+      console.error('Create account error:', error);
+      await signOut();
+    }
+  };
+
+  // Cancel create account handler
+  const handleCancelCreate = async () => {
+    setShowCreateModal(false);
+    setPendingProfile(null);
+    await signOut();
   };
 
   const value = {
@@ -410,7 +554,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isSupabaseConfigured,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+      {pendingProfile && (
+        <>
+          <RestoreAccountModal
+            isOpen={showRestoreModal}
+            daysAgo={
+              pendingProfile.deleted_at
+                ? Math.ceil(
+                    (new Date().getTime() - new Date(pendingProfile.deleted_at).getTime()) /
+                      (1000 * 60 * 60 * 24)
+                  )
+                : 0
+            }
+            onRestore={handleRestoreAccount}
+            onDecline={handleDeclineRestore}
+          />
+          <CreateAccountModal
+            isOpen={showCreateModal}
+            email={pendingProfile.email}
+            name={pendingProfile.name}
+            onConfirm={handleCreateAccount}
+            onCancel={handleCancelCreate}
+          />
+        </>
+      )}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
