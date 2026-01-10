@@ -473,11 +473,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Restore account handler
   const handleRestoreAccount = async () => {
-    if (!pendingProfile || !user) return;
+    if (!pendingProfile) return;
 
     try {
       const { error } = await supabase.rpc('restore_account', {
-        p_user_id: user.id,
+        p_user_id: pendingProfile.id,
       });
 
       if (error) {
@@ -486,8 +486,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // Reload profile without checking deleted status
-      await loadProfile(user.id, user, false);
+      // Get fresh session after restore
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await loadProfile(session.user.id, session.user, false);
+      }
+
       setShowRestoreModal(false);
       setPendingProfile(null);
     } catch (error) {
@@ -505,14 +509,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Create new account handler
   const handleCreateAccount = async () => {
-    if (!pendingProfile || !user) return;
+    if (!pendingProfile) return;
 
     try {
+      console.log('🚀 Creating profile for:', pendingProfile.id, pendingProfile.email);
+
       // Insert new profile
       const { error } = await supabase.from('profiles').insert({
-        id: user.id,
-        email: user.email || '',
-        name: user.user_metadata?.name || null,
+        id: pendingProfile.id,
+        email: pendingProfile.email,
+        name: pendingProfile.name,
         profile_photo: null,
         cover_photo: null,
         is_premium: false,
@@ -521,17 +527,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
-        console.error('Create account error:', error);
+        console.error('❌ Create account error:', error);
         await signOut();
         return;
       }
 
-      // Reload profile
-      await loadProfile(user.id, user, false);
+      console.log('✅ Profile created successfully');
+
+      // Get fresh session
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await loadProfile(session.user.id, session.user, false);
+      }
+
       setShowCreateModal(false);
       setPendingProfile(null);
     } catch (error) {
-      console.error('Create account error:', error);
+      console.error('❌ Create account error (catch):', error);
       await signOut();
     }
   };
