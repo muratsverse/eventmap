@@ -63,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        loadProfile(session.user.id);
+        loadProfile(session.user.id, session.user);
       } else {
         setLoading(false);
       }
@@ -76,7 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        loadProfile(session.user.id);
+        loadProfile(session.user.id, session.user);
       } else {
         setProfile(null);
         setLoading(false);
@@ -164,7 +164,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, [isSupabaseConfigured]);
 
-  const loadProfile = async (userId: string, checkDeleted = true) => {
+  const loadProfile = async (userId: string, currentUser: User, checkDeleted = true) => {
     try {
       // Silinen hesaplar dahil tüm profilleri getir
       const { data, error } = await supabase
@@ -182,40 +182,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
 
         // Profil yoksa yeni kullanıcı - create modal göster
-        if (checkDeleted && user) {
+        if (checkDeleted) {
           setPendingProfile({
             id: userId,
-            email: user.email || '',
-            name: user.user_metadata?.name || null,
+            email: currentUser.email || '',
+            name: currentUser.user_metadata?.name || null,
             profile_photo: null,
             cover_photo: null,
             is_premium: false,
             is_admin: false,
           } as Profile);
           setShowCreateModal(true);
+          // Modal gösterildiğinde loading'i false yap
+          setLoading(false);
+        } else {
+          setProfile(null);
+          setLoading(false);
         }
-
-        setProfile(null);
-        setLoading(false);
         return;
       }
 
       // Profil bulunamadı - yeni kullanıcı
       if (!data) {
-        if (checkDeleted && user) {
+        if (checkDeleted) {
           setPendingProfile({
             id: userId,
-            email: user.email || '',
-            name: user.user_metadata?.name || null,
+            email: currentUser.email || '',
+            name: currentUser.user_metadata?.name || null,
             profile_photo: null,
             cover_photo: null,
             is_premium: false,
             is_admin: false,
           } as Profile);
           setShowCreateModal(true);
+          // Modal gösterildiğinde loading'i false yap
+          setLoading(false);
+        } else {
+          setProfile(null);
+          setLoading(false);
         }
-        setProfile(null);
-        setLoading(false);
         return;
       }
 
@@ -482,7 +487,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Reload profile without checking deleted status
-      await loadProfile(user.id, false);
+      await loadProfile(user.id, user, false);
       setShowRestoreModal(false);
       setPendingProfile(null);
     } catch (error) {
@@ -522,7 +527,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Reload profile
-      await loadProfile(user.id, false);
+      await loadProfile(user.id, user, false);
       setShowCreateModal(false);
       setPendingProfile(null);
     } catch (error) {
