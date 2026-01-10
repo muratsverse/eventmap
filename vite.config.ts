@@ -5,7 +5,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/eventmap/' : '/', // Prod: GitHub Pages, Dev: root
+  base: process.env.VERCEL ? '/' : mode === 'production' ? '/eventmap/' : '/', // Vercel: root, GitHub Pages: /eventmap/
   plugins: [
     react(),
     VitePWA({
