@@ -4,18 +4,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => {
-  const isCapacitor = mode === 'capacitor';
-  const base = isCapacitor
-    ? './'
-    : process.env.VERCEL
-      ? '/'
-      : mode === 'production'
-        ? '/eventmap/'
-        : '/';
-
-  return {
-    base, // Capacitor: relative, Vercel: root, GH Pages: /eventmap
+export default defineConfig(({ mode }) => ({
+  base: process.env.VERCEL ? '/' : mode === 'production' ? '/eventmap/' : '/', // Vercel root, GH Pages /eventmap
   plugins: [
     react(),
     VitePWA({
@@ -106,5 +96,4 @@ export default defineConfig(({ mode }) => {
       }
     }
   }
-  };
-})
+}))
