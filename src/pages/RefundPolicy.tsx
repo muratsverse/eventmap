@@ -7,32 +7,23 @@ export default function RefundPolicy() {
 
         <div className="space-y-6">
           <section>
-            <h2 className="text-2xl font-semibold mb-4">1. Subscription Cancellation</h2>
+            <h2 className="text-2xl font-semibold mb-4">1. 14-Day Refund Window</h2>
             <p className="text-[var(--muted)]">
-              You may cancel your Socia Premium subscription at any time through your account settings or by contacting
-              our support team. Upon cancellation, you will continue to have access to Premium features until the end
-              of your current billing period.
+              You may request a refund within <strong>14 days</strong> of your initial subscription purchase. The 14-day
+              period starts on the day after your purchase.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">2. Refund Eligibility</h2>
+            <h2 className="text-2xl font-semibold mb-4">2. Refund Process</h2>
             <p className="text-[var(--muted)]">
-              You may request a refund within <strong>14 days</strong> of your initial subscription purchase. This 14-day
-              refund window applies to first-time subscriptions only and is measured from the day after the purchase.
+              Refunds are processed by Paddle, our Merchant of Record. Approved refunds are returned to the original
+              payment method.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">3. Refund Process</h2>
-            <p className="text-[var(--muted)]">
-              Refunds are processed by Paddle, our payment provider. If your refund request is approved, the payment
-              will be returned to your original payment method.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">4. How to Request a Refund</h2>
+            <h2 className="text-2xl font-semibold mb-4">3. How to Request a Refund</h2>
             <p className="text-[var(--muted)] mb-4">
               To request a refund, please contact our support team with your account email address and transaction
               details.
@@ -43,42 +34,14 @@ export default function RefundPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">5. Refund Processing Time</h2>
+            <h2 className="text-2xl font-semibold mb-4">4. Processing Time</h2>
             <p className="text-[var(--muted)]">
-              Approved refunds are typically processed within 5-10 business days. Depending on your bank, it may take
-              additional time for the refund to appear in your account.
+              Approved refunds are typically processed within 5-10 business days.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">6. Auto-Renewal and Reminders</h2>
-            <p className="text-[var(--muted)]">
-              Premium subscriptions automatically renew each month. We will send you a reminder email 3 days before your
-              renewal date. You can cancel at any time to prevent future charges, and your Premium access will continue
-              until the end of your current billing period.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">7. Payment Disputes</h2>
-            <p className="text-[var(--muted)]">
-              If you have any concerns about a charge, please contact us before initiating a chargeback with your bank.
-              Chargebacks may result in suspension of your account. We are committed to resolving all payment issues fairly
-              and promptly.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">8. Changes to This Policy</h2>
-            <p className="text-[var(--muted)]">
-              We reserve the right to modify this Refund Policy at any time. Any changes will be posted on this page with
-              an updated revision date. Your continued use of the Service after such changes constitutes acceptance of
-              the updated policy.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">9. Contact Information</h2>
+            <h2 className="text-2xl font-semibold mb-4">5. Contact Information</h2>
             <p className="text-[var(--muted)]">
               For questions about this Refund Policy or to request a refund, please contact us at:
               <br />
