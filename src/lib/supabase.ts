@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 import { Capacitor } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
@@ -26,7 +26,6 @@ const capacitorStorage = {
 // Use native storage for mobile, localStorage for web
 const storage = Capacitor.isNativePlatform() ? capacitorStorage : undefined;
 
-<<<<<<< HEAD
 const createSupabaseStub = () => {
   const error = new Error(
     'Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.'
@@ -75,17 +74,6 @@ export const supabase = (isConfigured
       },
     })
   : createSupabaseStub()) as ReturnType<typeof createClient<Database>>;
-=======
-export const supabase: SupabaseClient<Database> = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    storage,
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce', // More secure for mobile apps
-  },
-});
->>>>>>> main
 
 // Helper functions for common queries
 export const supabaseHelpers = {
