@@ -18,7 +18,11 @@ const highlights = [
 
 const trustPoints = [
   'Kredi karti bilgileri uygulamada saklanmaz',
+<<<<<<< Updated upstream
   'Aylik ₺250, istedigin zaman iptal',
+=======
+  'Aylik 250 TL, istedigin zaman iptal',
+>>>>>>> Stashed changes
   'Kullanici verileri Supabase ile guvende',
 ];
 
@@ -60,7 +64,11 @@ export default function Landing() {
               Sehirdeki en iyi etkinlikleri tek akista bul.
             </h1>
             <p className="text-base text-[var(--muted)] md:text-lg">
+<<<<<<< Updated upstream
               Socia, Istanbul’dan Antalya’ya kadar konser, festival, spor ve kultur etkinliklerini
+=======
+              Socia, Istanbul'dan Antalya'ya kadar konser, festival, spor ve kultur etkinliklerini
+>>>>>>> Stashed changes
               modern bir arayuzle bir araya getirir. Ucretsiz basla, premium ile sinirsiz olustur.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
@@ -94,7 +102,11 @@ export default function Landing() {
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] p-5">
                 <p className="text-sm text-[var(--muted)]">Premium</p>
                 <p className="text-4xl font-semibold">
+<<<<<<< Updated upstream
                   ₺250 <span className="text-base font-normal text-[var(--muted)]">/ ay</span>
+=======
+                  250 TL <span className="text-base font-normal text-[var(--muted)]">/ ay</span>
+>>>>>>> Stashed changes
                 </p>
                 <p className="mt-2 text-sm text-[var(--muted)]">
                   Sinirsiz etkinlik olusturma, reklamsiz deneyim, oncelikli gorunurluk.
@@ -103,7 +115,11 @@ export default function Landing() {
                   to="/app"
                   className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
                 >
+<<<<<<< Updated upstream
                   Premium’a Gec
+=======
+                  Premium'a Gec
+>>>>>>> Stashed changes
                 </Link>
               </div>
               <div className="space-y-3">
@@ -140,7 +156,11 @@ export default function Landing() {
         <div className="rounded-4xl border border-[var(--border)] bg-[var(--surface)] px-8 py-10">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
+<<<<<<< Updated upstream
               <p className="text-sm uppercase tracking-[0.25em] text-[var(--muted)]">Yasal Bilgiler</p>
+=======
+              <p className="text-sm uppercase tracking-[0.25em] text-[var(--muted)]">YASAL BILGILER</p>
+>>>>>>> Stashed changes
               <h2 className="mt-2 text-2xl font-semibold">Guvenli ve seffaf bir abonelik</h2>
               <p className="mt-3 text-sm text-[var(--muted)]">
                 Iade, gizlilik ve kullanim sartlari net sekilde paylasilir. Detaylar icin ilgili
@@ -174,7 +194,11 @@ export default function Landing() {
       <footer className="mx-auto flex max-w-6xl flex-col gap-3 px-6 pb-10 text-sm text-[var(--muted)] md:flex-row md:items-center md:justify-between">
         <p>© 2025 Socia. Tum haklari saklidir.</p>
         <p>
+<<<<<<< Updated upstream
           Iletisim: <span className="text-[var(--text)]">sociaapp@outlook.com</span>
+=======
+          Iletisim: <span className="text-[var(--text)]">sociaappsup@outlook.com</span>
+>>>>>>> Stashed changes
         </p>
       </footer>
     </div>

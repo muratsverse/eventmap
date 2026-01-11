@@ -5,7 +5,11 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
+<<<<<<< Updated upstream
   base: process.env.VERCEL ? '/' : mode === 'production' ? '/eventmap/' : '/', // Vercel: root, GitHub Pages: /eventmap/
+=======
+  base: process.env.VERCEL ? '/' : mode === 'production' ? '/eventmap/' : '/', // Vercel root, GH Pages /eventmap
+>>>>>>> Stashed changes
   plugins: [
     react(),
     VitePWA({
@@ -14,7 +18,11 @@ export default defineConfig(({ mode }) => ({
       manifest: {
         name: 'Socia - Sosyal Etkinlik Platformu',
         short_name: 'Socia',
+<<<<<<< Updated upstream
         description: 'Türkiye\'nin sosyal etkinlik platformu',
+=======
+        description: 'Turkiye\'deki sosyal etkinlikleri kesfedin',
+>>>>>>> Stashed changes
         theme_color: '#8B5CF6',
         background_color: '#1F2937',
         display: 'standalone',
