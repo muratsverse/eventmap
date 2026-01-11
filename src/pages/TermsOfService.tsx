@@ -97,7 +97,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">10. Contact Information</h2>
             <p className="text-[var(--muted)]">
-              For questions about these Terms of Service, please contact us at: support@socia-app.com
+              For questions about these Terms of Service, please contact us at: sociaapp@outlook.com
             </p>
           </section>
         </div>

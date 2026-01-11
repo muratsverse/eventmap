@@ -4,17 +4,17 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: '/eventmap/', // GitHub Pages için base path
+export default defineConfig(({ mode }) => ({
+  base: process.env.VERCEL ? '/' : mode === 'production' ? '/eventmap/' : '/', // Vercel: root, GitHub Pages: /eventmap/
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'EventMap - Türkiye Etkinlik Rehberi',
-        short_name: 'EventMap',
-        description: 'Türkiye\'deki tüm etkinlikleri keşfedin',
+        name: 'Socia - Sosyal Etkinlik Platformu',
+        short_name: 'Socia',
+        description: 'Türkiye\'nin sosyal etkinlik platformu',
         theme_color: '#8B5CF6',
         background_color: '#1F2937',
         display: 'standalone',
@@ -96,4 +96,4 @@ export default defineConfig({
       }
     }
   }
-})
+}))
