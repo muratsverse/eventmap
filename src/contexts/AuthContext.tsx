@@ -388,6 +388,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         provider: 'google',
         options: {
           redirectTo,
+          queryParams: {
+            prompt: 'select_account', // Force account chooser every time
+          },
           skipBrowserRedirect: false, // FALSE - redirect'e izin ver
         },
       });
