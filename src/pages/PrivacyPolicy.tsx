@@ -115,11 +115,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mb-4">11. Contact Us</h2>
             <p className="text-[var(--muted)]">
               For questions or concerns about this Privacy Policy or our data practices, please contact us at:
-<<<<<<< Updated upstream
-              sociaapp@outlook.com
-=======
               sociaappsup@outlook.com
->>>>>>> Stashed changes
             </p>
           </section>
         </div>
