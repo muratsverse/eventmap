@@ -3,7 +3,7 @@ export default function RefundPolicy() {
     <div className="min-h-screen bg-[var(--background)] text-[var(--text)] p-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold mb-8">Refund Policy</h1>
-        <p className="text-sm text-[var(--muted)] mb-8">Last updated: January 8, 2026</p>
+        <p className="text-sm text-[var(--muted)] mb-8">Last updated: January 11, 2026</p>
 
         <div className="space-y-6">
           <section>
@@ -17,40 +17,26 @@ export default function RefundPolicy() {
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">2. Refund Eligibility</h2>
-            <p className="text-[var(--muted)] mb-4">
-              We offer refunds under the following circumstances:
+            <p className="text-[var(--muted)]">
+              You may request a refund within <strong>14 days</strong> of your initial subscription purchase. This 14-day
+              refund window applies to first-time subscriptions only and is measured from the day after the purchase.
             </p>
-            <ul className="list-disc list-inside space-y-2 text-[var(--muted)] ml-4">
-              <li><strong>Technical Issues:</strong> If you experience technical problems that prevent you from using Premium features and we are unable to resolve them within a reasonable timeframe</li>
-              <li><strong>Billing Errors:</strong> If you were charged incorrectly due to a system error</li>
-              <li><strong>First-Time Subscribers:</strong> If you request a refund within 7 days of your first subscription payment</li>
-              <li><strong>Duplicate Charges:</strong> If you were accidentally charged multiple times for the same subscription period</li>
-            </ul>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">3. Non-Refundable Situations</h2>
-            <p className="text-[var(--muted)] mb-2">Refunds will not be provided in the following cases:</p>
-            <ul className="list-disc list-inside space-y-2 text-[var(--muted)] ml-4">
-              <li>You did not use the Premium features during the billing period</li>
-              <li>You changed your mind after the 7-day refund window</li>
-              <li>Your account was suspended or terminated due to violation of our Terms of Service</li>
-              <li>You forgot to cancel before the renewal date</li>
-              <li>Partial refunds for unused portions of the subscription period (except in cases of technical issues)</li>
-            </ul>
+            <h2 className="text-2xl font-semibold mb-4">3. Refund Process</h2>
+            <p className="text-[var(--muted)]">
+              Refunds are processed by Paddle, our payment provider. If your refund request is approved, the payment
+              will be returned to your original payment method.
+            </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">4. How to Request a Refund</h2>
             <p className="text-[var(--muted)] mb-4">
-              To request a refund, please contact our support team with the following information:
+              To request a refund, please contact our support team with your account email address and transaction
+              details.
             </p>
-            <ul className="list-disc list-inside space-y-2 text-[var(--muted)] ml-4">
-              <li>Your account email address</li>
-              <li>Transaction ID or receipt</li>
-              <li>Reason for the refund request</li>
-              <li>Any relevant screenshots or documentation</li>
-            </ul>
             <p className="text-[var(--muted)] mt-4">
               Send your refund request to: <strong>sociaappsup@outlook.com</strong>
             </p>
@@ -59,9 +45,8 @@ export default function RefundPolicy() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">5. Refund Processing Time</h2>
             <p className="text-[var(--muted)]">
-              Approved refunds will be processed within 5-10 business days. The refund will be credited to the original
-              payment method used for the purchase. Depending on your bank or payment provider, it may take an additional
-              5-7 business days for the refund to appear in your account.
+              Approved refunds are typically processed within 5-10 business days. Depending on your bank, it may take
+              additional time for the refund to appear in your account.
             </p>
           </section>
 

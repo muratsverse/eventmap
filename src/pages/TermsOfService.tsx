@@ -7,6 +7,13 @@ export default function TermsOfService() {
 
         <div className="space-y-6">
           <section>
+            <h2 className="text-2xl font-semibold mb-4">Business Information</h2>
+            <p className="text-[var(--muted)]">
+              Legal business name: <strong>muratsverse</strong>. Socia is operated by muratsverse.
+            </p>
+          </section>
+
+          <section>
             <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
             <p className="text-[var(--muted)]">
               By accessing and using Socia ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.
