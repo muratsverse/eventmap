@@ -52,7 +52,7 @@ export default function RefundPolicy() {
               <li>Any relevant screenshots or documentation</li>
             </ul>
             <p className="text-[var(--muted)] mt-4">
-              Send your refund request to: <strong>support@socia-app.com</strong>
+              Send your refund request to: <strong>sociaapp@outlook.com</strong>
             </p>
           </section>
 
@@ -97,7 +97,7 @@ export default function RefundPolicy() {
             <p className="text-[var(--muted)]">
               For questions about this Refund Policy or to request a refund, please contact us at:
               <br />
-              <strong>Email:</strong> support@socia-app.com
+              <strong>Email:</strong> sociaapp@outlook.com
               <br />
               <strong>Response Time:</strong> We aim to respond to all refund requests within 24-48 hours
             </p>

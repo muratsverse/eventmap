@@ -87,6 +87,10 @@ export interface Database {
           profile_photo: string | null
           cover_photo: string | null
           is_premium: boolean
+          is_admin: boolean
+          email_visible: boolean
+          deleted_at: string | null
+          deletion_reason: string | null
         }
         Insert: {
           id: string
@@ -97,6 +101,10 @@ export interface Database {
           profile_photo?: string | null
           cover_photo?: string | null
           is_premium?: boolean
+          is_admin?: boolean
+          email_visible?: boolean
+          deleted_at?: string | null
+          deletion_reason?: string | null
         }
         Update: {
           id?: string
@@ -107,6 +115,10 @@ export interface Database {
           profile_photo?: string | null
           cover_photo?: string | null
           is_premium?: boolean
+          is_admin?: boolean
+          email_visible?: boolean
+          deleted_at?: string | null
+          deletion_reason?: string | null
         }
       }
       favorites: {
@@ -165,6 +177,23 @@ export interface Database {
           title: string
           distance: number
         }[]
+      }
+      soft_delete_user_account: {
+        Args: {
+          p_user_id: string
+          p_reason: string | null
+        }
+        Returns: void
+      }
+      restore_account: {
+        Args: {
+          p_user_id: string
+        }
+        Returns: void
+      }
+      cleanup_old_deleted_accounts: {
+        Args: Record<string, never>
+        Returns: void
       }
     }
     Enums: {

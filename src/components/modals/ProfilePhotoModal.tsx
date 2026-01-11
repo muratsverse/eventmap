@@ -11,7 +11,7 @@ interface ProfilePhotoModalProps {
 }
 
 export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModalProps) {
-  const { user, profile } = useAuth();
+  const { user, profile, updateProfile } = useAuth();
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -108,17 +108,14 @@ export default function ProfilePhotoModal({ isOpen, onClose }: ProfilePhotoModal
         .getPublicUrl(filePath);
 
       // Profile tablosunu güncelle
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ profile_photo: publicUrl })
-        .eq('id', user.id);
+      const { error: updateError } = await updateProfile({ profile_photo: publicUrl });
 
       if (updateError) {
         throw updateError;
       }
 
-      // Başarılı - sayfayı yenile
-      window.location.reload();
+      // Başarılı - modal'ı kapat
+      onClose();
     } catch (error: any) {
       console.error('Upload error:', error);
       alert(`Yükleme hatası: ${error.message}`);

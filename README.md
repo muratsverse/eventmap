@@ -1,4 +1,4 @@
-# 🎉 EventMap - Türkiye Etkinlik Platformu
+# 🎉 Socia - Sosyal Etkinlik Platformu
 
 Modern, mobil-first bir etkinlik keşif ve yönetim platformu. Türkiye'deki konserler, festivaller, spor etkinlikleri, tiyatro gösterileri ve daha fazlasını keşfedin!
 
@@ -6,25 +6,18 @@ Modern, mobil-first bir etkinlik keşif ve yönetim platformu. Türkiye'deki kon
 
 ### 👤 Kullanıcı Özellikleri
 - **📱 Liste Görünümü**: Etkinlikleri çekici kartlarla göster
-- **🗺️ Harita Görünümü**: Etkinlikleri interaktif haritada gör (yakında)
+- **🗺️ Harita Görünümü**: Etkinlikleri interaktif haritada gör
 - **🔍 Gelişmiş Arama**: Kategori, şehir ve anahtar kelime bazlı arama
 - **🎯 Filtreleme**: Kategori ve şehir bazlı real-time filtreleme
 - **👤 Kullanıcı Profili**: Giriş/kayıt, favoriler, katıldıklarım
-- **💎 Premium Özellikler**: Etkinlik oluşturma ve yönetim yetkisi
+- **💎 Premium Özellikler**: Sınırsız etkinlik oluşturma ve reklamsız deneyim
 - **📸 Görsel Yükleme**: Etkinlik görseli yükleme (Supabase Storage)
+- **📊 Katılımcı Kapasitesi**: Etkinliklere maksimum katılımcı sayısı belirleme
+- **🗑️ Hesap Yönetimi**: Hesabınızı tamamen silme imkanı
 
-### 🔧 Admin Özellikleri (Premium)
-- **🔄 Unified Event Sync**: Tek tıkla tüm kaynaklardan etkinlik çekme
-- **🕷️ Web Scraping**: Biletix, Bubilet, Biletinial'dan otomatik çekme
-- **🌐 API Entegrasyonları**:
-  - Ticketmaster
-  - Eventbrite
-  - GetYourGuide
-  - Etkinlik.io
-  - Facebook Events (kısıtlı)
-  - Instagram (kısıtlı)
-- **📊 İstatistikler**: Sync başarı oranları ve detaylı raporlar
-- **⚙️ Kaynak Seçimi**: Hangi platformlardan çekileceğini seçme
+### 💰 Fiyatlandırma
+- **Ücretsiz**: Ayda 5 etkinlik oluşturma hakkı
+- **Premium**: ₺250/ay - Sınırsız etkinlik + reklamsız deneyim
 
 ### 💻 Teknik Özellikler
 - **React 18** + **TypeScript** (strict mode)
@@ -32,15 +25,16 @@ Modern, mobil-first bir etkinlik keşif ve yönetim platformu. Türkiye'deki kon
 - **Vite** ile ultra-hızlı geliştirme
 - **Supabase** backend (PostgreSQL + PostGIS + Auth + Storage)
 - **React Query** ile akıllı caching ve state management
+- **Paddle** payment integration (₺250/month subscription)
 - **PWA** desteği (offline çalışma, yüklenebilir)
 - **Mobil-first** responsive tasarım
-- **Smooth animasyonlar** ve transitions
+- **Capacitor 7** ile native mobile app (Android + iOS)
 
 ## 🚀 Hızlı Başlangıç
 
 ### 1. Projeyi Klonlayın
 ```bash
-git clone <repo-url>
+git clone https://github.com/muratsverse/eventmap.git
 cd eventmap
 ```
 
@@ -49,13 +43,27 @@ cd eventmap
 npm install
 ```
 
-### 3. Environment Variables (Opsiyonel)
+### 3. Environment Variables
 `.env` dosyasını oluşturun:
 ```bash
 cp .env.example .env
 ```
 
-**Demo Modu**: Supabase yapılandırılmadan da uygulama çalışır (mock data ile)
+Gerekli environment variables:
+```env
+# Supabase
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_anon_key
+
+# Paddle Payment
+VITE_PADDLE_CLIENT_TOKEN=your_paddle_token
+VITE_PADDLE_PRICE_ID=your_price_id
+VITE_PADDLE_ENVIRONMENT=sandbox
+
+# Optional APIs
+VITE_TICKETMASTER_API_KEY=your_key
+VITE_EVENTBRITE_API_KEY=your_key
+```
 
 ### 4. Geliştirme Sunucusu
 ```bash
@@ -63,98 +71,19 @@ npm run dev
 ```
 Tarayıcınızda http://localhost:5173 adresini açın
 
-### 5. Production Build
+### 5. Mobile Build (Android)
 ```bash
 npm run build
-npm run preview
+npx cap sync android
 ```
+Android Studio'da projeyi açın ve APK/AAB oluşturun.
 
-## 📚 Dokümantasyon
+## 📱 Platform Desteği
 
-| Dosya | Açıklama |
-|-------|----------|
-| [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) | Database kurulumu ve SQL şemaları |
-| [BACKEND_INTEGRATION.md](./BACKEND_INTEGRATION.md) | Backend entegrasyon rehberi |
-| [API_SETUP_GUIDE.md](./API_SETUP_GUIDE.md) | Tüm API entegrasyonları için detaylı rehber |
-| [SCRAPER_SETUP.md](./SCRAPER_SETUP.md) | Web scraper kurulumu ve Edge Functions |
-
-## 🗂️ Proje Yapısı
-
-```
-eventmap/
-├── src/
-│   ├── components/
-│   │   ├── views/              # Ana görünümler
-│   │   │   ├── ListView.tsx    # Etkinlik listesi
-│   │   │   ├── MapView.tsx     # Harita görünümü
-│   │   │   ├── SearchView.tsx  # Arama sayfası
-│   │   │   └── ProfileView.tsx # Profil ve admin paneli
-│   │   ├── modals/             # Modal bileşenler
-│   │   │   ├── EventDetailSheet.tsx
-│   │   │   ├── FilterSheet.tsx
-│   │   │   └── CreateEventModal.tsx
-│   │   ├── AdminPanel.tsx      # Admin yönetim paneli
-│   │   ├── SplashScreen.tsx
-│   │   ├── BottomNav.tsx
-│   │   ├── Header.tsx
-│   │   └── EventCard.tsx
-│   ├── contexts/
-│   │   └── AuthContext.tsx     # Authentication state
-│   ├── hooks/
-│   │   ├── useEvents.ts        # Event fetching
-│   │   ├── useFavorites.ts     # Favorites & attendances
-│   │   ├── useGeolocation.ts   # GPS features
-│   │   ├── useCreateEvent.ts   # Event creation
-│   │   ├── useScraper.ts       # Web scraping
-│   │   └── useEventSync.ts     # Unified sync
-│   ├── services/
-│   │   ├── eventApis.ts        # Ticketmaster & Eventbrite
-│   │   ├── getyourguideApi.ts  # GetYourGuide integration
-│   │   ├── etkinlikioApi.ts    # Etkinlik.io integration
-│   │   ├── facebookEventsApi.ts
-│   │   ├── instagramApi.ts
-│   │   ├── scraperService.ts   # Web scraper
-│   │   └── unifiedEventSync.ts # Sync orchestrator
-│   ├── lib/
-│   │   ├── supabase.ts         # Supabase client
-│   │   └── utils.ts
-│   ├── types/
-│   │   ├── index.ts            # App types
-│   │   └── database.ts         # Database types
-│   ├── data/
-│   │   └── mockData.ts         # Mock events
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── index.css
-├── supabase/
-│   └── functions/
-│       └── scrape-events/      # Edge function for scraping
-├── public/
-│   └── manifest.json           # PWA manifest
-├── supabase-setup.sql          # Database schema
-├── supabase-storage-setup.sql  # Storage setup
-└── package.json
-```
-
-## 📦 Dependencies
-
-### Core
-- `react` & `react-dom`: ^18.3.1
-- `typescript`: ^5.6.2
-- `vite`: ^6.0.1
-
-### UI
-- `tailwindcss`: ^3.4.17
-- `lucide-react`: ^0.469.0
-
-### Backend
-- `@supabase/supabase-js`: ^2.48.1
-- `@tanstack/react-query`: ^5.62.14
-- `axios`: ^1.7.9
-- `date-fns`: ^4.1.0
-
-### PWA
-- `vite-plugin-pwa`: ^0.21.2
+- ✅ **Web**: Modern tarayıcılar (Chrome, Firefox, Safari, Edge)
+- ✅ **Android**: Native app via Capacitor
+- 🔄 **iOS**: Yakında (Capacitor hazır, test aşamasında)
+- ✅ **PWA**: İndirilebilir, offline çalışma
 
 ## 🎯 Kategoriler
 
@@ -175,51 +104,15 @@ eventmap/
 - 🏖️ Antalya
 - 🌳 Bursa
 
-## 🔌 API Entegrasyonları
+## 💳 Payment Integration
 
-### ✅ Aktif
-| Platform | Durum | API Key Gerekli | Dokümantasyon |
-|----------|-------|-----------------|---------------|
-| **Ticketmaster** | ✅ Çalışıyor | ✅ Evet | [Docs](https://developer.ticketmaster.com/) |
-| **Eventbrite** | ✅ Çalışıyor | ✅ Evet | [Docs](https://www.eventbrite.com/platform/) |
-| **GetYourGuide** | ✅ Hazır | ✅ Evet (Başvuru) | [Docs](https://code.getyourguide.com/) |
-| **Etkinlik.io** | ✅ Hazır | ✅ Evet | [RapidAPI](https://rapidapi.com/etkinlik) |
-
-### ⚠️ Kısıtlı
-| Platform | Durum | Not |
-|----------|-------|-----|
-| **Facebook Events** | ⚠️ Kısıtlı | Sadece yönetilen sayfalar |
-| **Instagram** | ⚠️ Kısıtlı | Event API yok, hashtag parsing |
-
-### 🕷️ Web Scraping
-| Platform | Durum | Metod |
-|----------|-------|-------|
-| **Biletix** | 🔧 Mock | Edge Function + HTML parsing |
-| **Bubilet** | 🔧 Mock | Edge Function + HTML parsing |
-| **Biletinial** | 🔧 Mock | Edge Function + HTML parsing |
-
-## 🚀 Deployment
-
-### Vercel (Önerilen)
-```bash
-npm install -g vercel
-vercel
-```
-
-### Netlify
-```bash
-npm run build
-# dist/ klasörünü Netlify'a yükleyin
-```
-
-### Environment Variables (Production)
-```env
-VITE_SUPABASE_URL=your_production_url
-VITE_SUPABASE_ANON_KEY=your_production_key
-VITE_TICKETMASTER_API_KEY=your_key
-VITE_EVENTBRITE_API_KEY=your_key
-# ... diğer API keyler
-```
+**Paddle** ile güvenli ödeme altyapısı:
+- Monthly subscription: ₺250/month
+- Commission-based (no monthly fees to Paddle)
+- Secure checkout overlay
+- Subscription management
+- Automatic renewals
+- Refund policy support
 
 ## 🔐 Güvenlik
 
@@ -228,28 +121,30 @@ VITE_EVENTBRITE_API_KEY=your_key
 - ✅ Supabase Storage güvenli (authenticated uploads)
 - ✅ Input validation ve sanitization
 - ✅ CORS yapılandırması
-- ✅ Rate limiting (API seviyesinde)
+- ✅ Paddle PCI-compliant payment processing
+- ✅ Account deletion with data purge
 
 ## 📊 Database Schema
 
 ```sql
 -- Ana tablolar
-✅ profiles          # Kullanıcı profilleri
-✅ events            # Etkinlikler (PostGIS location)
+✅ profiles          # Kullanıcı profilleri (is_premium, event_count)
+✅ events            # Etkinlikler (PostGIS location, max_attendees)
 ✅ favorites         # Favoriler
 ✅ attendances       # Katılımlar
 
 -- Özellikler
 ✅ PostGIS extension (geospatial queries)
-✅ Triggers (auto-update location_point)
-✅ Functions (nearby_events, auto-profile)
+✅ Triggers (auto-update location_point, profile creation)
+✅ Functions (nearby_events, delete_user_account)
 ✅ Indexes (spatial index on location)
+✅ RLS Policies (user-specific data access)
 ```
 
 ## 🎨 Design System
 
 ### Colors
-- **Primary**: Purple (#8B5CF6)
+- **Primary**: Purple (#A855F7)
 - **Secondary**: Pink (#EC4899)
 - **Accent**: Blue (#3B82F6)
 - **Background**: Dark (#111827)
@@ -260,66 +155,64 @@ VITE_EVENTBRITE_API_KEY=your_key
 - **Animations**: fade-in, slide-up, scale-in
 - **Shadows**: Soft glows and elevations
 
-## 🧪 Testing
-
-```bash
-# Unit tests (gelecek)
-npm test
-
-# E2E tests (gelecek)
-npm run test:e2e
-
-# Type checking
-npm run type-check
-
-# Lint
-npm run lint
-```
-
-## 🐛 Troubleshooting
-
-### Problem: "Supabase not configured"
-**Çözüm**: .env dosyasında VITE_SUPABASE_URL ve VITE_SUPABASE_ANON_KEY ayarlayın.
-
-### Problem: "API rate limit exceeded"
-**Çözüm**: API key limitlerini kontrol edin. Ticketmaster: 5000/gün, Eventbrite: 1000/saat.
-
-### Problem: "Storage upload failed"
-**Çözüm**: Supabase Storage bucket'ının oluşturulduğundan ve policy'lerin doğru olduğundan emin olun.
-
-### Problem: Dev server çalışmıyor
-**Çözüm**:
-```bash
-rm -rf node_modules package-lock.json
-npm install
-npm run dev
-```
-
 ## 📈 Roadmap
 
-### v1.0 (Mevcut)
+### v1.0 (Current - Released) ✅
 - ✅ Mobil-first UI
 - ✅ Liste ve harita görünümleri
-- ✅ Kullanıcı authentication
+- ✅ Kullanıcı authentication (Google OAuth)
 - ✅ Favoriler ve katılımlar
-- ✅ Etkinlik oluşturma
-- ✅ Admin paneli
-- ✅ API entegrasyonları
-- ✅ Web scraping
+- ✅ Etkinlik oluşturma (5 event limit for free)
+- ✅ Premium subscription (Paddle)
+- ✅ Hesap silme
+- ✅ Android native app
+- ✅ Etkinlik katılımcı kapasitesi
 
-### v1.1 (Yakında)
-- [ ] Push notifications
-- [ ] Etkinlik hatırlatıcıları
-- [ ] Sosyal paylaşım
-- [ ] QR kod entegrasyonu
-- [ ] Kişiselleştirilmiş öneriler
+### v1.1 (In Progress)
+- 🔄 iOS app testing
+- 🔄 Push notifications
+- 🔄 Etkinlik hatırlatıcıları
+- 🔄 Sosyal paylaşım
 
-### v2.0 (Gelecek)
-- [ ] Mobil app (React Native)
+### v2.0 (Planned)
 - [ ] AI-powered öneriler
-- [ ] Venue partnerships
-- [ ] Ticketing integration
-- [ ] Analytics dashboard
+- [ ] Gelişmiş analytics
+- [ ] Multi-language support
+- [ ] Event check-in QR codes
+
+## 🚀 Deployment
+
+### Web (GitHub Pages)
+Live at: https://muratsverse.github.io/eventmap/
+
+```bash
+# Automated via GitHub Actions
+git push origin main
+```
+
+### Android (Google Play Store)
+Status: **Closed Testing**
+
+```bash
+# Build AAB
+cd android
+./gradlew bundleRelease
+```
+
+Upload to Google Play Console → Closed Testing
+
+### Environment Setup
+GitHub Secrets required:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_PADDLE_CLIENT_TOKEN`
+- `VITE_PADDLE_PRICE_ID`
+
+## 📄 Legal Pages
+
+- [Terms of Service](https://muratsverse.github.io/eventmap/terms)
+- [Privacy Policy](https://muratsverse.github.io/eventmap/privacy)
+- [Refund Policy](https://muratsverse.github.io/eventmap/refund)
 
 ## 🤝 Contributing
 
@@ -337,20 +230,20 @@ MIT License - detaylar için [LICENSE](LICENSE) dosyasına bakın.
 
 ## 👏 Teşekkürler
 
-- Figma tasarımları için özel teşekkürler
 - Supabase open-source backend
-- Unsplash görselleri
+- Paddle payment platform
+- Capacitor mobile framework
+- React ve TypeScript topluluğu
 - Türk etkinlik topluluğu
 
 ## 📞 İletişim
 
 Sorular, öneriler veya bug raporları için:
-- **Issues**: GitHub Issues kullanın
-- **Email**: [email]
-- **Twitter**: [@eventmap_tr]
+- **Issues**: [GitHub Issues](https://github.com/muratsverse/eventmap/issues)
+- **Website**: https://muratsverse.github.io/eventmap/
 
 ---
 
 **Made with ❤️ in Turkey**
 
-🎉 **EventMap** - Etkinliklerin dijital haritası!
+🎉 **Socia** - Sosyal etkinliklerin dijital evi!
