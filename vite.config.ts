@@ -5,7 +5,8 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: process.env.VERCEL ? '/' : mode === 'production' ? '/eventmap/' : '/', // Vercel root, GH Pages /eventmap
+  // Capacitor builds must use '/' as base. GitHub Pages might use '/eventmap/'
+  base: (process.env.VERCEL || mode === 'capacitor') ? '/' : mode === 'production' ? '/eventmap/' : '/',
   plugins: [
     react(),
     VitePWA({
