@@ -32,6 +32,8 @@
 
                 <!-- Custom app scheme -->
                 <data android:scheme="eventmap" />
+                <data android:scheme="eventmap" android:host="auth" android:pathPrefix="/callback" />
+                <data android:scheme="eventmap" android:host="reset-password" />
             </intent-filter>
 
             <!-- Deep linking for web URLs -->
