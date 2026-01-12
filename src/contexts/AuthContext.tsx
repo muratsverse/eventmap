@@ -91,69 +91,76 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     let listenerHandle: any;
 
+    const handleAuthCallbackUrl = async (url: string) => {
+      try {
+        if (!url) return;
+
+        // eventmap://auth/callback?code=xxx formatını parse et
+        const parsedUrl = new URL(url);
+
+        // Hem pathname hem de hash kontrolü (Supabase farklı format kullanabilir)
+        const isAuthCallback =
+          parsedUrl.pathname.includes('/auth/callback') ||
+          parsedUrl.pathname.includes('auth/callback') ||
+          url.includes('auth/callback');
+
+        if (!isAuthCallback) {
+          console.log('❌ Not an auth callback URL');
+          return;
+        }
+
+        // Code veya access_token al (PKCE flow)
+        const code = parsedUrl.searchParams.get('code');
+        const access_token = parsedUrl.searchParams.get('access_token');
+        const refresh_token = parsedUrl.searchParams.get('refresh_token');
+
+        console.log('📝 OAuth params:', { code: !!code, access_token: !!access_token });
+
+        if (code) {
+          console.log('✅ Exchanging code for session...');
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) {
+            console.error('❌ Exchange code error:', error);
+          } else {
+            console.log('✅ Session exchange successful');
+            await Browser.close();
+          }
+        } else if (access_token && refresh_token) {
+          console.log('✅ Setting session with tokens...');
+          const { error } = await supabase.auth.setSession({
+            access_token,
+            refresh_token,
+          });
+          if (error) {
+            console.error('❌ Set session error:', error);
+          } else {
+            console.log('✅ Session set successful');
+            await Browser.close();
+          }
+        } else {
+          console.log('❌ No code or tokens found in URL');
+        }
+      } catch (error) {
+        console.error('❌ Native OAuth callback error:', error);
+      }
+    };
+
     const setupListener = async () => {
       listenerHandle = await App.addListener('appUrlOpen', async ({ url }) => {
-        try {
-          console.log('🔗 Deep link received:', url);
-
-          if (!url) return;
-
-          // eventmap://auth/callback?code=xxx formatını parse et
-          const parsedUrl = new URL(url);
-
-          // Hem pathname hem de hash kontrolü (Supabase farklı format kullanabilir)
-          const isAuthCallback =
-            parsedUrl.pathname.includes('/auth/callback') ||
-            parsedUrl.pathname.includes('auth/callback') ||
-            url.includes('auth/callback');
-
-          if (!isAuthCallback) {
-            console.log('❌ Not an auth callback URL');
-            return;
-          }
-
-          // Code veya access_token al (PKCE flow)
-          const code = parsedUrl.searchParams.get('code');
-          const access_token = parsedUrl.searchParams.get('access_token');
-          const refresh_token = parsedUrl.searchParams.get('refresh_token');
-
-          console.log('📝 OAuth params:', { code: !!code, access_token: !!access_token });
-
-          if (code) {
-            // PKCE flow - code'u session'a çevir
-            console.log('✅ Exchanging code for session...');
-            const { error } = await supabase.auth.exchangeCodeForSession(code);
-            if (error) {
-              console.error('❌ Exchange code error:', error);
-            } else {
-              console.log('✅ Session exchange successful');
-              // Browser'ı kapat
-              await Browser.close();
-            }
-          } else if (access_token && refresh_token) {
-            // Implicit flow - doğrudan token var
-            console.log('✅ Setting session with tokens...');
-            const { error } = await supabase.auth.setSession({
-              access_token,
-              refresh_token,
-            });
-            if (error) {
-              console.error('❌ Set session error:', error);
-            } else {
-              console.log('✅ Session set successful');
-              // Browser'ı kapat
-              await Browser.close();
-            }
-          } else {
-            console.log('❌ No code or tokens found in URL');
-          }
-        } catch (error) {
-          console.error('❌ Native OAuth callback error:', error);
-        }
+        console.log('🔗 Deep link received:', url);
+        await handleAuthCallbackUrl(url || '');
       });
     };
 
     setupListener();
+
+    // Handle cold start deep link (app launched from OAuth callback)
+    App.getLaunchUrl().then((data) => {
+      if (data?.url) {
+        console.log('🔗 Launch URL detected:', data.url);
+        handleAuthCallbackUrl(data.url);
+      }
+    });
 
     return () => {
       if (listenerHandle) {
