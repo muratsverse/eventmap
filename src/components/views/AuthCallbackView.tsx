@@ -11,7 +11,18 @@ export default function AuthCallbackView() {
     const finalizeAuth = async () => {
       try {
         const params = new URLSearchParams(window.location.search);
-        const code = params.get('code');
+        const hashParams = new URLSearchParams(
+          window.location.hash?.startsWith('#') ? window.location.hash.slice(1) : window.location.hash,
+        );
+
+        const error = params.get('error') || hashParams.get('error');
+        const errorDescription =
+          params.get('error_description') || hashParams.get('error_description');
+        if (error) {
+          console.error('Auth callback returned error:', { error, errorDescription });
+        }
+
+        const code = params.get('code') || hashParams.get('code');
         if (code) {
           await supabase.auth.exchangeCodeForSession(code);
         }

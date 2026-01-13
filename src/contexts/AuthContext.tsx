@@ -98,8 +98,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // eventmap://auth/callback?code=xxx formatını parse et
         const parsedUrl = new URL(url);
 
+        const getParam = (name: string) => {
+          const fromQuery = parsedUrl.searchParams.get(name);
+          if (fromQuery) return fromQuery;
+
+          // Supabase bazen token'ları hash/fragment ile döndürebilir
+          const hash = parsedUrl.hash?.startsWith('#') ? parsedUrl.hash.slice(1) : parsedUrl.hash;
+          if (!hash) return null;
+          return new URLSearchParams(hash).get(name);
+        };
+
         // Hem pathname hem de hash kontrolü (Supabase farklı format kullanabilir)
         const isAuthCallback =
+          (parsedUrl.host === 'auth' && parsedUrl.pathname.startsWith('/callback')) ||
           parsedUrl.pathname.includes('/auth/callback') ||
           parsedUrl.pathname.includes('auth/callback') ||
           url.includes('auth/callback');
@@ -110,9 +121,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
 
         // Code veya access_token al (PKCE flow)
-        const code = parsedUrl.searchParams.get('code');
-        const access_token = parsedUrl.searchParams.get('access_token');
-        const refresh_token = parsedUrl.searchParams.get('refresh_token');
+        const code = getParam('code');
+        const access_token = getParam('access_token');
+        const refresh_token = getParam('refresh_token');
 
         console.log('📝 OAuth params:', { code: !!code, access_token: !!access_token });
 
@@ -386,10 +397,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
+      const isNative = Capacitor.isNativePlatform();
+
       // Mobile için deep link, web için normal URL
-      const redirectTo = Capacitor.isNativePlatform()
+      const baseUrl = import.meta.env.BASE_URL || '/';
+      const callbackPath = `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}auth/callback`;
+      const redirectTo = isNative
         ? 'eventmap://auth/callback'
-        : `${window.location.origin}/auth/callback`;
+        : `${window.location.origin}${callbackPath}`;
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -398,7 +413,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           queryParams: {
             prompt: 'select_account', // Force account chooser every time
           },
-          skipBrowserRedirect: false, // FALSE - redirect'e izin ver
+          // Native'de SDK'nın webview redirect yapmasını engelle; URL'yi biz Browser ile açıyoruz
+          skipBrowserRedirect: isNative,
         },
       });
 
@@ -409,7 +425,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Mobile'da Capacitor Browser ile aç
-      if (Capacitor.isNativePlatform()) {
+      if (isNative) {
         await Browser.open({
           url: data.url,
           windowName: '_blank',
@@ -438,9 +454,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       // Mobile için deep link, web için normal URL (SPA olduğu için sadece origin)
+      const baseUrl = import.meta.env.BASE_URL || '/';
       const redirectTo = Capacitor.isNativePlatform()
         ? 'eventmap://reset-password'
-        : window.location.origin; // /reset-password kaldırıldı çünkü SPA
+        : `${window.location.origin}${baseUrl}`; // SPA - base path dahil
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo,

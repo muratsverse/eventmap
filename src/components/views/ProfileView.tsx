@@ -51,6 +51,14 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const handleGoogleSignIn = async () => {
+    setLoginError('');
+    const { error } = await signInWithGoogle();
+    if (error) {
+      setLoginError(error.message || 'Gmail ile giriş yapılamadı');
+    }
+  };
+
   // Email görünürlük durumunu yükle
   useEffect(() => {
     if (profile) {
@@ -212,7 +220,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
             {/* OAuth Buttons */}
             <div className="space-y-3">
               <button
-                onClick={signInWithGoogle}
+                onClick={handleGoogleSignIn}
                 className="w-full bg-[var(--surface-2)] hover:bg-[var(--surface)] text-[var(--text)] font-semibold rounded-xl py-3 flex items-center justify-center gap-3 transition-colors border border-[var(--border)]"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
