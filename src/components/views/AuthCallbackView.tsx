@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 
 export default function AuthCallbackView() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -56,36 +54,53 @@ export default function AuthCallbackView() {
         });
 
         if (code) {
-          // PKCE flow
+          // PKCE flow - session zaten mevcut olabilir
+          console.log('🔄 Session kontrol ediliyor...');
+          const { data: sessionData } = await supabase.auth.getSession();
+          
+          if (sessionData.session) {
+            console.log('✅ Aktif session bulundu, code exchange atlanıyor');
+            if (isMounted) {
+              window.history.replaceState({}, '', '/');
+              await new Promise(resolve => setTimeout(resolve, 100));
+              navigate('/', { replace: true });
+              return;
+            }
+          }
+
+          // Session yoksa code exchange dene
           console.log('🔄 Code session\'a çevriliyor...');
           const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
 
           if (exchangeError) {
-            console.error('❌ Code exchange hatası:', exchangeError);
-            if (exchangeError.message.includes('code verifier')) {
-              const { data: sessionData } = await supabase.auth.getSession();
-              if (sessionData.session) {
-                console.log('✅ Mevcut session bulundu, exchange hatası yok sayılıyor');
-                if (isMounted) {
-                  setStatus('success');
-                }
-                window.history.replaceState({}, '', window.location.pathname);
-              } else if (isMounted) {
-                setStatus('error');
-                setErrorMessage(exchangeError.message);
-                didError = true;
+            console.warn('⚠️ Code exchange hatası (yok sayılıyor):', exchangeError.message);
+            // Hata olsa bile session kontrolü yap
+            const { data: retrySession } = await supabase.auth.getSession();
+            if (retrySession.session) {
+              console.log('✅ Session mevcut, hata yok sayıldı');
+              if (isMounted) {
+                window.history.replaceState({}, '', '/');
+                await new Promise(resolve => setTimeout(resolve, 100));
+                navigate('/', { replace: true });
+                return;
               }
-            } else if (isMounted) {
-              setStatus('error');
-              setErrorMessage(exchangeError.message);
+            } else {
+              // Gerçek hata - session yok
+              console.error('❌ Session oluşturulamadı');
               didError = true;
+              if (isMounted) {
+                navigate('/', { replace: true });
+                return;
+              }
             }
           } else if (data.session) {
             console.log('✅ Session oluşturuldu:', data.session.user.email);
             if (isMounted) {
-              setStatus('success');
+              window.history.replaceState({}, '', '/');
+              await new Promise(resolve => setTimeout(resolve, 100));
+              navigate('/', { replace: true });
+              return;
             }
-            window.history.replaceState({}, '', window.location.pathname);
           }
         } else if (access_token && refresh_token) {
           // Implicit flow
@@ -97,17 +112,15 @@ export default function AuthCallbackView() {
 
           if (sessionError) {
             console.error('❌ Session set hatası:', sessionError);
-            if (isMounted) {
-              setStatus('error');
-              setErrorMessage(sessionError.message);
-            }
             didError = true;
           } else {
             console.log('✅ Session set edildi');
             if (isMounted) {
-              setStatus('success');
+              window.history.replaceState({}, '', '/');
+              await new Promise(resolve => setTimeout(resolve, 100));
+              navigate('/', { replace: true });
+              return;
             }
-            window.history.replaceState({}, '', window.location.pathname);
           }
         } else {
           // Parametreler eksik - mevcut session'ı kontrol et
@@ -131,18 +144,21 @@ export default function AuthCallbackView() {
         }
       } catch (err) {
         console.error('❌ Auth callback hatası:', err);
-        if (isMounted) {
-          setStatus('error');
-          setErrorMessage(err instanceof Error ? err.message : 'Bilinmeyen hata');
-        }
         didError = true;
       } finally {
-        // Her durumda ana sayfaya yönlendir
-        setTimeout(() => {
-          if (isMounted) {
-            navigate('/');
-          }
-        }, didError ? 3000 : 500);
+        // Hata varsa veya henüz redirect olmadıysa
+        if (isMounted && didError) {
+          console.log('🔄 Hata var, ana sayfaya yönlendiriliyor...');
+          setTimeout(() => {
+            navigate('/', { replace: true });
+          }, 1000);
+        } else if (isMounted) {
+          // Başarılı ama henüz redirect olmadıysa
+          console.log('✅ Auth işlemi tamamlandı');
+          setTimeout(() => {
+            navigate('/', { replace: true });
+          }, 100);
+        }
       }
     };
 
@@ -154,42 +170,10 @@ export default function AuthCallbackView() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--bg)]">
-      <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] p-6 text-center max-w-sm">
-        {status === 'processing' && (
-          <>
-            <div className="w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-[var(--text)] font-medium">Giriş tamamlanıyor...</p>
-            <p className="text-[var(--muted)] text-sm mt-2">Lütfen bekleyin</p>
-          </>
-        )}
-
-        {status === 'success' && (
-          <>
-            <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <p className="text-[var(--text)] font-medium">Giriş başarılı!</p>
-            <p className="text-[var(--muted)] text-sm mt-2">Yönlendiriliyorsunuz...</p>
-          </>
-        )}
-
-        {status === 'error' && (
-          <>
-            <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </div>
-            <p className="text-[var(--text)] font-medium">Giriş başarısız</p>
-            {errorMessage && (
-              <p className="text-red-400 text-sm mt-2">{errorMessage}</p>
-            )}
-            <p className="text-[var(--muted)] text-sm mt-2">Ana sayfaya yönlendiriliyorsunuz...</p>
-          </>
-        )}
+    <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
+      <div className="text-center">
+        <div className="w-8 h-8 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-[var(--muted)] text-sm mt-4">Yükleniyor...</p>
       </div>
     </div>
   );

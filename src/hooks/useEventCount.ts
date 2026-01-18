@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 
+// Artık premium olmadığı için herkes sınırsız etkinlik oluşturabilir
+// Bu hook sadece istatistik için kullanılıyor
 export function useEventCount(userId: string | undefined) {
   return useQuery({
     queryKey: ['event-count', userId],
@@ -10,7 +12,7 @@ export function useEventCount(userId: string | undefined) {
       const { count, error } = await supabase
         .from('events')
         .select('*', { count: 'exact', head: true })
-        .eq('created_by', userId);
+        .eq('creator_id', userId);
 
       if (error) {
         console.error('Event count error:', error);

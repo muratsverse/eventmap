@@ -12,7 +12,6 @@ interface Profile {
   name: string | null;
   profile_photo: string | null;
   cover_photo: string | null;
-  is_premium: boolean;
   is_admin: boolean;
   email_visible?: boolean;
   deleted_at?: string | null;
@@ -100,7 +99,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        if (!url) return;
+        if (!url) {
+          console.log('⚠️ URL boş, işlem atlanıyor');
+          return;
+        }
 
         console.log('🔗 OAuth callback URL alındı:', url);
 
@@ -108,10 +110,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         let parsedUrl: URL;
         try {
           parsedUrl = new URL(url);
-        } catch {
+        } catch (parseError) {
           // eventmap:auth/callback gibi formatlar için
-          const fixedUrl = url.replace('eventmap:', 'eventmap://');
-          parsedUrl = new URL(fixedUrl);
+          try {
+            const fixedUrl = url.replace('eventmap:', 'eventmap://');
+            parsedUrl = new URL(fixedUrl);
+          } catch (secondError) {
+            console.error('❌ URL parsing başarısız:', url);
+            await Browser.close().catch(() => {});
+            return;
+          }
         }
 
         // Parametre okuma helper'ı
@@ -216,19 +224,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.log('✅ Browser kapatıldı');
         } catch (e) {
           // Browser zaten kapalı olabilir
-          console.log('ℹ️ Browser zaten kapalı');
+          console.log('ℹ️ Browser zaten kapalı veya kapanmış');
         }
 
         if (success) {
           console.log('🎉 Google ile giriş başarılı!');
+          // Session kontrolü - giriş yapıldığını doğrula
+          setTimeout(async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+              console.log('✅ Session doğrulandı, kullanıcı:', session.user.email);
+            } else {
+              console.log('⚠️ Session bulunamadı, tekrar deneyin');
+            }
+          }, 500);
         }
       } catch (error) {
         console.error('❌ OAuth callback işleme hatası:', error);
-        await Browser.close().catch(() => {});
+        // Browser'ı kapat (hata durumunda)
+        try {
+          await Browser.close();
+        } catch (closeError) {
+          console.log('ℹ️ Browser kapatma hatası (yok sayılıyor)');
+        }
       } finally {
         // Biraz bekle ve processing flag'i sıfırla
         setTimeout(() => {
           isProcessing = false;
+          console.log('🔓 OAuth işlem kilidi kaldırıldı');
         }, 1000);
       }
     };
@@ -279,7 +302,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'Kullanıcı',
           profile_photo: currentUser.user_metadata?.avatar_url || null,
           cover_photo: null,
-          is_premium: false,
           is_admin: false,
           email_visible: false,
         });
@@ -331,7 +353,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             name: currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'Kullanıcı',
             profile_photo: currentUser.user_metadata?.avatar_url || null,
             cover_photo: null,
-            is_premium: false,
             is_admin: false,
             email_visible: false,
           });
@@ -401,7 +422,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         name: name || 'Demo User',
         profile_photo: null,
         cover_photo: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=300&fit=crop',
-        is_premium: false,
         is_admin: false,
       });
       return { error: null };
@@ -489,11 +509,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Mobile: Custom scheme deep link kullan
         redirectTo = 'eventmap://auth/callback';
       } else {
-        // Web: Her zaman mevcut origin'de callback
-        redirectTo = new URL('/auth/callback', window.location.origin).toString();
+        // Web: MUTLAKA mevcut origin kullan (localhost veya production)
+        // Vercel'e gitmemesi için window.location.origin kullanılıyor
+        const currentOrigin = window.location.origin;
+        redirectTo = `${currentOrigin}/auth/callback`;
       }
 
       console.log('🔗 Redirect URL:', redirectTo);
+      console.log('🌐 Current Origin:', window.location.origin);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',

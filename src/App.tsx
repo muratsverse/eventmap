@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from 'react';
-import SplashScreen from './components/SplashScreen';
 import BottomNav from './components/BottomNav';
 import ListView from './components/views/ListView';
 import MapView from './components/views/MapView';
@@ -16,7 +15,6 @@ import { App as CapacitorApp } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 
 function App() {
-  const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('liste');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [showFilter, setShowFilter] = useState(false);
@@ -201,10 +199,6 @@ function App() {
     // Filters are applied in real-time, this is just for UI feedback
     console.log('Filters applied:', { selectedCategories, showNearby, priceRange, dateRange, sortBy });
   };
-
-  if (showSplash) {
-    return <SplashScreen onFinish={() => setShowSplash(false)} />;
-  }
 
   return (
     <div className="min-h-screen w-full max-w-mobile mx-auto flex flex-col bg-[var(--bg)]">

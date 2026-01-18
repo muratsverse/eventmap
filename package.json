@@ -1,7 +1,7 @@
 {
   "name": "socia",
   "private": true,
-  "version": "1.0.10",
+  "version": "1.0.13",
   "type": "module",
   "description": "Sosyal Etkinlik Platformu - Türkiye'nin etkinlik ağı",
   "scripts": {
@@ -13,7 +13,11 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "android:sync": "npm run build && npx cap sync android",
     "android:open": "npx cap open android",
-    "android:run": "npm run android:sync && npx cap run android"
+    "android:run": "npm run android:sync && npx cap run android",
+    "android:release": "npm run build && npx cap sync android && cd android && gradlew bundleRelease",
+    "android:clean": "cd android && gradlew clean && cd ..",
+    "android:logcat": "adb logcat -s Capacitor:V chromium:I *:E",
+    "test:oauth": "node -e \"console.log('OAuth test script - Use oauth-test.bat on Windows')\""
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",
