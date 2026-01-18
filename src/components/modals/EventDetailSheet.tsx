@@ -232,13 +232,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
             </div>
           </div>
 
-          {/* Ad Banner (Premium olmayanlara) */}
-          {!isPremium && (
-            <div className="mb-6">
-              <AdBanner variant="square" />
-            </div>
-          )}
-
           {/* Attendance Status */}
           {user && isAttending(event.id) && (
             <div className="mb-6 bg-[#4fb07a]/15 border border-[#4fb07a]/40 rounded-2xl p-4 flex items-center gap-3">
@@ -287,11 +280,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
         </div>
       </div>
 
-      {/* Premium Modal */}
-      <PremiumModal
-        isOpen={showPremiumModal}
-        onClose={() => setShowPremiumModal(false)}
-      />
     </div>
   );
 }

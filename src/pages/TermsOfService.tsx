@@ -24,7 +24,7 @@ export default function TermsOfService() {
             <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
             <p className="text-[var(--muted)]">
               Socia is a social event discovery and management platform that allows users to create, share, and join local events.
-              We offer both free and premium subscription plans with varying features and capabilities.
+              The service is currently provided free of charge.
             </p>
           </section>
 
@@ -42,18 +42,9 @@ export default function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">4. Premium Subscription</h2>
-            <p className="text-[var(--muted)] mb-2">
-              Premium subscriptions are billed monthly at ₺250/month and provide:
-            </p>
-            <ul className="list-disc list-inside space-y-2 text-[var(--muted)] ml-4">
-              <li>Unlimited event creation (free users limited to 5 events per month)</li>
-              <li>Ad-free experience</li>
-              <li>Priority event listing</li>
-              <li>Enhanced support</li>
-            </ul>
-            <p className="text-[var(--muted)] mt-4">
-              Subscriptions automatically renew unless cancelled before the renewal date. You may cancel at any time through your account settings.
+            <h2 className="text-2xl font-semibold mb-4">4. Free Access</h2>
+            <p className="text-[var(--muted)]">
+              Socia is currently provided free of charge. All users can create and share events without limits.
             </p>
           </section>
 
