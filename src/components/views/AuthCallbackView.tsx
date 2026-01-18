@@ -62,16 +62,30 @@ export default function AuthCallbackView() {
 
           if (exchangeError) {
             console.error('❌ Code exchange hatası:', exchangeError);
-            if (isMounted) {
+            if (exchangeError.message.includes('code verifier')) {
+              const { data: sessionData } = await supabase.auth.getSession();
+              if (sessionData.session) {
+                console.log('✅ Mevcut session bulundu, exchange hatası yok sayılıyor');
+                if (isMounted) {
+                  setStatus('success');
+                }
+                window.history.replaceState({}, '', window.location.pathname);
+              } else if (isMounted) {
+                setStatus('error');
+                setErrorMessage(exchangeError.message);
+                didError = true;
+              }
+            } else if (isMounted) {
               setStatus('error');
               setErrorMessage(exchangeError.message);
+              didError = true;
             }
-            didError = true;
           } else if (data.session) {
             console.log('✅ Session oluşturuldu:', data.session.user.email);
             if (isMounted) {
               setStatus('success');
             }
+            window.history.replaceState({}, '', window.location.pathname);
           }
         } else if (access_token && refresh_token) {
           // Implicit flow
@@ -93,6 +107,7 @@ export default function AuthCallbackView() {
             if (isMounted) {
               setStatus('success');
             }
+            window.history.replaceState({}, '', window.location.pathname);
           }
         } else {
           // Parametreler eksik - mevcut session'ı kontrol et
@@ -104,6 +119,7 @@ export default function AuthCallbackView() {
             if (isMounted) {
               setStatus('success');
             }
+            window.history.replaceState({}, '', window.location.pathname);
           } else {
             console.log('⚠️ Session bulunamadı');
             if (isMounted) {
