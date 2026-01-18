@@ -90,85 +90,163 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     let listenerHandle: any;
+    let isProcessing = false; // Duplicate callback önleme
 
     const handleAuthCallbackUrl = async (url: string) => {
+      // Duplicate callback önleme
+      if (isProcessing) {
+        console.log('⏳ Zaten bir callback işleniyor, atlıyorum...');
+        return;
+      }
+
       try {
         if (!url) return;
 
-        // eventmap://auth/callback?code=xxx formatını parse et
-        const parsedUrl = new URL(url);
+        console.log('🔗 OAuth callback URL alındı:', url);
 
-        const getParam = (name: string) => {
+        // URL parsing - farklı formatları handle et
+        let parsedUrl: URL;
+        try {
+          parsedUrl = new URL(url);
+        } catch {
+          // eventmap:auth/callback gibi formatlar için
+          const fixedUrl = url.replace('eventmap:', 'eventmap://');
+          parsedUrl = new URL(fixedUrl);
+        }
+
+        // Parametre okuma helper'ı
+        const getParam = (name: string): string | null => {
+          // Query string'den dene
           const fromQuery = parsedUrl.searchParams.get(name);
           if (fromQuery) return fromQuery;
 
-          // Supabase bazen token'ları hash/fragment ile döndürebilir
+          // Hash/fragment'tan dene (Supabase implicit flow)
           const hash = parsedUrl.hash?.startsWith('#') ? parsedUrl.hash.slice(1) : parsedUrl.hash;
-          if (!hash) return null;
-          return new URLSearchParams(hash).get(name);
+          if (hash) {
+            const hashParams = new URLSearchParams(hash);
+            return hashParams.get(name);
+          }
+
+          return null;
         };
 
-        // Hem pathname hem de hash kontrolü (Supabase farklı format kullanabilir)
+        // Auth callback kontrolü - çeşitli formatları handle et
         const isAuthCallback =
-          (parsedUrl.host === 'auth' && parsedUrl.pathname.startsWith('/callback')) ||
-          parsedUrl.pathname.includes('/auth/callback') ||
-          parsedUrl.pathname.includes('auth/callback') ||
-          url.includes('auth/callback');
+          url.includes('auth/callback') ||
+          url.includes('auth%2Fcallback') ||
+          (parsedUrl.host === 'auth' && parsedUrl.pathname.includes('callback')) ||
+          parsedUrl.pathname.includes('/auth/callback');
 
         if (!isAuthCallback) {
-          console.log('❌ Not an auth callback URL');
+          console.log('ℹ️ Bu bir auth callback URL değil:', url);
           return;
         }
 
-        // Code veya access_token al (PKCE flow)
+        isProcessing = true;
+        console.log('🔐 Auth callback işleniyor...');
+
+        // Error kontrolü
+        const errorParam = getParam('error');
+        const errorDescription = getParam('error_description');
+        if (errorParam) {
+          console.error('❌ OAuth hatası:', errorParam, errorDescription);
+          isProcessing = false;
+          await Browser.close().catch(() => {});
+          return;
+        }
+
+        // PKCE flow: code parametresi
         const code = getParam('code');
+        // Implicit flow: token parametreleri
         const access_token = getParam('access_token');
         const refresh_token = getParam('refresh_token');
 
-        console.log('📝 OAuth params:', { code: !!code, access_token: !!access_token });
+        console.log('📝 OAuth params:', {
+          hasCode: !!code,
+          hasAccessToken: !!access_token,
+          hasRefreshToken: !!refresh_token,
+        });
+
+        let success = false;
 
         if (code) {
-          console.log('✅ Exchanging code for session...');
-          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          // PKCE flow - code'u session'a çevir
+          console.log('🔄 PKCE: Code session\'a çevriliyor...');
+          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
           if (error) {
-            console.error('❌ Exchange code error:', error);
-          } else {
-            console.log('✅ Session exchange successful');
-            await Browser.close();
+            console.error('❌ Code exchange hatası:', error.message);
+          } else if (data.session) {
+            console.log('✅ Session başarıyla oluşturuldu');
+            success = true;
           }
-        } else if (access_token && refresh_token) {
-          console.log('✅ Setting session with tokens...');
-          const { error } = await supabase.auth.setSession({
-            access_token,
-            refresh_token,
-          });
-          if (error) {
-            console.error('❌ Set session error:', error);
+        } else if (access_token) {
+          // Implicit flow - token'ları set et
+          console.log('🔄 Implicit: Token\'lar set ediliyor...');
+
+          if (refresh_token) {
+            const { error } = await supabase.auth.setSession({
+              access_token,
+              refresh_token,
+            });
+
+            if (error) {
+              console.error('❌ Session set hatası:', error.message);
+            } else {
+              console.log('✅ Session başarıyla set edildi');
+              success = true;
+            }
           } else {
-            console.log('✅ Session set successful');
-            await Browser.close();
+            // Sadece access_token var - getUser ile kontrol et
+            const { data: userData, error: userError } = await supabase.auth.getUser(access_token);
+            if (userError) {
+              console.error('❌ User bilgisi alınamadı:', userError.message);
+            } else if (userData.user) {
+              console.log('✅ User doğrulandı:', userData.user.email);
+              success = true;
+            }
           }
         } else {
-          console.log('❌ No code or tokens found in URL');
+          console.log('⚠️ URL\'de code veya token bulunamadı');
+        }
+
+        // Browser'ı kapat
+        try {
+          await Browser.close();
+          console.log('✅ Browser kapatıldı');
+        } catch (e) {
+          // Browser zaten kapalı olabilir
+          console.log('ℹ️ Browser zaten kapalı');
+        }
+
+        if (success) {
+          console.log('🎉 Google ile giriş başarılı!');
         }
       } catch (error) {
-        console.error('❌ Native OAuth callback error:', error);
+        console.error('❌ OAuth callback işleme hatası:', error);
+        await Browser.close().catch(() => {});
+      } finally {
+        // Biraz bekle ve processing flag'i sıfırla
+        setTimeout(() => {
+          isProcessing = false;
+        }, 1000);
       }
     };
 
     const setupListener = async () => {
       listenerHandle = await App.addListener('appUrlOpen', async ({ url }) => {
-        console.log('🔗 Deep link received:', url);
+        console.log('🔔 Deep link event:', url);
         await handleAuthCallbackUrl(url || '');
       });
+      console.log('✅ Deep link listener kuruldu');
     };
 
     setupListener();
 
-    // Handle cold start deep link (app launched from OAuth callback)
+    // Cold start: Uygulama deep link ile açıldıysa
     App.getLaunchUrl().then((data) => {
       if (data?.url) {
-        console.log('🔗 Launch URL detected:', data.url);
+        console.log('🚀 Uygulama deep link ile açıldı:', data.url);
         handleAuthCallbackUrl(data.url);
       }
     });
@@ -176,6 +254,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       if (listenerHandle) {
         listenerHandle.remove();
+        console.log('🔌 Deep link listener kaldırıldı');
       }
     };
   }, [isSupabaseConfigured]);
@@ -399,40 +478,60 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const isNative = Capacitor.isNativePlatform();
 
-      // Mobile için deep link, web için normal URL
-      const baseUrl = import.meta.env.BASE_URL || '/';
-      const callbackPath = `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}auth/callback`;
-      const redirectTo = isNative
-        ? 'eventmap://auth/callback'
-        : `${window.location.origin}${callbackPath}`;
+      // Platform tespiti
+      const platform = Capacitor.getPlatform(); // 'ios', 'android', 'web'
+      console.log('🔐 Google Sign-In başlatılıyor, platform:', platform);
+
+      // Redirect URL belirleme
+      let redirectTo: string;
+
+      if (isNative) {
+        // Mobile: Custom scheme deep link kullan
+        redirectTo = 'eventmap://auth/callback';
+      } else {
+        // Web: Origin + callback path
+        const baseUrl = import.meta.env.BASE_URL || '/';
+        const callbackPath = baseUrl.endsWith('/') ? 'auth/callback' : '/auth/callback';
+        redirectTo = `${window.location.origin}${baseUrl === '/' ? '' : baseUrl}${callbackPath}`;
+      }
+
+      console.log('🔗 Redirect URL:', redirectTo);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo,
           queryParams: {
-            prompt: 'select_account', // Force account chooser every time
+            prompt: 'select_account', // Her seferinde hesap seçtir
+            access_type: 'offline', // Refresh token al
           },
-          // Native'de SDK'nın webview redirect yapmasını engelle; URL'yi biz Browser ile açıyoruz
+          // Native'de SDK'nın otomatik redirect yapmasını engelle
           skipBrowserRedirect: isNative,
         },
       });
 
-      if (error) return { error };
+      if (error) {
+        console.error('❌ OAuth error:', error);
+        return { error };
+      }
 
       if (!data?.url) {
+        console.error('❌ OAuth URL alınamadı');
         return { error: new Error('OAuth URL alınamadı') };
       }
 
+      console.log('✅ OAuth URL alındı');
+
       // Mobile'da Capacitor Browser ile aç
       if (isNative) {
+        console.log('📱 Capacitor Browser açılıyor...');
+
+        // iOS için presentationStyle önemli
         await Browser.open({
           url: data.url,
-          windowName: '_blank',
+          presentationStyle: 'popover', // iOS'ta daha iyi çalışır
+          toolbarColor: '#000000',
         });
-
-        // Browser açıldı, callback listener zaten çalışıyor
-        // Browser kapandığında otomatik olarak deep link yakalanacak
       } else {
         // Web'de tam sayfa yönlendirme
         window.location.assign(data.url);
@@ -440,7 +539,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { error: null };
     } catch (error) {
-      console.error('Google sign-in error:', error);
+      console.error('❌ Google sign-in error:', error);
       return { error: error as Error };
     }
   };
