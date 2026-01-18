@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Crown, Edit2, Eye, EyeOff, Trash2 } from 'lucide-react';
+import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Crown, Edit2, Eye, EyeOff, Trash2, FileText, Scale, CreditCard } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites, useAttendances } from '@/hooks/useFavorites';
 import { useEvents } from '@/hooks/useEvents';
@@ -22,6 +23,7 @@ interface ProfileViewProps {
 type ProfileTab = 'favorites' | 'attending' | 'settings' | 'admin';
 
 export default function ProfileView({ events, onEventClick }: ProfileViewProps) {
+  const navigate = useNavigate();
   const {
     user,
     profile,
@@ -508,6 +510,46 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                     }`}></div>
                   </div>
                 </button>
+
+                <div className="border-t border-[var(--border)]"></div>
+
+                {/* Yasal Bağlantılar */}
+                <div className="space-y-2">
+                  <p className="text-xs text-[var(--muted)] uppercase tracking-wider px-3">Yasal</p>
+
+                  <button
+                    onClick={() => navigate('/terms')}
+                    className="w-full flex items-center justify-between hover:bg-[var(--surface-2)] rounded-xl p-3 -mx-3 transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-5 h-5 text-[var(--muted)]" />
+                      <span className="text-[var(--text)]">Kullanım Şartları</span>
+                    </div>
+                    <span className="text-[var(--muted)]">›</span>
+                  </button>
+
+                  <button
+                    onClick={() => navigate('/privacy')}
+                    className="w-full flex items-center justify-between hover:bg-[var(--surface-2)] rounded-xl p-3 -mx-3 transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Scale className="w-5 h-5 text-[var(--muted)]" />
+                      <span className="text-[var(--text)]">Gizlilik Politikası</span>
+                    </div>
+                    <span className="text-[var(--muted)]">›</span>
+                  </button>
+
+                  <button
+                    onClick={() => navigate('/refund')}
+                    className="w-full flex items-center justify-between hover:bg-[var(--surface-2)] rounded-xl p-3 -mx-3 transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <CreditCard className="w-5 h-5 text-[var(--muted)]" />
+                      <span className="text-[var(--text)]">İade Politikası</span>
+                    </div>
+                    <span className="text-[var(--muted)]">›</span>
+                  </button>
+                </div>
 
                 <div className="border-t border-[var(--border)]"></div>
 
