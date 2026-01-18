@@ -81,9 +81,9 @@
     "submit": "Etkinliği Oluştur",
     "creating": "Oluşturuluyor...",
     "success": "Etkinlik başarıyla oluşturuldu!",
-    "premiumRequired": "Premium Özellik",
-    "premiumDesc": "Etkinlik oluşturabilmek için premium üyelik gereklidir.",
-    "upgradePremium": "Premium'a Geç",
+    "premiumRequired": "Unlimited Events",
+    "premiumDesc": "All users can create events without limits.",
+    "upgradePremium": "Create Event",
     "validationError": {
       "endBeforeStart": "Bitiş saati başlangıç saatinden önce olamaz",
       "fillRequired": "Lütfen tüm zorunlu alanları doldurun",

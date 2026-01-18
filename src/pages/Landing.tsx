@@ -11,14 +11,14 @@ const highlights = [
     description: 'Yakinindaki etkinlikleri harita uzerinden gorup hizlica katil.',
   },
   {
-    title: 'Premium ile Sinirsiz Olustur',
-    description: 'Aylik sabit ucretle sinirsiz etkinlik paylas, reklam gorme.',
+    title: 'Sinirsiz Etkinlik Paylas',
+    description: 'Herkes istedigi kadar etkinlik olusturabilir ve paylasabilir.',
   },
 ];
 
 const trustPoints = [
-  'Kredi karti bilgileri uygulamada saklanmaz',
-  'Aylik 250 TL, istedigin zaman iptal',
+  'Sinirsiz etkinlik olusturma',
+  'Etkinliklere katilanlari goruntule',
   'Kullanici verileri Supabase ile guvende',
 ];
 
@@ -61,7 +61,7 @@ export default function Landing() {
             </h1>
             <p className="text-base text-[var(--muted)] md:text-lg">
               Socia, Istanbul'dan Antalya'ya kadar konser, festival, spor ve kultur etkinliklerini
-              modern bir arayuzle bir araya getirir. Ucretsiz basla, premium ile sinirsiz olustur.
+              modern bir arayuzle bir araya getirir. Ucretsiz katil, etkinlikleri kesfet.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link
@@ -81,7 +81,7 @@ export default function Landing() {
             <div className="flex flex-wrap gap-4 text-xs text-[var(--muted)]">
               <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1">
                 <ShieldCheck className="h-3.5 w-3.5" />
-                Guvenli odeme deneyimi
+                Guvenli kullanici deneyimi
               </span>
               <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1">
                 PWA + Android destegi
@@ -92,18 +92,18 @@ export default function Landing() {
           <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-lg">
             <div className="space-y-4">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-2)] p-5">
-                <p className="text-sm text-[var(--muted)]">Premium</p>
+                <p className="text-sm text-[var(--muted)]">Herkes Icin</p>
                 <p className="text-4xl font-semibold">
-                  250 TL <span className="text-base font-normal text-[var(--muted)]">/ ay</span>
+                  Ucretsiz
                 </p>
                 <p className="mt-2 text-sm text-[var(--muted)]">
-                  Sinirsiz etkinlik olusturma, reklamsiz deneyim, oncelikli gorunurluk.
+                  Tum kullanicilar icin sinirsiz etkinlik olusturma ve kesif.
                 </p>
                 <Link
                   to="/app"
                   className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
                 >
-                  Premium'a Gec
+                  Uygulamayi Ac
                 </Link>
               </div>
               <div className="space-y-3">
@@ -141,7 +141,7 @@ export default function Landing() {
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.25em] text-[var(--muted)]">YASAL BILGILER</p>
-              <h2 className="mt-2 text-2xl font-semibold">Guvenli ve seffaf bir abonelik</h2>
+              <h2 className="mt-2 text-2xl font-semibold">Guvenli ve seffaf bir deneyim</h2>
               <p className="mt-3 text-sm text-[var(--muted)]">
                 Iade, gizlilik ve kullanim sartlari net sekilde paylasilir. Detaylar icin ilgili
                 sayfalari ziyaret edebilirsiniz.

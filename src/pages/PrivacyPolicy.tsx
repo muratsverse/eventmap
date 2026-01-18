@@ -16,7 +16,6 @@ export default function PrivacyPolicy() {
               <li><strong>Event Information:</strong> Event details, descriptions, locations, images</li>
               <li><strong>Usage Information:</strong> Events attended, created events, search history</li>
               <li><strong>Location Data:</strong> Approximate location for event discovery (with your permission)</li>
-              <li><strong>Payment Information:</strong> Processed securely through Paddle (we do not store credit card details)</li>
             </ul>
           </section>
 
@@ -25,7 +24,7 @@ export default function PrivacyPolicy() {
             <p className="text-[var(--muted)] mb-2">We use the collected information to:</p>
             <ul className="list-disc list-inside space-y-2 text-[var(--muted)] ml-4">
               <li>Provide, maintain, and improve our services</li>
-              <li>Process transactions and manage subscriptions</li>
+              <li>Maintain the service and your account</li>
               <li>Send you notifications about events and service updates</li>
               <li>Personalize your experience and show relevant events</li>
               <li>Detect, prevent, and address technical issues and fraud</li>
@@ -40,7 +39,7 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc list-inside space-y-2 text-[var(--muted)] ml-4">
               <li><strong>Public Events:</strong> Event information you create is visible to other users</li>
-              <li><strong>Service Providers:</strong> Third-party services that help us operate (e.g., Supabase for hosting, Paddle for payments)</li>
+              <li><strong>Service Providers:</strong> Third-party services that help us operate (e.g., Supabase for hosting)</li>
               <li><strong>Legal Requirements:</strong> When required by law or to protect our rights</li>
               <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
             </ul>
@@ -81,7 +80,6 @@ export default function PrivacyPolicy() {
             <p className="text-[var(--muted)] mb-2">We use the following third-party services:</p>
             <ul className="list-disc list-inside space-y-2 text-[var(--muted)] ml-4">
               <li><strong>Supabase:</strong> Database and authentication hosting</li>
-              <li><strong>Paddle:</strong> Payment processing and subscription management</li>
               <li><strong>Google OAuth:</strong> Optional sign-in authentication</li>
               <li><strong>OpenStreetMap:</strong> Map and location services</li>
             </ul>

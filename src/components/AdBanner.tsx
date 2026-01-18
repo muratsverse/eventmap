@@ -16,8 +16,8 @@ export default function AdBanner({ variant = 'horizontal', className = '' }: AdB
     },
     {
       title: 'Sponsor Etkinlik',
-      description: 'Premium üyeler reklamsız deneyim yaşar',
-      cta: "Premium'a Geç",
+      description: 'Etkinliginizi one cikaracak sponsor alani',
+      cta: 'Detaylari Gor',
       bg: 'from-[#7b6ad1] to-[#8f7fe0]',
     },
     {

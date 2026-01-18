@@ -9,16 +9,15 @@ export default function RefundPolicy() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. 14-Day Refund Window</h2>
             <p className="text-[var(--muted)]">
-              You may request a refund within <strong>14 days</strong> of your initial subscription purchase. The 14-day
-              period starts on the day after your purchase.
+              You may request a refund within <strong>14 days</strong> of your initial purchase. The 14-day period starts
+              on the day after your purchase.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">2. Refund Process</h2>
             <p className="text-[var(--muted)]">
-              Refunds are processed by Paddle, our Merchant of Record. Approved refunds are returned to the original
-              payment method.
+              Approved refunds are returned to the original payment method.
             </p>
           </section>
 

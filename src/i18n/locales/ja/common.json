@@ -81,9 +81,9 @@
     "submit": "Create Event",
     "creating": "Creating...",
     "success": "Event created successfully!",
-    "premiumRequired": "Premium Feature",
-    "premiumDesc": "Premium membership is required to create events.",
-    "upgradePremium": "Upgrade to Premium",
+    "premiumRequired": "Unlimited Events",
+    "premiumDesc": "All users can create events without limits.",
+    "upgradePremium": "Create Event",
     "validationError": {
       "endBeforeStart": "End time cannot be before start time",
       "fillRequired": "Please fill in all required fields",
