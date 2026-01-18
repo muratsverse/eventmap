@@ -11,7 +11,6 @@ import AuthCallbackView from './components/views/AuthCallbackView.tsx'
 import TermsOfService from './pages/TermsOfService.tsx'
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx'
 import RefundPolicy from './pages/RefundPolicy.tsx'
-import { Capacitor } from '@capacitor/core'
 import './index.css'
 import './i18n'
 
@@ -32,7 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route
               path="/"
-              element={Capacitor.isNativePlatform() ? <App /> : <Landing />}
+              element={<App />}
             />
             <Route path="/landing" element={<Landing />} />
             <Route path="/app" element={<App />} />
