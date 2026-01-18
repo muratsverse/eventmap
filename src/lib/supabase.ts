@@ -69,8 +69,8 @@ export const supabase = (isConfigured
         storage,
         persistSession: true,
         autoRefreshToken: true,
-        // Native platformda otomatik URL detection kapatıyoruz - manuel handle ediyoruz
-        detectSessionInUrl: !Capacitor.isNativePlatform(),
+        // OAuth callback'i biz handle ediyoruz; çift işleme olmasın
+        detectSessionInUrl: false,
         flowType: 'pkce', // More secure for mobile apps
       },
     })

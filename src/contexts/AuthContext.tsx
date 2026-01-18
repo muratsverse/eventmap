@@ -489,10 +489,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Mobile: Custom scheme deep link kullan
         redirectTo = 'eventmap://auth/callback';
       } else {
-        // Web: Origin + callback path
-        const baseUrl = import.meta.env.BASE_URL || '/';
-        const callbackPath = baseUrl.endsWith('/') ? 'auth/callback' : '/auth/callback';
-        redirectTo = `${window.location.origin}${baseUrl === '/' ? '' : baseUrl}${callbackPath}`;
+        // Web: Her zaman mevcut origin'de callback
+        redirectTo = new URL('/auth/callback', window.location.origin).toString();
       }
 
       console.log('🔗 Redirect URL:', redirectTo);

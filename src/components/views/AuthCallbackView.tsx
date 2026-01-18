@@ -11,6 +11,7 @@ export default function AuthCallbackView() {
     let isMounted = true;
 
     const finalizeAuth = async () => {
+      let didError = false;
       try {
         console.log('🔐 Web OAuth callback işleniyor...');
         console.log('📍 URL:', window.location.href);
@@ -34,6 +35,7 @@ export default function AuthCallbackView() {
             setStatus('error');
             setErrorMessage(errorDescription || error);
           }
+          didError = true;
           // 3 saniye sonra ana sayfaya yönlendir
           setTimeout(() => {
             if (isMounted) navigate('/');
@@ -64,6 +66,7 @@ export default function AuthCallbackView() {
               setStatus('error');
               setErrorMessage(exchangeError.message);
             }
+            didError = true;
           } else if (data.session) {
             console.log('✅ Session oluşturuldu:', data.session.user.email);
             if (isMounted) {
@@ -84,6 +87,7 @@ export default function AuthCallbackView() {
               setStatus('error');
               setErrorMessage(sessionError.message);
             }
+            didError = true;
           } else {
             console.log('✅ Session set edildi');
             if (isMounted) {
@@ -106,6 +110,7 @@ export default function AuthCallbackView() {
               setStatus('error');
               setErrorMessage('Giriş bilgileri alınamadı');
             }
+            didError = true;
           }
         }
       } catch (err) {
@@ -114,13 +119,14 @@ export default function AuthCallbackView() {
           setStatus('error');
           setErrorMessage(err instanceof Error ? err.message : 'Bilinmeyen hata');
         }
+        didError = true;
       } finally {
         // Her durumda ana sayfaya yönlendir
         setTimeout(() => {
           if (isMounted) {
             navigate('/');
           }
-        }, status === 'error' ? 3000 : 500);
+        }, didError ? 3000 : 500);
       }
     };
 
@@ -129,7 +135,7 @@ export default function AuthCallbackView() {
     return () => {
       isMounted = false;
     };
-  }, [navigate, status]);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--bg)]">
