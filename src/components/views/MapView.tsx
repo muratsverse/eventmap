@@ -4,8 +4,6 @@ import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Header from '../Header';
 import EventCard from '../EventCard';
-import AdBanner from '../AdBanner';
-import { useAuth } from '@/contexts/AuthContext';
 import type { Event, EventCategory } from '@/types';
 
 // Fix Leaflet default icon issue
@@ -68,9 +66,6 @@ function createCustomIcon(category: EventCategory): Icon {
 }
 
 export default function MapView({ events, onEventClick, onFilterClick }: MapViewProps) {
-  const { profile } = useAuth();
-  const isPremium = profile?.is_premium || false;
-
   // Default center: Istanbul
   const [mapCenter, setMapCenter] = useState<[number, number]>([41.0082, 28.9784]);
   const [mapZoom, setMapZoom] = useState(11);
@@ -179,13 +174,6 @@ export default function MapView({ events, onEventClick, onFilterClick }: MapView
                 );
               })}
             </div>
-          </div>
-        )}
-
-        {/* Ad Banner (Premium olmayanlara) */}
-        {!isPremium && events.length > 0 && (
-          <div className="absolute bottom-20 left-0 right-0 px-4 z-10">
-            <AdBanner variant="horizontal" />
           </div>
         )}
       </div>

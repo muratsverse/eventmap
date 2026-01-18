@@ -9,7 +9,6 @@ import EventDetailSheet from './components/modals/EventDetailSheet';
 import FilterSheet, { type SortOption } from './components/modals/FilterSheet';
 import CreateEventModal from './components/modals/CreateEventModal';
 import UpdatePasswordModal from './components/modals/UpdatePasswordModal';
-import PremiumModal from './components/modals/PremiumModal';
 import { useAuth } from './contexts/AuthContext';
 import { useEvents } from './hooks/useEvents';
 import type { TabType, Event, EventCategory, City } from './types';
@@ -23,10 +22,8 @@ function App() {
   const [showFilter, setShowFilter] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const { user, profile } = useAuth();
-  const isPremium = profile?.is_premium || false;
 
   // Debug: showUpdatePasswordModal değişikliklerini logla
   useEffect(() => {
@@ -255,12 +252,7 @@ function App() {
             setActiveTab('profil');
             return;
           }
-          // Premium kontrolü
-          if (!isPremium) {
-            setShowPremiumModal(true);
-            return;
-          }
-          // Premium kullanıcı için doğrudan modal aç
+          // Etkinlik oluşturma modalını aç
           setShowCreateModal(true);
         }}
       />
@@ -293,12 +285,6 @@ function App() {
       <CreateEventModal
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
-        isPremium={isPremium}
-      />
-
-      <PremiumModal
-        isOpen={showPremiumModal}
-        onClose={() => setShowPremiumModal(false)}
       />
 
       <UpdatePasswordModal

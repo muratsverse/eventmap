@@ -1,12 +1,9 @@
-import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Share2, Check, Navigation, Crown } from 'lucide-react';
-import { useState } from 'react';
+import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Share2, Check, Navigation } from 'lucide-react';
 import { Event } from '@/types';
 import { formatPrice, getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useFavorites, useAttendances, useEventAttendees } from '@/hooks/useFavorites';
 import { useAuth } from '@/contexts/AuthContext';
-import AdBanner from '../AdBanner';
-import PremiumModal from './PremiumModal';
 
 interface EventDetailSheetProps {
   event: Event | null;
@@ -14,12 +11,10 @@ interface EventDetailSheetProps {
 }
 
 export default function EventDetailSheet({ event, onClose }: EventDetailSheetProps) {
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { isAttending, toggleAttendance } = useAttendances();
   const { attendees, count: attendeesCount } = useEventAttendees(event?.id || null);
-  const isPremium = profile?.is_premium || false;
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   if (!event) return null;
 
@@ -180,8 +175,8 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                 </div>
               </div>
 
-              {/* Premium kullanıcılar için katılımcı listesi */}
-              {isPremium && attendees.length > 0 && (
+              {/* Katılımcı listesi - herkes görebilir */}
+              {attendees.length > 0 && (
                 <div className="mt-4 space-y-2">
                   <p className="text-xs text-[var(--muted)] font-medium uppercase tracking-wide mb-3">
                     Katılan Kullanıcılar
@@ -215,17 +210,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                     ))}
                   </div>
                 </div>
-              )}
-
-              {/* Premium olmayanlara katılımcı görme butonu */}
-              {!isPremium && attendeesCount > 0 && (
-                <button
-                  onClick={() => setShowPremiumModal(true)}
-                  className="w-full mt-3 bg-[var(--accent)] text-white font-semibold rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
-                >
-                  <Crown className="w-5 h-5" />
-                  <span>Katılımcıları Görmek İçin Premium Ol</span>
-                </button>
               )}
             </div>
 

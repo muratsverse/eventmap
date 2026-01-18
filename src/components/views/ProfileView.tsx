@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Crown, Edit2, Eye, EyeOff, Trash2, FileText, Scale, CreditCard } from 'lucide-react';
+import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Edit2, Eye, EyeOff, Trash2, FileText, Scale, CreditCard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites, useAttendances } from '@/hooks/useFavorites';
@@ -8,7 +8,6 @@ import type { Event } from '@/types';
 import EventCard from '../EventCard';
 import AdminPanel from '../admin/AdminPanel';
 import PasswordResetModal from '../modals/PasswordResetModal';
-import PremiumModal from '../modals/PremiumModal';
 import NotificationSettingsModal from '../modals/NotificationSettingsModal';
 import ProfilePhotoModal from '../modals/ProfilePhotoModal';
 import EditProfileModal from '../modals/EditProfileModal';
@@ -44,7 +43,6 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
   const [activeTab, setActiveTab] = useState<ProfileTab>('favorites');
   const [loginError, setLoginError] = useState('');
   const [showPasswordReset, setShowPasswordReset] = useState(false);
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [showNotifSettings, setShowNotifSettings] = useState(false);
   const [showProfilePhoto, setShowProfilePhoto] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
@@ -433,27 +431,6 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
 
           {activeTab === 'settings' && (
             <div className="space-y-4">
-              {/* Premium Banner */}
-              {!profile?.is_premium && (
-                <button
-                  onClick={() => setShowPremiumModal(true)}
-                  className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-4 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
-                >
-                  <Crown className="w-5 h-5" />
-                  <span>Premium'a Geç</span>
-                </button>
-              )}
-
-              {profile?.is_premium && (
-                <div className="bg-[#d3a253]/10 border border-[#d3a253]/40 rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Crown className="w-6 h-6 text-[#d3a253]" />
-                    <span className="text-[var(--text)] font-semibold">Premium Uye</span>
-                  </div>
-                  <p className="text-sm text-[var(--muted)]">Sinirsiz etkinlik olusturma ve reklamsiz deneyimin keyfini cikariyorsunuz</p>
-                </div>
-              )}
-
               {/* Settings */}
               <div className="rounded-2xl p-6 space-y-4 bg-[var(--surface)] border border-[var(--border)]">
                 {/* Şifre Değiştir */}
@@ -578,11 +555,6 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
         </div>
 
         {/* Modals */}
-        <PremiumModal
-          isOpen={showPremiumModal}
-          onClose={() => setShowPremiumModal(false)}
-        />
-
         <NotificationSettingsModal
           isOpen={showNotifSettings}
           onClose={() => setShowNotifSettings(false)}

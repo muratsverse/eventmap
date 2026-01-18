@@ -4,21 +4,17 @@ import { EventCategory, City } from '@/types';
 import { getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useCreateEvent } from '@/hooks/useCreateEvent';
-import { useEventCount } from '@/hooks/useEventCount';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { Icon as LeafletIcon } from 'leaflet';
 import { geocodeAddress, reverseGeocode } from '@/lib/geocoding';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { RECAPTCHA_SITE_KEY, isRecaptchaConfigured, checkRateLimit, formatRemainingTime } from '@/lib/recaptcha';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase, supabaseHelpers } from '@/lib/supabase';
-import PremiumModal from './PremiumModal';
 import 'leaflet/dist/leaflet.css';
 
 interface CreateEventModalProps {
   isOpen: boolean;
   onClose: () => void;
-  isPremium: boolean;
 }
 
 const categories: EventCategory[] = ['Konser', 'Spor', 'Tiyatro', 'Festival', 'Meetup', 'Sergi'];
@@ -45,16 +41,11 @@ const customIcon = new LeafletIcon({
   shadowSize: [41, 41],
 });
 
-export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateEventModalProps) {
+export default function CreateEventModal({ isOpen, onClose }: CreateEventModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const { createEvent, isCreating, error } = useCreateEvent();
   const { user } = useAuth();
-  const { data: eventCount = 0 } = useEventCount(user?.id);
-
-  // Free kullanıcılar max 5 etkinlik oluşturabilir
-  const FREE_EVENT_LIMIT = 5;
-  const canCreateEvent = isPremium || eventCount < FREE_EVENT_LIMIT;
 
   const [formData, setFormData] = useState({
     title: '',
@@ -80,7 +71,6 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
   const [showMap, setShowMap] = useState(false);
   const [isGeocoding, setIsGeocoding] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   if (!isOpen) return null;
 
@@ -144,13 +134,6 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
     const finalCategory = formData.customCategory.trim() || formData.category;
     if (!finalCategory) {
       alert('Lütfen bir kategori seçin veya yazın');
-      return;
-    }
-
-    // 5 Etkinlik Limiti Kontrolü (Free kullanıcılar için)
-    if (!canCreateEvent) {
-      // Premium modal aç
-      setShowPremiumModal(true);
       return;
     }
 
@@ -238,35 +221,6 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
   const handleRecaptchaChange = (token: string | null) => {
     setRecaptchaToken(token);
   };
-
-  if (!isPremium) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-        <div className="relative w-full max-w-md bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-8 shadow-sm">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 bg-[var(--surface-2)] border border-[var(--border)] rounded-full p-2 hover:bg-[var(--surface)]"
-          >
-            <X className="w-6 h-6 text-[var(--text)]" />
-          </button>
-
-          <div className="text-center">
-            <div className="w-20 h-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-3xl flex items-center justify-center mx-auto mb-4">
-              <span className="text-4xl">👑</span>
-            </div>
-            <h2 className="text-2xl font-semibold text-[var(--text)] mb-3">Premium Özellik</h2>
-            <p className="text-[var(--muted)] mb-6">
-              Etkinlik oluşturabilmek için premium üyelik gereklidir.
-            </p>
-            <button className="w-full bg-[var(--accent)] text-white font-semibold rounded-2xl py-4 hover:opacity-90 active:scale-95 transition-all">
-              Premium'a Geç
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in overflow-y-auto">
@@ -779,12 +733,6 @@ export default function CreateEventModal({ isOpen, onClose, isPremium }: CreateE
           </div>
         </form>
       </div>
-
-      {/* Premium Modal - 5 etkinlik limitine ulaşınca göster */}
-      <PremiumModal
-        isOpen={showPremiumModal}
-        onClose={() => setShowPremiumModal(false)}
-      />
     </div>
   );
 }

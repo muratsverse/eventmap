@@ -5,8 +5,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './contexts/AuthContext'
 import App from './App.tsx'
 import Landing from './pages/Landing.tsx'
-import PremiumSuccessView from './components/views/PremiumSuccessView.tsx'
-import PremiumCancelledView from './components/views/PremiumCancelledView.tsx'
 import AuthCallbackView from './components/views/AuthCallbackView.tsx'
 import TermsOfService from './pages/TermsOfService.tsx'
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx'
@@ -36,8 +34,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/landing" element={<Landing />} />
             <Route path="/app" element={<App />} />
             <Route path="/auth/callback" element={<AuthCallbackView />} />
-            <Route path="/premium-success" element={<PremiumSuccessView />} />
-            <Route path="/premium-cancelled" element={<PremiumCancelledView />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/refund" element={<RefundPolicy />} />
