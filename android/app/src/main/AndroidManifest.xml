@@ -24,16 +24,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Deep linking for Supabase Auth (password reset, email verification) -->
+            <!-- Deep linking: eventmap:// scheme (OAuth callback) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Custom app scheme -->
-                <data android:scheme="eventmap" />
                 <data android:scheme="eventmap" android:host="auth" android:pathPrefix="/callback" />
+            </intent-filter>
+
+            <!-- Deep linking: eventmap:// scheme (password reset) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="eventmap" android:host="reset-password" />
+            </intent-filter>
+
+            <!-- Deep linking: eventmap:// scheme (genel) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="eventmap" />
             </intent-filter>
 
             <!-- Deep linking for web URLs -->
