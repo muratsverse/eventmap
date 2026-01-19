@@ -395,7 +395,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         name: 'Demo User',
         profile_photo: null,
         cover_photo: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=300&fit=crop',
-        is_premium: false,
         is_admin: false,
       });
       return { error: null };

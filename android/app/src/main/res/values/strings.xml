@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Socia</string>
-    <string name="title_activity_main">Socia</string>
-    <string name="package_name">com.eventmap.app</string>
-    <string name="custom_url_scheme">com.eventmap.app</string>
+    <string name="app_name">Spotly</string>
+    <string name="title_activity_main">Spotly</string>
+    <string name="package_name">com.muratveozturk.eventmap</string>
+    <string name="custom_url_scheme">eventmap</string>
 </resources>
