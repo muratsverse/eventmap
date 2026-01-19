@@ -47,7 +47,7 @@ export function CreateAccountModal({
               <UserPlus className="w-6 h-6 text-purple-400" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">Socia'ya Hoş Geldiniz!</h2>
+              <h2 className="text-xl font-bold text-white">Spotly'a Hoş Geldiniz!</h2>
               <p className="text-gray-400 text-sm mt-1">
                 {name || email}
               </p>
@@ -57,7 +57,7 @@ export function CreateAccountModal({
 
         <div className="mb-6">
           <p className="text-gray-300 mb-4">
-            Hesap oluşturmak ister misiniz? Socia'da etkinlikleri keşfedebilir, favorilerinize ekleyebilir ve daha fazlasını yapabilirsiniz.
+            Hesap oluşturmak ister misiniz? Spotly'da etkinlikleri keşfedebilir, favorilerinize ekleyebilir ve daha fazlasını yapabilirsiniz.
           </p>
           <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
             <ul className="space-y-2 text-sm text-purple-300">

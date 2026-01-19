@@ -1,6 +1,6 @@
 {
-  "name": "EventMap - Türkiye Etkinlik Rehberi",
-  "short_name": "EventMap",
+  "name": "Spotly - Türkiye Etkinlik Rehberi",
+  "short_name": "Spotly",
   "description": "Türkiye'nin en kapsamlı etkinlik rehberi. Konserler, festivaller, spor etkinlikleri ve daha fazlası!",
   "start_url": "/",
   "display": "standalone",

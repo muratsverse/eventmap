@@ -13,8 +13,8 @@ export default defineConfig(({ mode }) => ({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Socia - Sosyal Etkinlik Platformu',
-        short_name: 'Socia',
+        name: 'Spotly - Sosyal Etkinlik Platformu',
+        short_name: 'Spotly',
         description: 'Turkiye\'deki sosyal etkinlikleri kesfedin',
         theme_color: '#8B5CF6',
         background_color: '#1F2937',

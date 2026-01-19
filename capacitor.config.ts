@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.muratveozturk.eventmap',
-  appName: 'Socia',
+  appName: 'Spotly',
   webDir: 'dist',
   server: {
     androidScheme: 'https',
@@ -19,7 +19,7 @@ const config: CapacitorConfig = {
   },
   ios: {
     contentInset: 'automatic',
-    scheme: 'EventMap',
+    scheme: 'Spotly',
     limitsNavigationsToAppBoundDomains: false
   }
 };

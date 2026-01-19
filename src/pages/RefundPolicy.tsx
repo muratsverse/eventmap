@@ -53,7 +53,7 @@ export default function RefundPolicy() {
 
         <div className="mt-12 pt-8 border-t border-[var(--border)]">
           <a href="/" className="text-[var(--accent)] hover:underline">
-            ← Back to Socia
+            ← Back to Spotly
           </a>
         </div>
       </div>

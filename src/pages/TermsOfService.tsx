@@ -9,21 +9,21 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">Business Information</h2>
             <p className="text-[var(--muted)]">
-              Legal business name: <strong>muratsverse</strong>. Socia is operated by muratsverse.
+              Legal business name: <strong>muratsverse</strong>. Spotly is operated by muratsverse.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
             <p className="text-[var(--muted)]">
-              By accessing and using Socia ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.
+              By accessing and using Spotly ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
             <p className="text-[var(--muted)]">
-              Socia is a social event discovery and management platform that allows users to create, share, and join local events.
+              Spotly is a social event discovery and management platform that allows users to create, share, and join local events.
               The service is currently provided free of charge.
             </p>
           </section>
@@ -44,14 +44,14 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">4. Free Access</h2>
             <p className="text-[var(--muted)]">
-              Socia is currently provided free of charge. All users can create and share events without limits.
+              Spotly is currently provided free of charge. All users can create and share events without limits.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">5. User Content</h2>
             <p className="text-[var(--muted)]">
-              You retain ownership of any content you post on Socia. By posting content, you grant us a worldwide, non-exclusive,
+              You retain ownership of any content you post on Spotly. By posting content, you grant us a worldwide, non-exclusive,
               royalty-free license to use, display, and distribute your content in connection with the Service.
             </p>
           </section>
@@ -79,7 +79,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">8. Limitation of Liability</h2>
             <p className="text-[var(--muted)]">
-              Socia is provided "as is" without warranties of any kind. We are not liable for any damages arising from your use
+              Spotly is provided "as is" without warranties of any kind. We are not liable for any damages arising from your use
               of the Service, including but not limited to direct, indirect, incidental, or consequential damages.
             </p>
           </section>
@@ -102,7 +102,7 @@ export default function TermsOfService() {
 
         <div className="mt-12 pt-8 border-t border-[var(--border)]">
           <a href="/" className="text-[var(--accent)] hover:underline">
-            ← Back to Socia
+            ← Back to Spotly
           </a>
         </div>
       </div>

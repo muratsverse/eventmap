@@ -42,7 +42,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           <div className="relative">
             <img
               src="/logo.png"
-              alt="Socia Logo"
+              alt="Spotly Logo"
               className="w-32 h-32 mx-auto animate-bounce drop-shadow-2xl"
             />
           </div>
@@ -51,7 +51,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
         {/* App Name */}
         <div className="space-y-2">
           <h1 className="text-5xl font-semibold text-[var(--text)] tracking-tight">
-            Socia
+            Spotly
           </h1>
           <p className="text-[var(--muted)] text-lg">
             {slogan}

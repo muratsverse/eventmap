@@ -17,7 +17,7 @@ export default function Header({ title, eventCount, onFilterClick, className }: 
             <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl p-1.5">
               <img
                 src="/logo.png"
-                alt="Socia"
+                alt="Spotly"
                 className="w-8 h-8"
               />
             </div>

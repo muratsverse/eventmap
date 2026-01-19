@@ -37,7 +37,7 @@ export default function Landing() {
               <Sparkles className="h-5 w-5 text-[var(--accent)]" />
             </div>
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-[var(--muted)]">Socia</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-[var(--muted)]">Spotly</p>
               <p className="text-lg font-semibold">Etkinlik Agi</p>
             </div>
           </div>
@@ -60,7 +60,7 @@ export default function Landing() {
               Sehirdeki en iyi etkinlikleri tek akista bul.
             </h1>
             <p className="text-base text-[var(--muted)] md:text-lg">
-              Socia, Istanbul'dan Antalya'ya kadar konser, festival, spor ve kultur etkinliklerini
+              Spotly, Istanbul'dan Antalya'ya kadar konser, festival, spor ve kultur etkinliklerini
               modern bir arayuzle bir araya getirir. Ucretsiz katil, etkinlikleri kesfet.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
@@ -172,7 +172,7 @@ export default function Landing() {
       </section>
 
       <footer className="mx-auto flex max-w-6xl flex-col gap-3 px-6 pb-10 text-sm text-[var(--muted)] md:flex-row md:items-center md:justify-between">
-        <p>© 2025 Socia. Tum haklari saklidir.</p>
+        <p>© 2025 Spotly. Tum haklari saklidir.</p>
         <p>
           Iletisim: <span className="text-[var(--text)]">sociaappsup@outlook.com</span>
         </p>
