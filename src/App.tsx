@@ -28,6 +28,22 @@ function App() {
     console.log('🔐 showUpdatePasswordModal state changed:', showUpdatePasswordModal);
   }, [showUpdatePasswordModal]);
 
+  // URL'deki event parametresini kontrol et ve etkinliği aç
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const eventId = params.get('event');
+
+    if (eventId && events.length > 0) {
+      const event = events.find(e => e.id === eventId);
+      if (event) {
+        setSelectedEvent(event);
+        // URL'den event parametresini temizle
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
+      }
+    }
+  }, [events]);
+
   // Deep Link & URL Handler - OAuth ve şifre sıfırlama için
   useEffect(() => {
     // Mobile deep link handler
@@ -117,6 +133,7 @@ function App() {
     end: null,
   });
   const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // User's city (default to Istanbul for now, can be expanded to use profile data)
   const userCity: City = 'Istanbul';
@@ -131,15 +148,31 @@ function App() {
   const filteredEvents = useMemo(() => {
     let filtered = events;
 
-    // City filter
-    if (selectedCities.length > 0) {
-      filtered = filtered.filter(e => selectedCities.includes(e.city));
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(e =>
+        e.title.toLowerCase().includes(query) ||
+        e.description.toLowerCase().includes(query) ||
+        e.organizer.toLowerCase().includes(query) ||
+        e.location.toLowerCase().includes(query) ||
+        e.city.toLowerCase().includes(query)
+      );
     }
 
-    // Price filter
-    filtered = filtered.filter(e =>
-      e.price.min >= priceRange[0] && e.price.max <= priceRange[1]
-    );
+    // City filter
+    if (selectedCities.length > 0) {
+      filtered = filtered.filter(e =>
+        selectedCities.some(city => e.city.toLowerCase().includes(city.toLowerCase()))
+      );
+    }
+
+    // Price filter (only apply if not default values)
+    if (priceRange[0] > 0 || priceRange[1] < 1000) {
+      filtered = filtered.filter(e =>
+        e.price.min >= priceRange[0] && e.price.max <= priceRange[1]
+      );
+    }
 
     // Date filter
     if (dateRange.start) {
@@ -168,7 +201,7 @@ function App() {
       default:
         return filtered;
     }
-  }, [events, selectedCities, priceRange, dateRange, sortBy]);
+  }, [events, selectedCities, priceRange, dateRange, sortBy, searchQuery]);
 
   const handleCategoryToggle = (category: EventCategory) => {
     setSelectedCategories((prev) =>
@@ -193,6 +226,7 @@ function App() {
     setPriceRange([0, 1000]);
     setDateRange({ start: null, end: null });
     setSortBy('newest');
+    setSearchQuery('');
   };
 
   const handleApplyFilters = () => {
@@ -266,12 +300,14 @@ function App() {
         priceRange={priceRange}
         dateRange={dateRange}
         sortBy={sortBy}
+        searchQuery={searchQuery}
         onCategoryToggle={handleCategoryToggle}
         onCityToggle={handleCityToggle}
         onNearbyToggle={handleNearbyToggle}
         onPriceRangeChange={setPriceRange}
         onDateRangeChange={setDateRange}
         onSortChange={setSortBy}
+        onSearchChange={setSearchQuery}
         onClearAll={handleClearFilters}
         onApply={handleApplyFilters}
       />
