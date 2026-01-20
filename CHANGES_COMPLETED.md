@@ -208,7 +208,7 @@ Closes #1, #2, #3, #4
 - [✅] AuthContext.tsx düzeltildi
 - [✅] AuthCallbackView.tsx güncellendi
 - [✅] Android Gradle files güncellendi
-- [✅] Package.json version 1.0.13
+- [✅] Package.json version 1.0.17
 - [✅] Yeni scripts eklendi
 
 ### Dökümanlar
