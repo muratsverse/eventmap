@@ -64,13 +64,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     // Chunk size uyarısını artır
     chunkSizeWarningLimit: 1000,
-    // Minification optimizasyonu
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: false,
-        drop_debugger: true
-      }
-    }
+    // esbuild kullan (varsayılan, daha güvenli)
+    minify: 'esbuild'
   }
 }))
