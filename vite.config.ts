@@ -62,39 +62,13 @@ export default defineConfig(({ mode }) => ({
     }
   },
   build: {
-    // Code splitting ve optimizasyon
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          // node_modules içindeki paketleri vendor chunk'larına ayır
-          if (id.includes('node_modules')) {
-            if (id.includes('react-dom') || id.includes('react/')) {
-              return 'react-vendor';
-            }
-            if (id.includes('@supabase') || id.includes('@tanstack')) {
-              return 'supabase-vendor';
-            }
-            if (id.includes('leaflet')) {
-              return 'map-vendor';
-            }
-            if (id.includes('@stripe')) {
-              return 'stripe-vendor';
-            }
-            if (id.includes('lucide-react')) {
-              return 'icons-vendor';
-            }
-            // Capacitor'u ana bundle'a dahil et (circular dependency sorununu önlemek için)
-          }
-        }
-      }
-    },
     // Chunk size uyarısını artır
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 1000,
     // Minification optimizasyonu
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: false, // Debug için console.log'ları koru
+        drop_console: false,
         drop_debugger: true
       }
     }
