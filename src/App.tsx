@@ -20,6 +20,7 @@ function App() {
   const [showFilter, setShowFilter] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
+  const [pendingEventId, setPendingEventId] = useState<string | null>(null);
 
   const { user, profile } = useAuth();
 
@@ -32,7 +33,9 @@ function App() {
   useEffect(() => {
     // Mobile deep link handler
     if (Capacitor.isNativePlatform()) {
-      const handleAppUrlOpen = CapacitorApp.addListener('appUrlOpen', async (data) => {
+      let removeListener: (() => void) | undefined;
+
+      void CapacitorApp.addListener('appUrlOpen', async (data) => {
         const url = data.url;
         console.log('🔗 Deep link received:', url);
 
@@ -51,10 +54,26 @@ function App() {
           console.log('✅ Password reset detected');
           setShowUpdatePasswordModal(true);
         }
+
+        // Etkinlik paylaşım deep link'i: eventmap://event?event=<id>
+        else if (url.includes('event=')) {
+          try {
+            const parsed = new URL(url);
+            const eventId = parsed.searchParams.get('event') || parsed.searchParams.get('id');
+            if (eventId) {
+              console.log('✅ Event deep link detected:', eventId);
+              setPendingEventId(eventId);
+            }
+          } catch (e) {
+            console.log('❌ Failed to parse event deep link:', e);
+          }
+        }
+      }).then((handle) => {
+        removeListener = () => handle.remove();
       });
 
       return () => {
-        handleAppUrlOpen.remove();
+        removeListener?.();
       };
     } else {
       // Web için URL hash VE query param kontrolü
@@ -127,6 +146,16 @@ function App() {
     categories: selectedCategories.length > 0 ? selectedCategories : undefined,
     cities: showNearby ? [userCity] : undefined,
   });
+
+  // Native'de deep link ile gelen event ID'yi events yüklenince aç
+  useEffect(() => {
+    if (!pendingEventId || events.length === 0) return;
+    const foundEvent = events.find((e) => e.id === pendingEventId);
+    if (foundEvent) {
+      setSelectedEvent(foundEvent);
+      setPendingEventId(null);
+    }
+  }, [pendingEventId, events]);
 
   // URL'den event parametresini kontrol et ve ilgili etkinliği aç
   useEffect(() => {

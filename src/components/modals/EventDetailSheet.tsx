@@ -20,15 +20,15 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   if (!event) return null;
 
   const buildEventShareUrl = () => {
-    const publicWebBaseUrl = 'https://muratsverse.github.io/eventmap/';
+    // Native'de: uygulamayı açan deep link paylaş
+    if (Capacitor.isNativePlatform()) {
+      return `eventmap://event?event=${encodeURIComponent(event.id)}`;
+    }
 
-    const baseUrl = Capacitor.isNativePlatform()
-      ? publicWebBaseUrl
-      : new URL(import.meta.env.BASE_URL, window.location.origin).toString();
-
-    const url = new URL(baseUrl);
-    url.searchParams.set('event', event.id);
-    return url.toString();
+    // Web'de: mevcut origin + BASE_URL (GitHub Pages base path gibi) ile link üret
+    const baseUrl = new URL(import.meta.env.BASE_URL, window.location.origin);
+    baseUrl.searchParams.set('event', event.id);
+    return baseUrl.toString();
   };
 
   const copyToClipboard = async (text: string) => {
