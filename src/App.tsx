@@ -39,18 +39,8 @@ function App() {
         const url = data.url;
         console.log('🔗 Deep link received:', url);
 
-        // Google OAuth callback - access_token veya code içeriyorsa
-        if (url.includes('access_token=') || url.includes('code=')) {
-          console.log('✅ OAuth callback detected');
-          // URL'i parse et ve Supabase'e gönder
-          const hashPart = url.split('#')[1] || url.split('?')[1];
-          if (hashPart) {
-            // Hash'i window.location.hash'e set et ki Supabase otomatik handle etsin
-            window.location.hash = hashPart;
-          }
-        }
         // Şifre sıfırlama
-        else if (url.includes('reset-password') || url.includes('type=recovery')) {
+        if (url.includes('reset-password') || url.includes('type=recovery')) {
           console.log('✅ Password reset detected');
           setShowUpdatePasswordModal(true);
         }

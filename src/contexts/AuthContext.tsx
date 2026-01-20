@@ -139,11 +139,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         };
 
         // Auth callback kontrolü - çeşitli formatları handle et
+        // Not: Google redirect URI Supabase tarafında /auth/v1/callback olabilir.
         const isAuthCallback =
           url.includes('auth/callback') ||
           url.includes('auth%2Fcallback') ||
+          url.includes('/auth/v1/callback') ||
+          url.includes('auth/v1/callback') ||
           (parsedUrl.host === 'auth' && parsedUrl.pathname.includes('callback')) ||
-          parsedUrl.pathname.includes('/auth/callback');
+          parsedUrl.pathname.includes('/auth/callback') ||
+          parsedUrl.pathname.includes('/auth/v1/callback');
 
         if (!isAuthCallback) {
           console.log('ℹ️ Bu bir auth callback URL değil:', url);
