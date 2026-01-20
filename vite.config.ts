@@ -65,24 +65,26 @@ export default defineConfig(({ mode }) => ({
     // Code splitting ve optimizasyon
     rollupOptions: {
       output: {
-        manualChunks: {
-          // React core
-          'react-vendor': ['react', 'react-dom'],
-          // Supabase ve API
-          'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
-          // Harita (en ağır kütüphane)
-          'map-vendor': ['leaflet', 'react-leaflet'],
-          // Stripe
-          'stripe-vendor': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
-          // Capacitor
-          'capacitor-vendor': [
-            '@capacitor/core',
-            '@capacitor/app',
-            '@capacitor/browser',
-            '@capacitor/preferences'
-          ],
-          // Icons
-          'icons-vendor': ['lucide-react']
+        manualChunks(id) {
+          // node_modules içindeki paketleri vendor chunk'larına ayır
+          if (id.includes('node_modules')) {
+            if (id.includes('react-dom') || id.includes('react/')) {
+              return 'react-vendor';
+            }
+            if (id.includes('@supabase') || id.includes('@tanstack')) {
+              return 'supabase-vendor';
+            }
+            if (id.includes('leaflet')) {
+              return 'map-vendor';
+            }
+            if (id.includes('@stripe')) {
+              return 'stripe-vendor';
+            }
+            if (id.includes('lucide-react')) {
+              return 'icons-vendor';
+            }
+            // Capacitor'u ana bundle'a dahil et (circular dependency sorununu önlemek için)
+          }
         }
       }
     },
@@ -92,7 +94,7 @@ export default defineConfig(({ mode }) => ({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Console.log'ları production'da kaldır
+        drop_console: false, // Debug için console.log'ları koru
         drop_debugger: true
       }
     }
