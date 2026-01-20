@@ -19,35 +19,20 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   if (!event) return null;
 
   const handleShare = async () => {
-    // Etkinlik için benzersiz URL oluştur
-    const baseUrl = window.location.origin;
-    const eventUrl = `${baseUrl}?event=${event.id}`;
-
     if (navigator.share) {
       try {
         await navigator.share({
           title: event.title,
-          text: `${event.title} - ${event.date} | ${event.location}, ${event.city}`,
-          url: eventUrl,
+          text: event.description,
+          url: window.location.href,
         });
       } catch (error) {
         console.log('Share failed:', error);
       }
     } else {
       // Fallback: Copy to clipboard
-      try {
-        await navigator.clipboard.writeText(eventUrl);
-        alert('Link kopyalandı!');
-      } catch {
-        // Clipboard API desteklenmiyorsa
-        const textArea = document.createElement('textarea');
-        textArea.value = eventUrl;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('Link kopyalandı!');
-      }
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link kopyalandı!');
     }
   };
 

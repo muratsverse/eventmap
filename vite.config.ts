@@ -62,9 +62,39 @@ export default defineConfig(({ mode }) => ({
     }
   },
   build: {
+    // Code splitting ve optimizasyon
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core
+          'react-vendor': ['react', 'react-dom'],
+          // Supabase ve API
+          'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
+          // Harita (en ağır kütüphane)
+          'map-vendor': ['leaflet', 'react-leaflet'],
+          // Stripe
+          'stripe-vendor': ['@stripe/stripe-js', '@stripe/react-stripe-js'],
+          // Capacitor
+          'capacitor-vendor': [
+            '@capacitor/core',
+            '@capacitor/app',
+            '@capacitor/browser',
+            '@capacitor/preferences'
+          ],
+          // Icons
+          'icons-vendor': ['lucide-react']
+        }
+      }
+    },
     // Chunk size uyarısını artır
-    chunkSizeWarningLimit: 1000,
-    // esbuild kullan (varsayılan, daha güvenli)
-    minify: 'esbuild'
+    chunkSizeWarningLimit: 600,
+    // Minification optimizasyonu
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Console.log'ları production'da kaldır
+        drop_debugger: true
+      }
+    }
   }
 }))
