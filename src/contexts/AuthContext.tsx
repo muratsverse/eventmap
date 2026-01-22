@@ -550,11 +550,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (isNative) {
         console.log('📱 Capacitor Browser açılıyor...');
 
-        // iOS için presentationStyle önemli
+        // Android için windowName kullanarak sistem tarayıcısında aç
         await Browser.open({
           url: data.url,
           presentationStyle: 'popover', // iOS'ta daha iyi çalışır
           toolbarColor: '#000000',
+          windowName: '_system', // Sistem tarayıcısında aç (Chrome)
         });
       } else {
         // Web'de tam sayfa yönlendirme
