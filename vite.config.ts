@@ -5,8 +5,8 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  // Capacitor builds must use '/' as base. GitHub Pages might use '/eventmap/'
-  base: (process.env.VERCEL || mode === 'capacitor') ? '/' : mode === 'production' ? '/eventmap/' : '/',
+  // Always use '/' as base for Capacitor and Vercel
+  base: '/',
   plugins: [
     react(),
     VitePWA({
