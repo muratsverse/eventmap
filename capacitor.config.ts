@@ -8,6 +8,12 @@ const config: CapacitorConfig = {
     androidScheme: 'https',
     cleartext: true
   },
+  plugins: {
+    Browser: {
+      // Android'de Chrome Custom Tabs yerine WebView kullan
+      androidxBrowser: false
+    }
+  },
   android: {
     buildOptions: {
       keystorePath: 'eventmap-release-key.keystore',
