@@ -1,4 +1,4 @@
-import { X, Calendar, DollarSign, ArrowUpDown, MapPin, Plus, Search } from 'lucide-react';
+import { X, Calendar, DollarSign, ArrowUpDown, MapPin, Plus } from 'lucide-react';
 import { EventCategory } from '@/types';
 import { getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
@@ -15,14 +15,12 @@ interface FilterSheetProps {
   priceRange: [number, number];
   dateRange: { start: Date | null; end: Date | null };
   sortBy: SortOption;
-  searchQuery: string;
   onCategoryToggle: (category: EventCategory) => void;
   onCityToggle: (city: string) => void;
   onNearbyToggle: () => void;
   onPriceRangeChange: (range: [number, number]) => void;
   onDateRangeChange: (range: { start: Date | null; end: Date | null }) => void;
   onSortChange: (sort: SortOption) => void;
-  onSearchChange: (query: string) => void;
   onClearAll: () => void;
   onApply: () => void;
 }
@@ -46,14 +44,12 @@ export default function FilterSheet({
   priceRange,
   dateRange,
   sortBy,
-  searchQuery,
   onCategoryToggle,
   onCityToggle,
   onNearbyToggle,
   onPriceRangeChange,
   onDateRangeChange,
   onSortChange,
-  onSearchChange,
   onClearAll,
   onApply,
 }: FilterSheetProps) {
@@ -104,42 +100,6 @@ export default function FilterSheet({
             >
               <X className="w-6 h-6 text-[var(--text)]" strokeWidth={2.5} />
             </button>
-          </div>
-
-          {/* Search */}
-          <div className="mb-6">
-            <div className="flex items-center gap-2 mb-3">
-              <Search className="w-5 h-5 text-[var(--muted)]" />
-              <h3 className="text-lg font-semibold text-[var(--text)]">Etkinlik Ara</h3>
-            </div>
-            <div className="flex gap-2">
-              <div className="relative flex-1">
-              <input
-                type="text"
-                placeholder="Etkinlik adı, açıklama veya organizatör..."
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    onApply();
-                    onClose();
-                  }
-                }}
-                className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl px-4 py-3 pl-11 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
-              />
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
-              </div>
-              <button
-                onClick={() => {
-                  onApply();
-                  onClose();
-                }}
-                className="px-5 rounded-2xl font-semibold bg-[var(--accent)] text-white hover:opacity-90 active:scale-95 transition-all"
-              >
-                Ara
-              </button>
-            </div>
           </div>
 
           {/* Categories */}

@@ -1,7 +1,7 @@
 {
   "name": "spotly",
   "private": true,
-  "version": "1.0.20",
+  "version": "1.0.17",
   "type": "module",
   "description": "Sosyal Etkinlik Platformu - Türkiye'nin etkinlik ağı",
   "scripts": {

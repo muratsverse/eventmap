@@ -126,7 +126,6 @@ function App() {
     end: null,
   });
   const [sortBy, setSortBy] = useState<SortOption>('newest');
-  const [searchQuery, setSearchQuery] = useState('');
 
   // User's city (default to Istanbul for now, can be expanded to use profile data)
   const userCity: City = 'Istanbul';
@@ -147,36 +146,9 @@ function App() {
     }
   }, [pendingEventId, events]);
 
-  // URL'den event parametresini kontrol et ve ilgili etkinliği aç
-  useEffect(() => {
-    if (events.length > 0) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const eventId = urlParams.get('event');
-      if (eventId) {
-        const foundEvent = events.find(e => e.id === eventId);
-        if (foundEvent) {
-          setSelectedEvent(foundEvent);
-          // URL'den event parametresini temizle
-          window.history.replaceState({}, '', window.location.pathname);
-        }
-      }
-    }
-  }, [events]);
-
   // Client-side filtering and sorting
   const filteredEvents = useMemo(() => {
     let filtered = events;
-
-    // Search filter
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim();
-      filtered = filtered.filter(e =>
-        e.title.toLowerCase().includes(query) ||
-        e.description.toLowerCase().includes(query) ||
-        e.organizer.toLowerCase().includes(query) ||
-        e.location.toLowerCase().includes(query)
-      );
-    }
 
     // City filter
     if (selectedCities.length > 0) {
@@ -215,7 +187,7 @@ function App() {
       default:
         return filtered;
     }
-  }, [events, selectedCities, priceRange, dateRange, sortBy, searchQuery]);
+  }, [events, selectedCities, priceRange, dateRange, sortBy]);
 
   const handleCategoryToggle = (category: EventCategory) => {
     setSelectedCategories((prev) =>
@@ -240,7 +212,6 @@ function App() {
     setPriceRange([0, 1000]);
     setDateRange({ start: null, end: null });
     setSortBy('newest');
-    setSearchQuery('');
   };
 
   const handleApplyFilters = () => {
@@ -314,14 +285,12 @@ function App() {
         priceRange={priceRange}
         dateRange={dateRange}
         sortBy={sortBy}
-        searchQuery={searchQuery}
         onCategoryToggle={handleCategoryToggle}
         onCityToggle={handleCityToggle}
         onNearbyToggle={handleNearbyToggle}
         onPriceRangeChange={setPriceRange}
         onDateRangeChange={setDateRange}
         onSortChange={setSortBy}
-        onSearchChange={setSearchQuery}
         onClearAll={handleClearFilters}
         onApply={handleApplyFilters}
       />

@@ -4,7 +4,6 @@ import { formatPrice, getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useFavorites, useAttendances, useEventAttendees } from '@/hooks/useFavorites';
 import { useAuth } from '@/contexts/AuthContext';
-import { Capacitor } from '@capacitor/core';
 
 interface EventDetailSheetProps {
   event: Event | null;
@@ -19,65 +18,21 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
 
   if (!event) return null;
 
-  const buildEventShareUrl = () => {
-    // Native'de: uygulamayı açan deep link paylaş
-    if (Capacitor.isNativePlatform()) {
-      return `eventmap://event?event=${encodeURIComponent(event.id)}`;
-    }
-
-    // Web'de: mevcut origin + BASE_URL (GitHub Pages base path gibi) ile link üret
-    const baseUrl = new URL(import.meta.env.BASE_URL, window.location.origin);
-    baseUrl.searchParams.set('event', event.id);
-    return baseUrl.toString();
-  };
-
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      // ignore and fall back
-    }
-
-    try {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'fixed';
-      textarea.style.left = '-9999px';
-      textarea.style.top = '0';
-      document.body.appendChild(textarea);
-      textarea.focus();
-      textarea.select();
-      const ok = document.execCommand('copy');
-      document.body.removeChild(textarea);
-      return ok;
-    } catch {
-      return false;
-    }
-  };
-
   const handleShare = async () => {
-    const eventUrl = buildEventShareUrl();
-
-    const copied = await copyToClipboard(eventUrl);
-    if (copied) {
-      alert('Etkinlik linki kopyalandı!');
-    } else {
-      // Last-resort fallback
-      window.prompt('Etkinlik linki (kopyalayın):', eventUrl);
-    }
-
     if (navigator.share) {
       try {
         await navigator.share({
           title: event.title,
           text: event.description,
-          url: eventUrl,
+          url: window.location.href,
         });
       } catch (error) {
         console.log('Share failed:', error);
       }
+    } else {
+      // Fallback: Copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link kopyalandı!');
     }
   };
 
