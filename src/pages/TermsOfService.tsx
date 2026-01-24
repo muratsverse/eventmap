@@ -9,21 +9,21 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">Business Information</h2>
             <p className="text-[var(--muted)]">
-              Legal business name: <strong>muratsverse</strong>. Spotly is operated by muratsverse.
+              Legal business name: <strong>muratsverse</strong>. Happenin is operated by muratsverse.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
             <p className="text-[var(--muted)]">
-              By accessing and using Spotly ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.
+              By accessing and using Happenin ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
             <p className="text-[var(--muted)]">
-              Spotly is a social event discovery and management platform that allows users to create, share, and join local events.
+              Happenin is a social event discovery and management platform that allows users to create, share, and join local events.
               The service is currently provided free of charge.
             </p>
           </section>
@@ -44,14 +44,14 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">4. Free Access</h2>
             <p className="text-[var(--muted)]">
-              Spotly is currently provided free of charge. All users can create and share events without limits.
+              Happenin is currently provided free of charge. All users can create and share events without limits.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">5. User Content</h2>
             <p className="text-[var(--muted)]">
-              You retain ownership of any content you post on Spotly. By posting content, you grant us a worldwide, non-exclusive,
+              You retain ownership of any content you post on Happenin. By posting content, you grant us a worldwide, non-exclusive,
               royalty-free license to use, display, and distribute your content in connection with the Service.
             </p>
           </section>
@@ -79,7 +79,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">8. Limitation of Liability</h2>
             <p className="text-[var(--muted)]">
-              Spotly is provided "as is" without warranties of any kind. We are not liable for any damages arising from your use
+              Happenin is provided "as is" without warranties of any kind. We are not liable for any damages arising from your use
               of the Service, including but not limited to direct, indirect, incidental, or consequential damages.
             </p>
           </section>
@@ -102,7 +102,7 @@ export default function TermsOfService() {
 
         <div className="mt-12 pt-8 border-t border-[var(--border)]">
           <a href="/" className="text-[var(--accent)] hover:underline">
-            ← Back to Spotly
+            ← Back to Happenin
           </a>
         </div>
       </div>

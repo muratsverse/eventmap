@@ -88,7 +88,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">8. Children's Privacy</h2>
             <p className="text-[var(--muted)]">
-              Spotly is not intended for users under 13 years of age. We do not knowingly collect personal information from
+              Happenin is not intended for users under 13 years of age. We do not knowingly collect personal information from
               children under 13. If we become aware of such collection, we will delete the information immediately.
             </p>
           </section>
@@ -120,7 +120,7 @@ export default function PrivacyPolicy() {
 
         <div className="mt-12 pt-8 border-t border-[var(--border)]">
           <a href="/" className="text-[var(--accent)] hover:underline">
-            ← Back to Spotly
+            ← Back to Happenin
           </a>
         </div>
       </div>

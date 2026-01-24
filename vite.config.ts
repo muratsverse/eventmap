@@ -13,8 +13,8 @@ export default defineConfig(({ mode }) => ({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Spotly - Sosyal Etkinlik Platformu',
-        short_name: 'Spotly',
+        name: 'Happenin - Sosyal Etkinlik Platformu',
+        short_name: 'Happenin',
         description: 'Turkiye\'deki sosyal etkinlikleri kesfedin',
         theme_color: '#8B5CF6',
         background_color: '#1F2937',

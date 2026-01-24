@@ -1,7 +1,7 @@
 {
-  "name": "spotly",
+  "name": "happenin",
   "private": true,
-  "version": "1.0.17",
+  "version": "1.0.18",
   "type": "module",
   "description": "Sosyal Etkinlik Platformu - Türkiye'nin etkinlik ağı",
   "scripts": {

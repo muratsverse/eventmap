@@ -1,4 +1,4 @@
-import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Share2, Check, Navigation } from 'lucide-react';
+import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Check, Navigation } from 'lucide-react';
 import { Event } from '@/types';
 import { formatPrice, getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
@@ -17,24 +17,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   const { attendees, count: attendeesCount } = useEventAttendees(event?.id || null);
 
   if (!event) return null;
-
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: event.title,
-          text: event.description,
-          url: window.location.href,
-        });
-      } catch (error) {
-        console.log('Share failed:', error);
-      }
-    } else {
-      // Fallback: Copy to clipboard
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link kopyalandı!');
-    }
-  };
 
   const handleGetDirections = () => {
     const { latitude, longitude } = event;
@@ -269,12 +251,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                   isFavorite(event.id) ? "text-[#d07a6a] fill-[#d07a6a]" : "text-[var(--text)]"
                 )}
               />
-            </button>
-            <button
-              onClick={handleShare}
-              className="rounded-2xl px-6 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-2)] active:scale-95 transition-all"
-            >
-              <Share2 className="w-6 h-6 text-[var(--text)]" />
             </button>
           </div>
         </div>
