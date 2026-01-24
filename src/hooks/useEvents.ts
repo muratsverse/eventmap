@@ -23,6 +23,7 @@ const dbToEvent = (dbEvent: any): Event => ({
   organizer: dbEvent.organizer,
   // Use real attendee count if available, otherwise fallback to static count
   attendees: dbEvent.attendee_count ?? dbEvent.attendees,
+  maxAttendees: dbEvent.max_attendees ?? undefined,
   latitude: dbEvent.latitude,
   longitude: dbEvent.longitude,
   isPremium: dbEvent.is_premium,

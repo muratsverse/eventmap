@@ -13,6 +13,7 @@ import ProfilePhotoModal from '../modals/ProfilePhotoModal';
 import EditProfileModal from '../modals/EditProfileModal';
 import UpdatePasswordModal from '../modals/UpdatePasswordModal';
 import { supabase } from '@/lib/supabase';
+import { translateAuthError } from '@/lib/errorMessages';
 
 interface ProfileViewProps {
   events: Event[];
@@ -55,7 +56,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
     setLoginError('');
     const { error } = await signInWithGoogle();
     if (error) {
-      setLoginError(error.message || 'Gmail ile giriş yapılamadı');
+      setLoginError(translateAuthError(error));
     }
   };
 
@@ -90,7 +91,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
     const { error } = await deleteAccount();
 
     if (error) {
-      alert('Hesap silinirken hata oluştu: ' + error.message);
+      alert('Hesap silinirken hata oluştu: ' + translateAuthError(error));
       setIsDeleting(false);
       setShowDeleteConfirm(false);
     } else {
@@ -108,12 +109,12 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
     if (isSignUp) {
       const { error } = await signUp(email, password);
       if (error) {
-        setLoginError(error.message || 'Kayıt yapılamadı');
+        setLoginError(translateAuthError(error));
       }
     } else {
       const { error } = await signIn(email, password);
       if (error) {
-        setLoginError(error.message || 'Giriş yapılamadı');
+        setLoginError(translateAuthError(error));
       }
     }
   };

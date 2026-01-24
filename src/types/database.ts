@@ -26,6 +26,7 @@ export interface Database {
           price_max: number
           organizer: string
           attendees: number
+          max_attendees: number | null
           latitude: number
           longitude: number
           is_premium: boolean
@@ -48,6 +49,7 @@ export interface Database {
           price_max?: number
           organizer: string
           attendees?: number
+          max_attendees?: number | null
           latitude: number
           longitude: number
           is_premium?: boolean
@@ -70,6 +72,7 @@ export interface Database {
           price_max?: number
           organizer?: string
           attendees?: number
+          max_attendees?: number | null
           latitude?: number
           longitude?: number
           is_premium?: boolean

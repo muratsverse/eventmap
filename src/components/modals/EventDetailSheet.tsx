@@ -1,9 +1,10 @@
-import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Check, Navigation } from 'lucide-react';
+import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Check, Navigation, AlertTriangle } from 'lucide-react';
 import { Event } from '@/types';
 import { formatPrice, getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useFavorites, useAttendances, useEventAttendees } from '@/hooks/useFavorites';
 import { useAuth } from '@/contexts/AuthContext';
+import { translateError } from '@/lib/errorMessages';
 
 interface EventDetailSheetProps {
   event: Event | null;
@@ -17,6 +18,11 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   const { attendees, count: attendeesCount } = useEventAttendees(event?.id || null);
 
   if (!event) return null;
+
+  // Kapasite kontrolü
+  const hasCapacityLimit = event.maxAttendees !== undefined && event.maxAttendees !== null;
+  const isAtCapacity = hasCapacityLimit && attendeesCount >= event.maxAttendees!;
+  const remainingSpots = hasCapacityLimit ? Math.max(0, event.maxAttendees! - attendeesCount) : null;
 
   const handleGetDirections = () => {
     const { latitude, longitude } = event;
@@ -152,8 +158,20 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                 <div className="flex-1">
                   <p className="text-sm text-[var(--muted)]">Katılımcılar</p>
                   <p className="text-[var(--text)] font-semibold">
-                    {attendeesCount > 0 ? `${attendeesCount} kişi katılıyor` : `${event.attendees.toLocaleString()} kişi`}
+                    {attendeesCount > 0
+                      ? hasCapacityLimit
+                        ? `${attendeesCount} / ${event.maxAttendees} kişi`
+                        : `${attendeesCount} kişi katılıyor`
+                      : hasCapacityLimit
+                        ? `0 / ${event.maxAttendees} kişi`
+                        : `${event.attendees.toLocaleString()} kişi`
+                    }
                   </p>
+                  {hasCapacityLimit && !isAtCapacity && remainingSpots !== null && remainingSpots <= 10 && remainingSpots > 0 && (
+                    <p className="text-xs text-orange-400 mt-1">
+                      Son {remainingSpots} kişilik yer kaldı!
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -225,18 +243,42 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
             </div>
           )}
 
+          {/* Capacity Warning - Maksimum katılımcı uyarısı */}
+          {isAtCapacity && !isAttending(event.id) && (
+            <div className="mb-6 bg-orange-500/15 border border-orange-500/40 rounded-2xl p-4 flex items-center gap-3">
+              <AlertTriangle className="w-6 h-6 text-orange-400" />
+              <div>
+                <p className="text-[var(--text)] font-semibold">Maksimum katılımcı sayısına ulaşıldı</p>
+                <p className="text-sm text-[var(--muted)]">Bu etkinlik için tüm kontenjan dolmuştur</p>
+              </div>
+            </div>
+          )}
+
           {/* Actions */}
           <div className="flex gap-3 mb-6">
             <button
-              onClick={() => toggleAttendance(event.id)}
+              onClick={() => {
+                if (!user) {
+                  alert('Giriş yapmalısınız');
+                  return;
+                }
+                if (isAtCapacity && !isAttending(event.id)) {
+                  alert('Bu etkinliğin kapasitesi dolmuştur');
+                  return;
+                }
+                toggleAttendance(event.id);
+              }}
+              disabled={isAtCapacity && !isAttending(event.id)}
               className={cn(
-                "flex-1 font-semibold rounded-2xl py-4 transition-all hover:opacity-90 active:scale-95",
+                "flex-1 font-semibold rounded-2xl py-4 transition-all",
                 isAttending(event.id)
-                  ? "bg-[#4fb07a]/15 text-[#4fb07a] border border-[#4fb07a]/40"
-                  : "bg-[var(--accent)] text-white"
+                  ? "bg-[#4fb07a]/15 text-[#4fb07a] border border-[#4fb07a]/40 hover:opacity-90 active:scale-95"
+                  : isAtCapacity
+                    ? "bg-[var(--surface-2)] text-[var(--muted)] border border-[var(--border)] cursor-not-allowed"
+                    : "bg-[var(--accent)] text-white hover:opacity-90 active:scale-95"
               )}
             >
-              {isAttending(event.id) ? 'Katılıyorsunuz' : 'Katıl'}
+              {isAttending(event.id) ? 'Katılıyorsunuz' : isAtCapacity ? 'Kontenjan Dolu' : 'Katıl'}
             </button>
             <button
               onClick={() => user ? toggleFavorite(event.id) : alert('Giriş yapmalısınız')}

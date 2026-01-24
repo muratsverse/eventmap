@@ -598,25 +598,58 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
             {/* Katılımcı Kapasitesi */}
             <div>
               <h3 className="text-lg font-semibold text-[var(--text)] mb-4">
-                Katılımcı Kapasitesi <span className="text-sm font-normal text-[var(--muted)]">(Opsiyonel)</span>
+                Katılımcı Kapasitesi
               </h3>
-              <div>
-                <label className="block text-sm font-medium text-[var(--text)] mb-2">
-                  Maksimum Katılımcı Sayısı
-                </label>
-                <input
-                  type="number"
-                  value={formData.maxAttendees}
-                  onChange={(e) => setFormData({ ...formData, maxAttendees: e.target.value })}
-                  placeholder="Örn: 100 (Boş bırakabilirsiniz)"
-                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
-                  min="1"
+
+              {/* Sınırsız Toggle */}
+              <div className="flex items-center justify-between mb-4 p-3 bg-[var(--surface)] border border-[var(--border)] rounded-xl">
+                <div className="flex items-center gap-3">
+                  <span className="text-[var(--text)]">Sınırsız Katılım</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, maxAttendees: formData.maxAttendees === '' ? '100' : '' })}
                   disabled={isCreating}
-                />
-                <p className="text-xs text-[var(--muted)] mt-2">
-                  👥 Etkinliğe katılabilecek maksimum kişi sayısını belirleyin. Boş bırakırsanız sınırsız katılım olur.
-                </p>
+                  className={cn(
+                    "w-12 h-6 rounded-full transition-colors relative",
+                    formData.maxAttendees === ''
+                      ? "bg-[#4fb07a]"
+                      : "bg-[var(--surface-2)]"
+                  )}
+                >
+                  <div className={cn(
+                    "absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform",
+                    formData.maxAttendees === '' ? "translate-x-6" : ""
+                  )} />
+                </button>
               </div>
+
+              {/* Maksimum Katılımcı Input - Sadece sınırsız değilse göster */}
+              {formData.maxAttendees !== '' && (
+                <div>
+                  <label className="block text-sm font-medium text-[var(--text)] mb-2">
+                    Maksimum Katılımcı Sayısı
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.maxAttendees}
+                    onChange={(e) => setFormData({ ...formData, maxAttendees: e.target.value })}
+                    placeholder="Örn: 100"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
+                    min="1"
+                    disabled={isCreating}
+                  />
+                  <p className="text-xs text-[var(--muted)] mt-2">
+                    👥 Etkinliğe katılabilecek maksimum kişi sayısını belirleyin.
+                  </p>
+                </div>
+              )}
+
+              {formData.maxAttendees === '' && (
+                <p className="text-xs text-[var(--muted)]">
+                  ♾️ Sınırsız katılım aktif - herkes katılabilir.
+                </p>
+              )}
             </div>
 
             {/* Image Upload */}
