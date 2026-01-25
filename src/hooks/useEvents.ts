@@ -53,8 +53,12 @@ export function useEvents(filters?: {
         return events;
       }
 
-      // Query from Supabase
-      let query = supabase.from('events').select('*').order('date', { ascending: true });
+      // Query from Supabase - sadece onaylanmış etkinlikleri getir
+      let query = supabase
+        .from('events')
+        .select('*')
+        .eq('status', 'approved') // Sadece admin tarafından onaylanmış etkinlikler
+        .order('date', { ascending: true });
 
       if (filters?.categories && filters.categories.length > 0) {
         query = query.in('category', filters.categories);
