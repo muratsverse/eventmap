@@ -26,6 +26,8 @@ export interface Event {
   isPremium?: boolean;
   source?: string; // biletix, bubilet, eventbrite, etc.
   status?: 'draft' | 'inReview' | 'approved' | 'rejected'; // Moderation status
+  creatorId?: string; // Event creator user ID
+  createdAt?: string; // Event creation timestamp
 }
 
 export interface User {

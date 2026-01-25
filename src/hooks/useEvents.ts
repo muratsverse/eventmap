@@ -29,6 +29,8 @@ const dbToEvent = (dbEvent: any): Event => ({
   isPremium: dbEvent.is_premium,
   source: dbEvent.source,
   status: dbEvent.status as 'draft' | 'inReview' | 'approved' | 'rejected',
+  creatorId: dbEvent.creator_id, // Etkinlik sahibi
+  createdAt: dbEvent.created_at, // Oluşturulma tarihi
 });
 
 export function useEvents(filters?: {
@@ -54,11 +56,12 @@ export function useEvents(filters?: {
       }
 
       // Query from Supabase - sadece onaylanmış etkinlikleri getir
+      // En son oluşturulan etkinlikler önce gösterilsin
       let query = supabase
         .from('events')
         .select('*')
         .eq('status', 'approved') // Sadece admin tarafından onaylanmış etkinlikler
-        .order('date', { ascending: true });
+        .order('created_at', { ascending: false }); // En yeni önce
 
       if (filters?.categories && filters.categories.length > 0) {
         query = query.in('category', filters.categories);

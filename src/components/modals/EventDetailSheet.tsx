@@ -1,10 +1,12 @@
-import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Check, Navigation, AlertTriangle } from 'lucide-react';
+import { useState } from 'react';
+import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Check, Navigation, AlertTriangle, Edit3 } from 'lucide-react';
 import { Event } from '@/types';
 import { formatPrice, getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useFavorites, useAttendances, useEventAttendees } from '@/hooks/useFavorites';
 import { useAuth } from '@/contexts/AuthContext';
 import { translateError } from '@/lib/errorMessages';
+import EditEventModal from './EditEventModal';
 
 interface EventDetailSheetProps {
   event: Event | null;
@@ -16,8 +18,12 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   const { isFavorite, toggleFavorite } = useFavorites();
   const { isAttending, toggleAttendance } = useAttendances();
   const { attendees, count: attendeesCount } = useEventAttendees(event?.id || null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   if (!event) return null;
+
+  // Kullanıcı bu etkinliğin sahibi mi kontrol et
+  const isOwner = user && event.creatorId === user.id;
 
   // Kapasite kontrolü
   const hasCapacityLimit = event.maxAttendees !== undefined && event.maxAttendees !== null;
@@ -75,13 +81,26 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
           )} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 rounded-full p-2 bg-[var(--surface)]/80 border border-[var(--border)] hover:bg-[var(--surface)] active:scale-95 transition-all"
-          >
-            <X className="w-6 h-6 text-[var(--text)]" />
-          </button>
+          {/* Header Buttons */}
+          <div className="absolute top-4 right-4 flex items-center gap-2">
+            {/* Edit Button - Sadece etkinlik sahibi görebilir */}
+            {isOwner && (
+              <button
+                onClick={() => setShowEditModal(true)}
+                className="rounded-full p-2 bg-[var(--surface)]/80 border border-[var(--border)] hover:bg-[var(--surface)] active:scale-95 transition-all"
+                title="Etkinliği Düzenle"
+              >
+                <Edit3 className="w-6 h-6 text-[var(--text)]" />
+              </button>
+            )}
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="rounded-full p-2 bg-[var(--surface)]/80 border border-[var(--border)] hover:bg-[var(--surface)] active:scale-95 transition-all"
+            >
+              <X className="w-6 h-6 text-[var(--text)]" />
+            </button>
+          </div>
 
           {/* Category Badge */}
           <div className="absolute top-4 left-4">
@@ -298,6 +317,17 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
         </div>
       </div>
 
+      {/* Edit Event Modal */}
+      {showEditModal && event && (
+        <EditEventModal
+          isOpen={showEditModal}
+          onClose={() => {
+            setShowEditModal(false);
+            onClose(); // Ana sheet'i de kapat
+          }}
+          event={event}
+        />
+      )}
     </div>
   );
 }
