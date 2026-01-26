@@ -366,7 +366,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
             {[
               { id: 'favorites' as ProfileTab, label: 'Favori', icon: Heart },
               { id: 'attending' as ProfileTab, label: 'Katılım', icon: Calendar },
-              { id: 'created' as ProfileTab, label: 'Oluştur', icon: PlusCircle },
+              { id: 'created' as ProfileTab, label: 'Oluşturduklarım', icon: PlusCircle },
             ].map((tab) => {
               const Icon = tab.icon;
               return (
