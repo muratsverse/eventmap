@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Edit2, Eye, EyeOff, Trash2, FileText, Scale, CreditCard } from 'lucide-react';
+import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Edit2, Eye, EyeOff, Trash2, FileText, Scale, CreditCard, PlusCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites, useAttendances } from '@/hooks/useFavorites';
-import { useEvents } from '@/hooks/useEvents';
+import { useEvents, useUserCreatedEvents } from '@/hooks/useEvents';
 import type { Event } from '@/types';
 import EventCard from '../EventCard';
 import AdminPanel from '../admin/AdminPanel';
@@ -20,7 +20,7 @@ interface ProfileViewProps {
   onEventClick: (event: Event) => void;
 }
 
-type ProfileTab = 'favorites' | 'attending' | 'settings' | 'admin';
+type ProfileTab = 'favorites' | 'attending' | 'created' | 'settings' | 'admin';
 
 export default function ProfileView({ events, onEventClick }: ProfileViewProps) {
   const navigate = useNavigate();
@@ -37,6 +37,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
   const { favorites } = useFavorites();
   const { attendances } = useAttendances();
   const { data: allEvents = [] } = useEvents();
+  const { data: userCreatedEvents = [] } = useUserCreatedEvents(user?.id);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -121,6 +122,8 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
 
   const favoriteEvents = allEvents.filter((e) => favorites.includes(e.id));
   const attendingEvents = allEvents.filter((e) => attendances.includes(e.id));
+  // Kullanıcının oluşturduğu tüm etkinlikler (onaysız dahil)
+  const createdEvents = userCreatedEvents;
 
   if (loading) {
     return (
@@ -347,7 +350,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                     <p className="text-xs text-[var(--muted)]">Katılıyorum</p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold text-[var(--text)]">0</p>
+                    <p className="text-lg font-semibold text-[var(--text)]">{createdEvents.length}</p>
                     <p className="text-xs text-[var(--muted)]">Oluşturdum</p>
                   </div>
                 </div>
@@ -362,6 +365,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
             {[
               { id: 'favorites' as ProfileTab, label: 'Favoriler', icon: Heart },
               { id: 'attending' as ProfileTab, label: 'Katılıyorum', icon: Calendar },
+              { id: 'created' as ProfileTab, label: 'Oluşturdum', icon: PlusCircle },
               ...(profile?.is_admin ? [{ id: 'admin' as ProfileTab, label: 'Admin', icon: Shield }] : []),
               { id: 'settings' as ProfileTab, label: 'Ayarlar', icon: Settings },
             ].map((tab) => {
@@ -421,6 +425,42 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                     onClick={() => onEventClick(event)}
                     variant="compact"
                   />
+                ))
+              )}
+            </>
+          )}
+
+          {activeTab === 'created' && (
+            <>
+              {createdEvents.length === 0 ? (
+                <div className="rounded-2xl p-8 text-center bg-[var(--surface)] border border-[var(--border)]">
+                  <PlusCircle className="w-12 h-12 text-[var(--muted)] mx-auto mb-3" />
+                  <p className="text-[var(--muted)]">Henüz etkinlik oluşturmadınız</p>
+                  <p className="text-xs text-[var(--muted)] mt-2">Alt menüdeki + butonuyla yeni etkinlik oluşturabilirsiniz</p>
+                </div>
+              ) : (
+                createdEvents.map((event) => (
+                  <div key={event.id} className="relative">
+                    {/* Status Badge */}
+                    {event.status && event.status !== 'approved' && (
+                      <div className={`absolute top-2 right-2 z-10 px-2 py-1 rounded-full text-xs font-medium ${
+                        event.status === 'inReview'
+                          ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                          : event.status === 'rejected'
+                          ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                          : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                      }`}>
+                        {event.status === 'inReview' ? '⏳ Onay Bekliyor' :
+                         event.status === 'rejected' ? '❌ Reddedildi' :
+                         event.status === 'draft' ? '📝 Taslak' : event.status}
+                      </div>
+                    )}
+                    <EventCard
+                      event={event}
+                      onClick={() => onEventClick(event)}
+                      variant="compact"
+                    />
+                  </div>
                 ))
               )}
             </>

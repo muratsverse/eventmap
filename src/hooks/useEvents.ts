@@ -96,6 +96,29 @@ export function useEvents(filters?: {
   });
 }
 
+// Kullanıcının oluşturduğu tüm etkinlikleri getir (onaysız dahil)
+export function useUserCreatedEvents(userId?: string) {
+  return useQuery({
+    queryKey: ['user-created-events', userId],
+    queryFn: async () => {
+      if (!userId || !supabaseHelpers.isConfigured()) {
+        return [];
+      }
+
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('creator_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      return data.map((event) => dbToEvent(event));
+    },
+    enabled: Boolean(userId),
+  });
+}
+
 export function useNearbyEvents(latitude?: number, longitude?: number, distanceKm: number = 10) {
   return useQuery({
     queryKey: ['nearby-events', latitude, longitude, distanceKm],

@@ -221,9 +221,6 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                           <p className="text-sm font-medium text-[var(--text)] truncate">
                             {attendee.name}
                           </p>
-                          <p className="text-xs text-[var(--muted)] truncate">
-                            {attendee.email}
-                          </p>
                         </div>
                       </div>
                     ))}
