@@ -359,13 +359,35 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="px-4 mt-6">
+        {/* Tabs - İki satır */}
+        <div className="px-4 mt-6 space-y-2">
+          {/* Birinci satır: Favoriler, Katılıyorum, Oluşturdum */}
           <div className="rounded-2xl p-1 flex gap-1 bg-[var(--surface)] border border-[var(--border)]">
             {[
               { id: 'favorites' as ProfileTab, label: 'Favoriler', icon: Heart },
               { id: 'attending' as ProfileTab, label: 'Katılıyorum', icon: Calendar },
               { id: 'created' as ProfileTab, label: 'Oluşturdum', icon: PlusCircle },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-medium text-sm transition-all ${
+                    activeTab === tab.id
+                      ? 'bg-[var(--accent)] text-white'
+                      : 'text-[var(--muted)] hover:text-[var(--text)]'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          {/* İkinci satır: Admin (varsa), Ayarlar */}
+          <div className="rounded-2xl p-1 flex gap-1 bg-[var(--surface)] border border-[var(--border)]">
+            {[
               ...(profile?.is_admin ? [{ id: 'admin' as ProfileTab, label: 'Admin', icon: Shield }] : []),
               { id: 'settings' as ProfileTab, label: 'Ayarlar', icon: Settings },
             ].map((tab) => {
