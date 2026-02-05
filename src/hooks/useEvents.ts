@@ -74,10 +74,11 @@ export function useEvents(filters?: {
 
       if (error) throw error;
 
-      // Get attendee counts for all events
+      // Get attendee counts for all events (sadece görünür olanlar)
       const { data: attendancesData } = await supabase
         .from('attendances')
-        .select('event_id');
+        .select('event_id')
+        .is('hidden_at', null);
 
       // Count attendees per event
       const attendeeCounts: Record<string, number> = {};
