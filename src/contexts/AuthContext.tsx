@@ -29,6 +29,7 @@ interface AuthContextType {
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: Error | null }>;
   // OAuth methods
   signInWithGoogle: () => Promise<{ error: Error | null }>;
+  signInWithApple: () => Promise<{ error: Error | null }>;
   // Password reset
   resetPassword: (email: string) => Promise<{ error: Error | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
@@ -568,6 +569,66 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Sign in with Apple
+  const signInWithApple = async () => {
+    if (!isSupabaseConfigured) {
+      return { error: new Error('Supabase yapılandırılmamış') };
+    }
+
+    try {
+      const isNative = Capacitor.isNativePlatform();
+      const platform = Capacitor.getPlatform();
+      console.log('🍎 Apple Sign-In başlatılıyor, platform:', platform);
+
+      // Redirect URL belirleme
+      let redirectTo: string;
+
+      if (isNative) {
+        redirectTo = 'eventmap://auth/callback';
+      } else {
+        const currentOrigin = window.location.origin;
+        redirectTo = `${currentOrigin}/auth/callback`;
+      }
+
+      console.log('🔗 Apple Redirect URL:', redirectTo);
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
+        options: {
+          redirectTo,
+          skipBrowserRedirect: isNative,
+        },
+      });
+
+      if (error) {
+        console.error('❌ Apple OAuth error:', error);
+        return { error };
+      }
+
+      if (!data?.url) {
+        console.error('❌ Apple OAuth URL alınamadı');
+        return { error: new Error('Apple OAuth URL alınamadı') };
+      }
+
+      console.log('✅ Apple OAuth URL alındı');
+
+      if (isNative) {
+        console.log('📱 Capacitor Browser açılıyor (Apple)...');
+        await Browser.open({
+          url: data.url,
+          presentationStyle: 'popover',
+          toolbarColor: '#000000',
+        });
+      } else {
+        window.location.assign(data.url);
+      }
+
+      return { error: null };
+    } catch (error) {
+      console.error('❌ Apple sign-in error:', error);
+      return { error: error as Error };
+    }
+  };
 
   // Password Reset Methods
   const resetPassword = async (email: string) => {
@@ -679,6 +740,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
     updateProfile,
     signInWithGoogle,
+    signInWithApple,
     resetPassword,
     updatePassword,
     deleteAccount,
