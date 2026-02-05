@@ -176,8 +176,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         console.log('📝 OAuth params:', {
           hasCode: !!code,
+          codePreview: code ? code.substring(0, 20) + '...' : null,
           hasAccessToken: !!access_token,
           hasRefreshToken: !!refresh_token,
+          fullUrl: url,
+          hash: parsedUrl.hash,
+          search: parsedUrl.search,
         });
 
         let success = false;
@@ -267,6 +271,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await handleAuthCallbackUrl(url || '');
       });
       console.log('✅ Deep link listener kuruldu');
+
+      // Browser kapandığında session kontrol et (Apple OAuth için önemli)
+      await Browser.addListener('browserFinished', async () => {
+        console.log('🌐 Browser kapatıldı, session kontrol ediliyor...');
+        // Kısa bir bekleme - redirect tamamlansın
+        setTimeout(async () => {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            console.log('✅ Browser kapandıktan sonra session bulundu:', session.user.email);
+            // State'leri güncelle
+            setSession(session);
+            setUser(session.user);
+            loadProfile(session.user.id, session.user);
+          } else {
+            console.log('⚠️ Browser kapandı ama session yok');
+          }
+        }, 500);
+      });
+      console.log('✅ Browser finished listener kuruldu');
     };
 
     setupListener();
@@ -279,11 +302,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     });
 
+    // Uygulama resume olduğunda session kontrol et
+    App.addListener('appStateChange', async ({ isActive }) => {
+      if (isActive) {
+        console.log('📱 Uygulama aktif oldu, session kontrol ediliyor...');
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session && !user) {
+          console.log('✅ Resume sonrası session bulundu:', session.user.email);
+          setSession(session);
+          setUser(session.user);
+          loadProfile(session.user.id, session.user);
+        }
+      }
+    });
+
     return () => {
       if (listenerHandle) {
         listenerHandle.remove();
         console.log('🔌 Deep link listener kaldırıldı');
       }
+      Browser.removeAllListeners();
+      App.removeAllListeners();
+      console.log('🔌 Tüm listener\'lar kaldırıldı');
     };
   }, [isSupabaseConfigured]);
 
