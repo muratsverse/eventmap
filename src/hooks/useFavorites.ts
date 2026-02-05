@@ -96,11 +96,12 @@ export function useEventAttendees(eventId: string | null) {
         return [];
       }
 
-      // Step 1: Get all attendances for this event
+      // Step 1: Get all attendances for this event (hidden_at NULL = görünür)
       const { data: attendancesData, error: attendancesError } = await supabase
         .from('attendances')
         .select('user_id')
-        .eq('event_id', eventId);
+        .eq('event_id', eventId)
+        .is('hidden_at', null);
 
       if (attendancesError) {
         throw attendancesError;
@@ -113,11 +114,12 @@ export function useEventAttendees(eventId: string | null) {
       // Step 2: Get user_ids
       const userIds = attendancesData.map((a: any) => a.user_id);
 
-      // Step 3: Get profiles for these users
+      // Step 3: Get profiles for these users (silinmemiş olanlar)
       const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
         .select('id, name, email, profile_photo')
-        .in('id', userIds);
+        .in('id', userIds)
+        .is('deleted_at', null);
 
       if (profilesError) {
         // Don't throw - return attendees without profile data

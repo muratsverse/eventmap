@@ -31,7 +31,7 @@ CREATE INDEX IF NOT EXISTS idx_events_creator ON events(creator_id);
 
 -- Add report count for spam detection
 ALTER TABLE events
-ADD COLUMN IF NOT EXISTS report_count INTEGER DEFAULT 0;
+ADD COLUMN IF NOT EXISTS report_count INTEGER DEFAULT 0;şöyle yapalım closed testte 22 versiyon var 23 
 
 -- Create reports table for tracking spam/inappropriate content
 CREATE TABLE IF NOT EXISTS event_reports (
