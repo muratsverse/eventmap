@@ -258,8 +258,8 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                 Google ile Giriş Yap
               </button>
 
-              {/* Apple ile giriş sadece iOS'ta göster */}
-              {Capacitor.getPlatform() === 'ios' && (
+              {/* Apple ile giriş - TEST İÇİN HER YERDE GÖSTERİLİYOR */}
+              {true && (
                 <button
                   onClick={handleAppleSignIn}
                   className="w-full bg-black hover:bg-gray-900 text-white font-semibold rounded-xl py-3 flex items-center justify-center gap-3 transition-colors border border-[var(--border)]"
