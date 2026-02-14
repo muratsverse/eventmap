@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Check, Navigation, AlertTriangle, Edit3 } from 'lucide-react';
+import { X, Calendar, MapPin, User, Users, DollarSign, Heart, Check, Navigation, AlertTriangle, Edit3, Share2 } from 'lucide-react';
 import { Event } from '@/types';
 import { formatPrice, getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useFavorites, useAttendances, useEventAttendees } from '@/hooks/useFavorites';
 import { useAuth } from '@/contexts/AuthContext';
-import { translateError } from '@/lib/errorMessages';
+import { Capacitor } from '@capacitor/core';
 import EditEventModal from './EditEventModal';
 
 interface EventDetailSheetProps {
@@ -29,6 +29,29 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   const hasCapacityLimit = event.maxAttendees !== undefined && event.maxAttendees !== null;
   const isAtCapacity = hasCapacityLimit && attendeesCount >= event.maxAttendees!;
   const remainingSpots = hasCapacityLimit ? Math.max(0, event.maxAttendees! - attendeesCount) : null;
+
+  const handleShare = async () => {
+    const shareText = `${event.title}\n${event.date} • ${event.time}\n${event.location}, ${event.city}`;
+    const shareUrl = Capacitor.isNativePlatform()
+      ? `eventmap://event?event=${event.id}`
+      : `${window.location.origin}?event=${event.id}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: event.title,
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch {}
+    } else {
+      // Fallback: clipboard'a kopyala
+      try {
+        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+        alert('Link kopyalandı!');
+      } catch {}
+    }
+  };
 
   const handleGetDirections = () => {
     const { latitude, longitude } = event;
@@ -309,6 +332,13 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
                   isFavorite(event.id) ? "text-[#d07a6a] fill-[#d07a6a]" : "text-[var(--text)]"
                 )}
               />
+            </button>
+            <button
+              onClick={handleShare}
+              className="rounded-2xl px-6 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-2)] active:scale-95 transition-all"
+              title="Paylaş"
+            >
+              <Share2 className="w-6 h-6 text-[var(--text)]" />
             </button>
           </div>
         </div>

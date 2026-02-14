@@ -1,29 +1,55 @@
 import { X, Bell, Mail, Smartphone, Calendar, Heart } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface NotificationSettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const STORAGE_KEY = 'notification_settings';
+
+interface NotificationSettings {
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  eventReminders: boolean;
+  favoriteUpdates: boolean;
+  newEventsInCity: boolean;
+}
+
+const defaultSettings: NotificationSettings = {
+  emailNotifications: true,
+  pushNotifications: true,
+  eventReminders: true,
+  favoriteUpdates: true,
+  newEventsInCity: false,
+};
+
+function loadSettings(): NotificationSettings {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return { ...defaultSettings, ...JSON.parse(saved) };
+  } catch {}
+  return defaultSettings;
+}
+
 export default function NotificationSettingsModal({ isOpen, onClose }: NotificationSettingsModalProps) {
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(true);
-  const [eventReminders, setEventReminders] = useState(true);
-  const [favoriteUpdates, setFavoriteUpdates] = useState(true);
-  const [newEventsInCity, setNewEventsInCity] = useState(false);
+  const [settings, setSettings] = useState<NotificationSettings>(loadSettings);
+
+  // Modal açıldığında güncel ayarları yükle
+  useEffect(() => {
+    if (isOpen) {
+      setSettings(loadSettings());
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
+  const updateSetting = (key: keyof NotificationSettings, value: boolean) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
   const handleSave = () => {
-    // TODO: Save to backend/localStorage
-    console.log('Notification settings saved:', {
-      emailNotifications,
-      pushNotifications,
-      eventReminders,
-      favoriteUpdates,
-      newEventsInCity,
-    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     onClose();
   };
 
@@ -73,8 +99,8 @@ export default function NotificationSettingsModal({ isOpen, onClose }: Notificat
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={emailNotifications}
-                onChange={(e) => setEmailNotifications(e.target.checked)}
+                checked={settings.emailNotifications}
+                onChange={(e) => updateSetting('emailNotifications', e.target.checked)}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-[var(--surface-2)] peer-focus:outline-none rounded-full peer border border-[var(--border)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent)]"></div>
@@ -95,8 +121,8 @@ export default function NotificationSettingsModal({ isOpen, onClose }: Notificat
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={pushNotifications}
-                onChange={(e) => setPushNotifications(e.target.checked)}
+                checked={settings.pushNotifications}
+                onChange={(e) => updateSetting('pushNotifications', e.target.checked)}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-[var(--surface-2)] peer-focus:outline-none rounded-full peer border border-[var(--border)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent)]"></div>
@@ -117,8 +143,8 @@ export default function NotificationSettingsModal({ isOpen, onClose }: Notificat
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={eventReminders}
-                onChange={(e) => setEventReminders(e.target.checked)}
+                checked={settings.eventReminders}
+                onChange={(e) => updateSetting('eventReminders', e.target.checked)}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-[var(--surface-2)] peer-focus:outline-none rounded-full peer border border-[var(--border)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent)]"></div>
@@ -139,8 +165,8 @@ export default function NotificationSettingsModal({ isOpen, onClose }: Notificat
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={favoriteUpdates}
-                onChange={(e) => setFavoriteUpdates(e.target.checked)}
+                checked={settings.favoriteUpdates}
+                onChange={(e) => updateSetting('favoriteUpdates', e.target.checked)}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-[var(--surface-2)] peer-focus:outline-none rounded-full peer border border-[var(--border)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent)]"></div>
@@ -161,8 +187,8 @@ export default function NotificationSettingsModal({ isOpen, onClose }: Notificat
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={newEventsInCity}
-                onChange={(e) => setNewEventsInCity(e.target.checked)}
+                checked={settings.newEventsInCity}
+                onChange={(e) => updateSetting('newEventsInCity', e.target.checked)}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-[var(--surface-2)] peer-focus:outline-none rounded-full peer border border-[var(--border)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent)]"></div>

@@ -24,11 +24,6 @@ function App() {
 
   const { user, profile } = useAuth();
 
-  // Debug: showUpdatePasswordModal değişikliklerini logla
-  useEffect(() => {
-    console.log('🔐 showUpdatePasswordModal state changed:', showUpdatePasswordModal);
-  }, [showUpdatePasswordModal]);
-
   // Deep Link & URL Handler - OAuth ve şifre sıfırlama için
   useEffect(() => {
     // Mobile deep link handler
@@ -37,11 +32,8 @@ function App() {
 
       void CapacitorApp.addListener('appUrlOpen', async (data) => {
         const url = data.url;
-        console.log('🔗 Deep link received:', url);
-
         // Şifre sıfırlama
         if (url.includes('reset-password') || url.includes('type=recovery')) {
-          console.log('✅ Password reset detected');
           setShowUpdatePasswordModal(true);
         }
 
@@ -51,12 +43,9 @@ function App() {
             const parsed = new URL(url);
             const eventId = parsed.searchParams.get('event') || parsed.searchParams.get('id');
             if (eventId) {
-              console.log('✅ Event deep link detected:', eventId);
               setPendingEventId(eventId);
             }
-          } catch (e) {
-            console.log('❌ Failed to parse event deep link:', e);
-          }
+          } catch {}
         }
       }).then((handle) => {
         removeListener = () => handle.remove();
@@ -72,11 +61,6 @@ function App() {
         const search = window.location.search;
         const fullUrl = window.location.href;
 
-        console.log('🔍 Checking URL for password reset...');
-        console.log('Full URL:', fullUrl);
-        console.log('Hash:', hash);
-        console.log('Query:', search);
-
         // Supabase şifre sıfırlama linki farklı formatlarda gelebilir:
         // Format 1: #access_token=...&type=recovery
         // Format 2: ?type=recovery&code=...
@@ -89,23 +73,24 @@ function App() {
           window.location.pathname.includes('reset-password');
 
         if (isPasswordReset) {
-          console.log('✅ Password reset detected, opening modal...');
-          // Infinite loop'u önlemek için sadece bir kere set et
-          setShowUpdatePasswordModal((prev) => {
-            if (!prev) {
-              console.log('🔓 Modal açılıyor (şu an kapalı)');
-              return true;
-            }
-            console.log('⏭️ Modal zaten açık, skip');
-            return prev;
-          });
-        } else {
-          console.log('❌ No password reset detected');
+          setShowUpdatePasswordModal((prev) => prev ? prev : true);
         }
       };
 
       // Sayfa yüklendiğinde kontrol et
       handlePasswordReset();
+
+      // Web'de ?event= query param'ını kontrol et (paylaşım linki)
+      const params = new URLSearchParams(window.location.search);
+      const eventId = params.get('event') || params.get('id');
+      if (eventId) {
+        setPendingEventId(eventId);
+        // URL'den event param'ını temizle
+        const url = new URL(window.location.href);
+        url.searchParams.delete('event');
+        url.searchParams.delete('id');
+        window.history.replaceState({}, '', url.pathname + url.search);
+      }
 
       // Hash değişikliklerini dinle
       window.addEventListener('hashchange', handlePasswordReset);
@@ -228,8 +213,7 @@ function App() {
   };
 
   const handleApplyFilters = () => {
-    // Filters are applied in real-time, this is just for UI feedback
-    console.log('Filters applied:', { selectedCategories, showNearby, priceRange, dateRange, sortBy });
+    // Filters are applied in real-time via useMemo
   };
 
   return (

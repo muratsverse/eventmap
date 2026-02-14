@@ -93,31 +93,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let isProcessing = false; // Duplicate callback önleme
 
     const handleAuthCallbackUrl = async (url: string) => {
-      // Duplicate callback önleme
-      if (isProcessing) {
-        console.log('⏳ Zaten bir callback işleniyor, atlıyorum...');
-        return;
-      }
+      if (isProcessing) return;
 
       try {
-        if (!url) {
-          console.log('⚠️ URL boş, işlem atlanıyor');
-          return;
-        }
+        if (!url) return;
 
-        console.log('🔗 OAuth callback URL alındı:', url);
-
-        // URL parsing - farklı formatları handle et
+        // URL parsing
         let parsedUrl: URL;
         try {
           parsedUrl = new URL(url);
-        } catch (parseError) {
-          // eventmap:auth/callback gibi formatlar için
+        } catch {
           try {
-            const fixedUrl = url.replace('eventmap:', 'eventmap://');
-            parsedUrl = new URL(fixedUrl);
-          } catch (secondError) {
-            console.error('❌ URL parsing başarısız:', url);
+            parsedUrl = new URL(url.replace('eventmap:', 'eventmap://'));
+          } catch {
             await Browser.close().catch(() => {});
             return;
           }
@@ -125,22 +113,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // Parametre okuma helper'ı
         const getParam = (name: string): string | null => {
-          // Query string'den dene
           const fromQuery = parsedUrl.searchParams.get(name);
           if (fromQuery) return fromQuery;
-
-          // Hash/fragment'tan dene (Supabase implicit flow)
           const hash = parsedUrl.hash?.startsWith('#') ? parsedUrl.hash.slice(1) : parsedUrl.hash;
           if (hash) {
             const hashParams = new URLSearchParams(hash);
             return hashParams.get(name);
           }
-
           return null;
         };
 
-        // Auth callback kontrolü - çeşitli formatları handle et
-        // Not: Google redirect URI Supabase tarafında /auth/v1/callback olabilir.
+        // Auth callback kontrolü
         const isAuthCallback =
           url.includes('auth/callback') ||
           url.includes('auth%2Fcallback') ||
@@ -150,146 +133,83 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           parsedUrl.pathname.includes('/auth/callback') ||
           parsedUrl.pathname.includes('/auth/v1/callback');
 
-        if (!isAuthCallback) {
-          console.log('ℹ️ Bu bir auth callback URL değil:', url);
-          return;
-        }
+        if (!isAuthCallback) return;
 
         isProcessing = true;
-        console.log('🔐 Auth callback işleniyor...');
 
         // Error kontrolü
         const errorParam = getParam('error');
-        const errorDescription = getParam('error_description');
         if (errorParam) {
-          console.error('❌ OAuth hatası:', errorParam, errorDescription);
+          console.error('OAuth hatası:', errorParam, getParam('error_description'));
           isProcessing = false;
           await Browser.close().catch(() => {});
           return;
         }
 
-        // PKCE flow: code parametresi
         const code = getParam('code');
-        // Implicit flow: token parametreleri
         const access_token = getParam('access_token');
         const refresh_token = getParam('refresh_token');
-
-        console.log('📝 OAuth params:', {
-          hasCode: !!code,
-          codePreview: code ? code.substring(0, 20) + '...' : null,
-          hasAccessToken: !!access_token,
-          hasRefreshToken: !!refresh_token,
-          fullUrl: url,
-          hash: parsedUrl.hash,
-          search: parsedUrl.search,
-        });
 
         let success = false;
 
         if (code) {
-          // PKCE flow - code'u session'a çevir
-          console.log('🔄 PKCE: Code session\'a çevriliyor...');
+          // PKCE flow
           const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
           if (error) {
-            console.error('❌ Code exchange hatası:', error.message);
+            console.error('Code exchange hatası:', error.message);
           } else if (data.session) {
-            console.log('✅ Session başarıyla oluşturuldu');
             success = true;
           }
         } else if (access_token) {
-          // Implicit flow - token'ları set et
-          console.log('🔄 Implicit: Token\'lar set ediliyor...');
-
+          // Implicit flow
           if (refresh_token) {
-            const { error } = await supabase.auth.setSession({
-              access_token,
-              refresh_token,
-            });
-
+            const { error } = await supabase.auth.setSession({ access_token, refresh_token });
             if (error) {
-              console.error('❌ Session set hatası:', error.message);
+              console.error('Session set hatası:', error.message);
             } else {
-              console.log('✅ Session başarıyla set edildi');
               success = true;
             }
           } else {
-            // Sadece access_token var - getUser ile kontrol et
             const { data: userData, error: userError } = await supabase.auth.getUser(access_token);
             if (userError) {
-              console.error('❌ User bilgisi alınamadı:', userError.message);
+              console.error('User bilgisi alınamadı:', userError.message);
             } else if (userData.user) {
-              console.log('✅ User doğrulandı:', userData.user.email);
               success = true;
             }
           }
-        } else {
-          console.log('⚠️ URL\'de code veya token bulunamadı');
         }
 
-        // Browser'ı kapat
-        try {
-          await Browser.close();
-          console.log('✅ Browser kapatıldı');
-        } catch (e) {
-          // Browser zaten kapalı olabilir
-          console.log('ℹ️ Browser zaten kapalı veya kapanmış');
-        }
+        try { await Browser.close(); } catch {}
 
         if (success) {
-          console.log('🎉 Google ile giriş başarılı!');
-          // Session kontrolü - giriş yapıldığını doğrula
           setTimeout(async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-              console.log('✅ Session doğrulandı, kullanıcı:', session.user.email);
-            } else {
-              console.log('⚠️ Session bulunamadı, tekrar deneyin');
-            }
+            await supabase.auth.getSession();
           }, 500);
         }
       } catch (error) {
-        console.error('❌ OAuth callback işleme hatası:', error);
-        // Browser'ı kapat (hata durumunda)
-        try {
-          await Browser.close();
-        } catch (closeError) {
-          console.log('ℹ️ Browser kapatma hatası (yok sayılıyor)');
-        }
+        console.error('OAuth callback hatası:', error);
+        try { await Browser.close(); } catch {}
       } finally {
-        // Biraz bekle ve processing flag'i sıfırla
-        setTimeout(() => {
-          isProcessing = false;
-          console.log('🔓 OAuth işlem kilidi kaldırıldı');
-        }, 1000);
+        setTimeout(() => { isProcessing = false; }, 1000);
       }
     };
 
     const setupListener = async () => {
       listenerHandle = await App.addListener('appUrlOpen', async ({ url }) => {
-        console.log('🔔 Deep link event:', url);
         await handleAuthCallbackUrl(url || '');
       });
-      console.log('✅ Deep link listener kuruldu');
 
-      // Browser kapandığında session kontrol et (Apple OAuth için önemli)
+      // Browser kapandığında session kontrol et
       await Browser.addListener('browserFinished', async () => {
-        console.log('🌐 Browser kapatıldı, session kontrol ediliyor...');
-        // Kısa bir bekleme - redirect tamamlansın
         setTimeout(async () => {
           const { data: { session } } = await supabase.auth.getSession();
           if (session) {
-            console.log('✅ Browser kapandıktan sonra session bulundu:', session.user.email);
-            // State'leri güncelle
             setSession(session);
             setUser(session.user);
             loadProfile(session.user.id, session.user);
-          } else {
-            console.log('⚠️ Browser kapandı ama session yok');
           }
         }, 500);
       });
-      console.log('✅ Browser finished listener kuruldu');
     };
 
     setupListener();
@@ -297,7 +217,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Cold start: Uygulama deep link ile açıldıysa
     App.getLaunchUrl().then((data) => {
       if (data?.url) {
-        console.log('🚀 Uygulama deep link ile açıldı:', data.url);
         handleAuthCallbackUrl(data.url);
       }
     });
@@ -305,10 +224,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Uygulama resume olduğunda session kontrol et
     App.addListener('appStateChange', async ({ isActive }) => {
       if (isActive) {
-        console.log('📱 Uygulama aktif oldu, session kontrol ediliyor...');
         const { data: { session } } = await supabase.auth.getSession();
         if (session && !user) {
-          console.log('✅ Resume sonrası session bulundu:', session.user.email);
           setSession(session);
           setUser(session.user);
           loadProfile(session.user.id, session.user);
@@ -319,11 +236,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       if (listenerHandle) {
         listenerHandle.remove();
-        console.log('🔌 Deep link listener kaldırıldı');
       }
       Browser.removeAllListeners();
       App.removeAllListeners();
-      console.log('🔌 Tüm listener\'lar kaldırıldı');
     };
   }, [isSupabaseConfigured]);
 
@@ -338,7 +253,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Profil bulunamadı - otomatik oluştur
       if (!data || error) {
-        console.log('🔵 Profil bulunamadı, otomatik oluşturuluyor...');
 
         // Yeni profil oluştur
         const { error: insertError } = await supabase.from('profiles').insert({
@@ -352,13 +266,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
 
         if (insertError) {
-          console.error('❌ Profil oluşturma hatası:', insertError);
+          console.error('Profil oluşturma hatası:', insertError);
           setProfile(null);
           setLoading(false);
           return;
         }
-
-        console.log('✅ Profil otomatik oluşturuldu');
 
         // Yeni oluşturulan profili yükle
         const { data: newProfile } = await supabase
@@ -383,15 +295,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // 30 gün geçmemişse restore modal göster
         if (diffDays <= 30) {
-          console.log('⚠️ Silinmiş hesap bulundu, restore modal gösteriliyor');
-          setPendingProfile(data as Profile);
+            setPendingProfile(data as Profile);
           setShowRestoreModal(true);
           setProfile(null);
           setLoading(false);
           return;
         } else {
           // 30 gün geçmiş, yeni profil oluştur
-          console.log('🔵 30 gün geçmiş silinmiş hesap, yeni profil oluşturuluyor');
           const { error: insertError } = await supabase.from('profiles').insert({
             id: userId,
             email: currentUser.email || '',
@@ -417,13 +327,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Normal aktif hesap
       if (!data.deleted_at) {
-        console.log('✅ Profil yüklendi');
         setProfile(data as Profile);
       } else {
         setProfile(null);
       }
     } catch (error) {
-      console.error('❌ Profil yükleme hatası:', error);
+      console.error('Profil yükleme hatası:', error);
       setProfile(null);
     } finally {
       setLoading(false);
@@ -542,25 +451,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const isNative = Capacitor.isNativePlatform();
 
-      // Platform tespiti
-      const platform = Capacitor.getPlatform(); // 'ios', 'android', 'web'
-      console.log('🔐 Google Sign-In başlatılıyor, platform:', platform);
-
       // Redirect URL belirleme
       let redirectTo: string;
 
       if (isNative) {
-        // Mobile: Custom scheme deep link kullan
         redirectTo = 'eventmap://auth/callback';
       } else {
-        // Web: MUTLAKA mevcut origin kullan (localhost veya production)
-        // Vercel'e gitmemesi için window.location.origin kullanılıyor
-        const currentOrigin = window.location.origin;
-        redirectTo = `${currentOrigin}/auth/callback`;
+        redirectTo = `${window.location.origin}/auth/callback`;
       }
-
-      console.log('🔗 Redirect URL:', redirectTo);
-      console.log('🌐 Current Origin:', window.location.origin);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -575,23 +473,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         },
       });
 
-      if (error) {
-        console.error('❌ OAuth error:', error);
-        return { error };
-      }
+      if (error) return { error };
 
       if (!data?.url) {
-        console.error('❌ OAuth URL alınamadı');
         return { error: new Error('OAuth URL alınamadı') };
       }
 
-      console.log('✅ OAuth URL alındı');
-
-      // Mobile'da Capacitor Browser ile aç
       if (isNative) {
-        console.log('📱 Capacitor Browser açılıyor...');
-
-        // iOS için presentationStyle önemli
         await Browser.open({
           url: data.url,
           presentationStyle: 'popover', // iOS'ta daha iyi çalışır
@@ -604,7 +492,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { error: null };
     } catch (error) {
-      console.error('❌ Google sign-in error:', error);
+      console.error('Google sign-in error:', error);
       return { error: error as Error };
     }
   };
@@ -617,20 +505,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       const isNative = Capacitor.isNativePlatform();
-      const platform = Capacitor.getPlatform();
-      console.log('🍎 Apple Sign-In başlatılıyor, platform:', platform);
 
-      // Redirect URL belirleme
       let redirectTo: string;
-
       if (isNative) {
         redirectTo = 'eventmap://auth/callback';
       } else {
-        const currentOrigin = window.location.origin;
-        redirectTo = `${currentOrigin}/auth/callback`;
+        redirectTo = `${window.location.origin}/auth/callback`;
       }
-
-      console.log('🔗 Apple Redirect URL:', redirectTo);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'apple',
@@ -640,20 +521,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         },
       });
 
-      if (error) {
-        console.error('❌ Apple OAuth error:', error);
-        return { error };
-      }
+      if (error) return { error };
 
       if (!data?.url) {
-        console.error('❌ Apple OAuth URL alınamadı');
         return { error: new Error('Apple OAuth URL alınamadı') };
       }
 
-      console.log('✅ Apple OAuth URL alındı');
-
       if (isNative) {
-        console.log('📱 Capacitor Browser açılıyor (Apple)...');
         await Browser.open({
           url: data.url,
           presentationStyle: 'popover',
@@ -665,7 +539,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { error: null };
     } catch (error) {
-      console.error('❌ Apple sign-in error:', error);
+      console.error('Apple sign-in error:', error);
       return { error: error as Error };
     }
   };
