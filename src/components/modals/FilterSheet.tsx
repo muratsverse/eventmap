@@ -27,7 +27,12 @@ interface FilterSheetProps {
   onApply: () => void;
 }
 
-const categories: EventCategory[] = ['Konser', 'Spor', 'Tiyatro', 'Festival', 'Meetup', 'Sergi'];
+const categories: EventCategory[] = [
+  'Konser', 'Spor', 'Tiyatro', 'Festival', 'Meetup', 'Sergi',
+  'Atölye', 'Parti', 'Komedi', 'Show', 'Müzik', 'Gezi',
+  'Keyif', 'Dans', 'Sinema', 'Opera', 'Bar', 'Kültür',
+  'Sosyal', 'Eğlence', 'Müzikal', 'Yarışma', 'Çocuk', 'Talk Show',
+];
 
 const sortOptions: { value: SortOption; label: string }[] = [
   { value: 'newest', label: 'En Yeni' },

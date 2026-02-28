@@ -1,4 +1,9 @@
-export type EventCategory = 'Konser' | 'Spor' | 'Tiyatro' | 'Festival' | 'Meetup' | 'Sergi';
+export type EventCategory =
+  | 'Konser' | 'Spor' | 'Tiyatro' | 'Festival' | 'Meetup' | 'Sergi'
+  | 'Atölye' | 'Parti' | 'Komedi' | 'Show' | 'Müzik' | 'Gezi'
+  | 'Keyif' | 'Dans' | 'Sinema' | 'Opera' | 'Bar' | 'Kültür'
+  | 'Sosyal' | 'Eğlence' | 'Müzikal' | 'Yarışma' | 'Çocuk' | 'Talk Show'
+  | 'Gösteri';
 
 export type City = 'Istanbul' | 'Ankara' | 'Izmir' | 'Antalya' | 'Bursa';
 

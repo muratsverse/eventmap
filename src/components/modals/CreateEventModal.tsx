@@ -17,7 +17,12 @@ interface CreateEventModalProps {
   onClose: () => void;
 }
 
-const categories: EventCategory[] = ['Konser', 'Spor', 'Tiyatro', 'Festival', 'Meetup', 'Sergi'];
+const categories: EventCategory[] = [
+  'Konser', 'Spor', 'Tiyatro', 'Festival', 'Meetup', 'Sergi',
+  'Atölye', 'Parti', 'Komedi', 'Show', 'Müzik', 'Gezi',
+  'Keyif', 'Dans', 'Sinema', 'Opera', 'Bar', 'Kültür',
+  'Sosyal', 'Eğlence', 'Müzikal', 'Yarışma', 'Çocuk', 'Talk Show',
+];
 const cities: City[] = ['Istanbul', 'Ankara', 'Izmir', 'Antalya', 'Bursa'];
 
 // Map click handler component

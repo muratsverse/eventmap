@@ -10,7 +10,12 @@ interface SearchViewProps {
   onEventClick: (event: Event) => void;
 }
 
-const popularCategories: string[] = ['Konser', 'Festival', 'Spor', 'Tiyatro', 'Sergi', 'Meetup'];
+const popularCategories: string[] = [
+  'Konser', 'Festival', 'Spor', 'Tiyatro', 'Sergi', 'Meetup',
+  'Atölye', 'Parti', 'Komedi', 'Show', 'Müzik', 'Gezi',
+  'Keyif', 'Dans', 'Sinema', 'Opera', 'Bar', 'Kültür',
+  'Sosyal', 'Eğlence', 'Müzikal', 'Yarışma', 'Çocuk', 'Talk Show',
+];
 const popularCities: string[] = ['İstanbul', 'Ankara', 'İzmir', 'Antalya', 'Bursa'];
 
 export default function SearchView({ events, onEventClick }: SearchViewProps) {
