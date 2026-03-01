@@ -1,12 +1,32 @@
 {
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/landing.html"
+    },
+    {
       "source": "/privacy-policy",
       "destination": "/privacy-policy.html"
     },
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/refund",
+      "destination": "/refund.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/app",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/app/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

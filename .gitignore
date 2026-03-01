@@ -63,7 +63,12 @@ android/local.properties
 
 # Temporary & Development Files
 *.sql
+!supabase/*.sql
 *.html
+!public/*.html
+!index.html
+!privacy-policy.html
+!privacy-policy-tr.html
 Screenshot_*.png
 Reklam Fotograflari/
 nul

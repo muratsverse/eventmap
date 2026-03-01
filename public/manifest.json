@@ -1,6 +1,6 @@
 {
-  "name": "Spotly - Türkiye Etkinlik Rehberi",
-  "short_name": "Spotly",
+  "name": "Happenin - Sosyal Etkinlik Platformu",
+  "short_name": "Happenin",
   "description": "Türkiye'nin en kapsamlı etkinlik rehberi. Konserler, festivaller, spor etkinlikleri ve daha fazlası!",
   "start_url": "/",
   "display": "standalone",

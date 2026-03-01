@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happenin - Sosyal Etkinlik Platformu</title>
+    <meta name="description" content="Happenin ile etkinlikleri keşfedin. Konserler, festivaller, tiyatrolar ve daha fazlası.">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6; color: #fff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; max-width: 1200px; margin: 0 auto; }
+        .logo { font-size: 1.8em; font-weight: 800; letter-spacing: -0.5px; }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
+        .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.95em; transition: color 0.2s; }
+        .nav-links a:hover { color: #fff; }
+        .btn-app { background: #fff; color: #764ba2; padding: 10px 24px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 0.95em; transition: transform 0.2s, box-shadow 0.2s; }
+        .btn-app:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); color: #764ba2; }
+        .hero { text-align: center; padding: 80px 20px 60px; max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: 3.2em; font-weight: 800; margin-bottom: 20px; line-height: 1.15; }
+        .hero p { font-size: 1.25em; color: rgba(255,255,255,0.9); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary { background: #fff; color: #764ba2; padding: 16px 40px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 1.1em; transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+        .btn-secondary { background: rgba(255,255,255,0.15); color: #fff; padding: 16px 40px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 1.1em; border: 2px solid rgba(255,255,255,0.3); transition: transform 0.2s, background 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+        .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1000px; margin: 60px auto; padding: 0 20px; }
+        .feature-card { background: rgba(255,255,255,0.12); backdrop-filter: blur(10px); border-radius: 20px; padding: 32px 24px; text-align: center; border: 1px solid rgba(255,255,255,0.15); transition: transform 0.2s; }
+        .feature-card:hover { transform: translateY(-4px); }
+        .feature-icon { font-size: 2.5em; margin-bottom: 16px; }
+        .feature-card h3 { font-size: 1.2em; margin-bottom: 8px; }
+        .feature-card p { color: rgba(255,255,255,0.8); font-size: 0.95em; }
+        .stats { display: flex; justify-content: center; gap: 60px; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        .stat { text-align: center; }
+        .stat-number { font-size: 2.5em; font-weight: 800; }
+        .stat-label { color: rgba(255,255,255,0.8); font-size: 0.95em; }
+        footer { text-align: center; padding: 40px 20px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.15); }
+        .footer-links { display: flex; justify-content: center; gap: 32px; margin-bottom: 20px; flex-wrap: wrap; }
+        .footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9em; transition: color 0.2s; }
+        .footer-links a:hover { color: #fff; text-decoration: underline; }
+        .footer-copy { color: rgba(255,255,255,0.5); font-size: 0.85em; }
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 50px 20px 40px; }
+            .hero h1 { font-size: 2.2em; }
+            .hero p { font-size: 1.05em; }
+            .features { grid-template-columns: 1fr; gap: 16px; }
+            .stats { gap: 30px; }
+            .stat-number { font-size: 1.8em; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Happenin</div>
+        <div class="nav-links">
+            <a href="/contact">İletişim</a>
+            <a href="/terms">Kullanım Şartları</a>
+            <a href="/app" class="btn-app">Uygulamayı Aç</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Etrafınızdaki Etkinlikleri Keşfedin</h1>
+        <p>Konserler, festivaller, tiyatrolar, spor etkinlikleri ve daha fazlası. Türkiye'nin en kapsamlı etkinlik platformu.</p>
+        <div class="hero-buttons">
+            <a href="/app" class="btn-primary">Web'de Kullan</a>
+            <a href="#indirme" class="btn-secondary">Uygulamayı İndir</a>
+        </div>
+    </section>
+
+    <div class="features">
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F5FA;&#xFE0F;</div>
+            <h3>Harita Görünümü</h3>
+            <p>Etkinlikleri harita üzerinde görün, size en yakın olanları keşfedin.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F50D;</div>
+            <h3>Akıllı Filtreleme</h3>
+            <p>Kategori, şehir ve tarih filtresiyle aradığınızı anında bulun.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F4F1;</div>
+            <h3>Mobil Uygulama</h3>
+            <p>iOS ve Android uygulamamız ile etkinlikleri her yerde takip edin.</p>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">5+</div>
+            <div class="stat-label">Şehir</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">24+</div>
+            <div class="stat-label">Kategori</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">100+</div>
+            <div class="stat-label">Etkinlik</div>
+        </div>
+    </div>
+
+    <section id="indirme" style="text-align:center; padding: 40px 20px;">
+        <h2 style="font-size:2em; margin-bottom:16px;">İndirin</h2>
+        <p style="color:rgba(255,255,255,0.8); margin-bottom:24px;">Yakında App Store ve Google Play'de!</p>
+        <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+            <div style="background:rgba(255,255,255,0.1); padding:16px 32px; border-radius:12px; border:1px solid rgba(255,255,255,0.2);">
+                &#x1F34E; App Store - Yakında
+            </div>
+            <div style="background:rgba(255,255,255,0.1); padding:16px 32px; border-radius:12px; border:1px solid rgba(255,255,255,0.2);">
+                &#x25B6;&#xFE0F; Google Play - Yakında
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="/privacy-policy">Gizlilik Politikası</a>
+            <a href="/terms">Kullanım Şartları</a>
+            <a href="/refund">İade Politikası</a>
+            <a href="/contact">İletişim</a>
+            <a href="/app">Uygulamayı Aç</a>
+        </div>
+        <p class="footer-copy">&copy; 2025 Happenin. Tüm hakları saklıdır.</p>
+    </footer>
+</body>
+</html>
