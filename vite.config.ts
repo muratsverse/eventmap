@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
+import fs from 'fs'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -9,6 +10,20 @@ export default defineConfig(({ mode }) => ({
   base: '/',
   plugins: [
     react(),
+    // Vercel: swap index.html with landing.html after build
+    {
+      name: 'swap-landing-page',
+      closeBundle() {
+        const dist = path.resolve(__dirname, 'dist')
+        const indexPath = path.join(dist, 'index.html')
+        const landingPath = path.join(dist, 'landing.html')
+        const appPath = path.join(dist, 'app.html')
+        if (fs.existsSync(landingPath) && fs.existsSync(indexPath)) {
+          fs.copyFileSync(indexPath, appPath)
+          fs.copyFileSync(landingPath, indexPath)
+        }
+      }
+    },
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
