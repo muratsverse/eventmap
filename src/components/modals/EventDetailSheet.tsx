@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { useFavorites, useAttendances, useEventAttendees } from '@/hooks/useFavorites';
 import { useAuth } from '@/contexts/AuthContext';
 import { Capacitor } from '@capacitor/core';
+import { Share } from '@capacitor/share';
 import EditEventModal from './EditEventModal';
 
 interface EventDetailSheetProps {
@@ -34,7 +35,16 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
     const shareUrl = 'https://bit.ly/4aths9j';
     const shareText = `${event.title}\n${event.date} • ${event.time}\n${event.location}, ${event.city}`;
 
-    if (navigator.share) {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        await Share.share({
+          title: 'Happenin - Etkinlik Uygulaması',
+          text: shareText,
+          url: shareUrl,
+          dialogTitle: 'Etkinliği Paylaş',
+        });
+      } catch {}
+    } else if (navigator.share) {
       try {
         await navigator.share({
           title: 'Happenin - Etkinlik Uygulaması',
