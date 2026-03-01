@@ -1,32 +1,31 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/",
-      "destination": "/landing.html"
+      "src": "^/$",
+      "dest": "/landing.html"
     },
     {
-      "source": "/privacy-policy",
-      "destination": "/privacy-policy.html"
+      "src": "^/privacy-policy$",
+      "dest": "/privacy-policy.html"
     },
     {
-      "source": "/terms",
-      "destination": "/terms.html"
+      "src": "^/terms$",
+      "dest": "/terms.html"
     },
     {
-      "source": "/refund",
-      "destination": "/refund.html"
+      "src": "^/refund$",
+      "dest": "/refund.html"
     },
     {
-      "source": "/contact",
-      "destination": "/contact.html"
+      "src": "^/contact$",
+      "dest": "/contact.html"
     },
     {
-      "source": "/app",
-      "destination": "/index.html"
+      "handle": "filesystem"
     },
     {
-      "source": "/app/(.*)",
-      "destination": "/index.html"
+      "src": "^/app(/.*)?$",
+      "dest": "/index.html"
     }
   ]
 }
