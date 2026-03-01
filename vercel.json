@@ -1,31 +1,29 @@
 {
-  "routes": [
+  "buildCommand": "npm run build && cp dist/index.html dist/app.html && cp dist/landing.html dist/index.html",
+  "rewrites": [
     {
-      "src": "^/$",
-      "dest": "/landing.html"
+      "source": "/privacy-policy",
+      "destination": "/privacy-policy.html"
     },
     {
-      "src": "^/privacy-policy$",
-      "dest": "/privacy-policy.html"
+      "source": "/terms",
+      "destination": "/terms.html"
     },
     {
-      "src": "^/terms$",
-      "dest": "/terms.html"
+      "source": "/refund",
+      "destination": "/refund.html"
     },
     {
-      "src": "^/refund$",
-      "dest": "/refund.html"
+      "source": "/contact",
+      "destination": "/contact.html"
     },
     {
-      "src": "^/contact$",
-      "dest": "/contact.html"
+      "source": "/app",
+      "destination": "/app.html"
     },
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "^/app(/.*)?$",
-      "dest": "/index.html"
+      "source": "/app/(.*)",
+      "destination": "/app.html"
     }
   ]
 }
