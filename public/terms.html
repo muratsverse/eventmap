@@ -1,236 +1,269 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kullan&#x131;m &#x15E;artlar&#x131; - Happenin</title>
+    <title>Terms of Service / Kullanım Şartları - Happenin</title>
+    <link rel="icon" href="/logo.png" type="image/png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            background: #fafafa;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 720px;
             margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-
-        .last-updated {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        h2 {
-            color: #764ba2;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-        }
-
-        h3 {
-            color: #667eea;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        ul {
-            margin-left: 30px;
-            margin-bottom: 15px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        .contact-info {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 30px;
-            border-left: 4px solid #667eea;
-        }
-
-        .highlight {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 20px 0;
-            border-left: 4px solid #ffc107;
-        }
-
-        a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
+            padding: 40px 24px 60px;
         }
 
         .back-link {
             display: inline-block;
-            margin-bottom: 20px;
-            color: #667eea;
+            margin-bottom: 32px;
+            color: #6c5ce7;
+            text-decoration: none;
             font-weight: 600;
+            font-size: 0.9em;
+            transition: color 0.2s;
         }
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
+        .back-link:hover { color: #5a4bd1; }
 
-            h1 {
-                font-size: 2em;
-            }
-
-            h2 {
-                font-size: 1.5em;
-            }
+        h1 {
+            font-size: 2em;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
+
+        .subtitle {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .business-info {
+            background: #f5f3ff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .business-info strong { color: #6c5ce7; }
+
+        .lang-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .lang-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 2px solid #eee;
+            background: #fff;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            border-color: #6c5ce7;
+            color: #6c5ce7;
+            background: #f5f3ff;
+        }
+
+        .lang-section { display: none; }
+        .lang-section.active { display: block; }
+
+        h2 {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-top: 28px;
+            margin-bottom: 10px;
+        }
+
+        p { margin-bottom: 12px; color: #555; font-size: 0.95em; }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        li { margin-bottom: 6px; color: #555; font-size: 0.95em; }
+
+        .contact-box {
+            background: #f5f3ff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 32px;
+        }
+
+        .contact-box a { color: #6c5ce7; text-decoration: none; font-weight: 600; }
+        .contact-box a:hover { text-decoration: underline; }
+
+        .page-footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .page-footer a {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.8em;
+            margin: 0 12px;
+            transition: color 0.2s;
+        }
+
+        .page-footer a:hover { color: #6c5ce7; }
+
+        .page-footer p { color: #ccc; font-size: 0.75em; margin-top: 12px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="/" class="back-link">&larr; Ana Sayfa</a>
-        <h1>Kullan&#x131;m &#x15E;artlar&#x131;</h1>
-        <p class="last-updated"><strong>Son G&#xFC;ncelleme:</strong> 1 Mart 2026</p>
+        <a href="/" class="back-link">&larr; Home / Ana Sayfa</a>
 
-        <p>Bu Kullan&#x131;m &#x15E;artlar&#x131;, Happenin ("biz", "bize", "uygulama") mobil uygulamas&#x131;n&#x131; ve web sitesini kullan&#x131;m&#x131;n&#x131;z&#x131; d&#xFC;zenler. Uygulamam&#x131;z&#x131; kullanarak bu &#x15F;artlar&#x131; kabul etmi&#x15F; say&#x131;l&#x131;rs&#x131;n&#x131;z.</p>
+        <h1>Terms of Service</h1>
+        <p class="subtitle">Last updated: March 1, 2026 &middot; Son güncelleme: 1 Mart 2026</p>
 
-        <div class="highlight">
-            <strong>&#xD6;nemli:</strong> L&#xFC;tfen bu kullan&#x131;m &#x15F;artlar&#x131;n&#x131; dikkatlice okuyunuz. Uygulamay&#x131; kullanarak bu &#x15F;artlar&#x131; kabul etmi&#x15F; olursunuz.
+        <div class="business-info">
+            <strong>Business Information:</strong> Legal business name: muratsverse. Happenin is operated by muratsverse.
         </div>
 
-        <h2>1. Hizmet Tan&#x131;m&#x131;</h2>
-        <p>Happenin, kullan&#x131;c&#x131;lar&#x131;n etkinlikleri ke&#x15F;fetmesine, olu&#x15F;turmas&#x131;na, payla&#x15F;mas&#x131;na ve kat&#x131;l&#x131;m sa&#x11F;lamas&#x131;na olanak tan&#x131;yan bir sosyal etkinlik platformudur. Hizmetlerimiz &#x15F;unlard&#x131;r:</p>
-        <ul>
-            <li>Etkinlik ke&#x15F;fetme ve arama</li>
-            <li>Harita &#xFC;zerinde etkinlik g&#xF6;r&#xFC;nt&#xFC;leme</li>
-            <li>Etkinlik olu&#x15F;turma ve y&#xF6;netme</li>
-            <li>Etkinliklere kat&#x131;l&#x131;m ve favori ekleme</li>
-            <li>Kullan&#x131;c&#x131; profili y&#xF6;netimi</li>
-        </ul>
-
-        <h2>2. Hesap Olu&#x15F;turma ve G&#xFC;venlik</h2>
-
-        <h3>2.1 Hesap Gereksinimleri</h3>
-        <ul>
-            <li>Uygulamay&#x131; kullanmak i&#xE7;in 18 ya&#x15F;&#x131;ndan b&#xFC;y&#xFC;k olman&#x131;z gerekmektedir</li>
-            <li>Ge&#xE7;erli bir e-posta adresi ile kay&#x131;t olman&#x131;z gerekmektedir</li>
-            <li>Google, Apple veya e-posta ile giri&#x15F; yapabilirsiniz</li>
-        </ul>
-
-        <h3>2.2 Hesap G&#xFC;venli&#x11F;i</h3>
-        <ul>
-            <li>Hesab&#x131;n&#x131;z&#x131;n g&#xFC;venli&#x11F;inden siz sorumlusunuz</li>
-            <li>&#x15E;ifrenizi kimseyle payla&#x15F;may&#x131;n&#x131;z</li>
-            <li>Yetkisiz eri&#x15F;im durumunda derhal bize bildirin</li>
-        </ul>
-
-        <h3>2.3 Hesap Silme</h3>
-        <p>Hesab&#x131;n&#x131;z&#x131; istedi&#x11F;iniz zaman uygulama i&#xE7;inden silebilirsiniz. Hesap silindi&#x11F;inde t&#xFC;m ki&#x15F;isel verileriniz 30 g&#xFC;n i&#xE7;inde kal&#x131;c&#x131; olarak silinecektir.</p>
-
-        <h2>3. Kullan&#x131;c&#x131; Y&#xFC;k&#xFC;ml&#xFC;l&#xFC;kleri</h2>
-
-        <h3>3.1 Kabul Edilebilir Kullan&#x131;m</h3>
-        <p>Uygulamay&#x131; kullan&#x131;rken a&#x15F;a&#x11F;&#x131;daki kurallara uymal&#x131;s&#x131;n&#x131;z:</p>
-        <ul>
-            <li>Do&#x11F;ru ve g&#xFC;ncel bilgiler sa&#x11F;lamal&#x131;s&#x131;n&#x131;z</li>
-            <li>Ba&#x15F;kalar&#x131;n&#x131;n haklar&#x131;na sayg&#x131; g&#xF6;stermelisiniz</li>
-            <li>Yasalara ve y&#xF6;netmeliklere uymal&#x131;s&#x131;n&#x131;z</li>
-            <li>Spam veya yan&#x131;lt&#x131;c&#x131; i&#xE7;erik payla&#x15F;mamal&#x131;s&#x131;n&#x131;z</li>
-        </ul>
-
-        <h3>3.2 Yasaklanan Davran&#x131;&#x15F;lar</h3>
-        <ul>
-            <li>Sahte etkinlik olu&#x15F;turmak</li>
-            <li>Ba&#x15F;ka kullan&#x131;c&#x131;lar&#x131; taciz etmek veya tehdit etmek</li>
-            <li>K&#xF6;t&#xFC; ama&#xE7;l&#x131; yaz&#x131;l&#x131;m veya vir&#xFC;s yaymak</li>
-            <li>Uygulamay&#x131; tersine m&#xFC;hendislik ile &#xE7;&#xF6;zmeye &#xE7;al&#x131;&#x15F;mak</li>
-            <li>Otomatik bot veya script kullanmak</li>
-            <li>Telif haklar&#x131;n&#x131; ihlal eden i&#xE7;erik payla&#x15F;mak</li>
-        </ul>
-
-        <h2>4. Etkinlik &#x130;&#xE7;erikleri</h2>
-
-        <h3>4.1 Etkinlik Olu&#x15F;turma</h3>
-        <ul>
-            <li>Olu&#x15F;turdu&#x11F;unuz etkinliklerin i&#xE7;eri&#x11F;inden siz sorumlusunuz</li>
-            <li>Etkinlik bilgileri do&#x11F;ru ve g&#xFC;ncel olmal&#x131;d&#x131;r</li>
-            <li>Uygunsuz veya yasad&#x131;&#x15F;&#x131; i&#xE7;erik yasakt&#x131;r</li>
-            <li>Etkinlikler moderasyon s&#xFC;recinden ge&#xE7;ebilir</li>
-        </ul>
-
-        <h3>4.2 &#x130;&#xE7;erik Moderasyonu</h3>
-        <p>Happenin, uygunsuz bulunan etkinlikleri &#xF6;nceden bildirimde bulunmaks&#x131;z&#x131;n kald&#x131;rma veya d&#xFC;zenleme hakk&#x131;n&#x131; sakl&#x131; tutar. Moderasyon kararlar&#x131;m&#x131;z topluluk kurallar&#x131;m&#x131;za dayanmaktad&#x131;r.</p>
-
-        <h2>5. Fikri M&#xFC;lkiyet</h2>
-        <ul>
-            <li>Happenin uygulamas&#x131;, logosu, tasar&#x131;m&#x131; ve i&#xE7;eri&#x11F;i telif hakk&#x131; ile korunmaktad&#x131;r</li>
-            <li>Kullan&#x131;c&#x131;lar&#x131;n y&#xFC;kledi&#x11F;i i&#xE7;eriklerin haklar&#x131; kullan&#x131;c&#x131;lara aittir</li>
-            <li>&#x130;&#xE7;erik y&#xFC;kleyerek, Happenin&#x2019;a bu i&#xE7;eri&#x11F;i platformda g&#xF6;sterme lisans&#x131; vermi&#x15F; olursunuz</li>
-        </ul>
-
-        <h2>6. Sorumluluk S&#x131;n&#x131;rlamalar&#x131;</h2>
-        <ul>
-            <li>Happenin, kullan&#x131;c&#x131;lar taraf&#x131;ndan olu&#x15F;turulan etkinliklerin do&#x11F;rulu&#x11F;unu garanti etmez</li>
-            <li>Etkinliklere kat&#x131;l&#x131;m tamamen kullan&#x131;c&#x131;n&#x131;n kendi sorumlulu&#x11F;undad&#x131;r</li>
-            <li>&#xDC;&#xE7;&#xFC;nc&#xFC; taraf hizmetlerinden kaynaklanan sorunlardan sorumlu de&#x11F;iliz</li>
-            <li>Uygulaman&#x131;n kesintisiz &#xE7;al&#x131;&#x15F;aca&#x11F;&#x131;n&#x131; garanti etmeyiz</li>
-        </ul>
-
-        <h2>7. Hizmet De&#x11F;i&#x15F;iklikleri</h2>
-        <p>Happenin, uygulamay&#x131; ve hizmetlerini istedi&#x11F;i zaman de&#x11F;i&#x15F;tirme, g&#xFC;ncelleme veya sonland&#x131;rma hakk&#x131;n&#x131; sakl&#x131; tutar. &#xD6;nemli de&#x11F;i&#x15F;iklikler i&#xE7;in kullan&#x131;c&#x131;lar &#xF6;nceden bilgilendirilecektir.</p>
-
-        <h2>8. Uygulanacak Hukuk</h2>
-        <p>Bu kullan&#x131;m &#x15F;artlar&#x131;, T&#xFC;rkiye Cumhuriyeti kanunlar&#x131;na tabidir. Uyu&#x15F;mazl&#x131;klarda &#x130;stanbul Mahkemeleri ve &#x130;cra Daireleri yetkilidir.</p>
-
-        <h2>9. De&#x11F;i&#x15F;iklikler</h2>
-        <p>Bu kullan&#x131;m &#x15F;artlar&#x131;n&#x131; zaman zaman g&#xFC;ncelleyebiliriz. &#xD6;nemli de&#x11F;i&#x15F;iklikler oldu&#x11F;unda sizi uygulama i&#xE7;i bildirim veya e-posta ile bilgilendirece&#x11F;iz. G&#xFC;ncellenen &#x15F;artlarla uygulamay&#x131; kullanmaya devam ederseniz, yeni &#x15F;artlar&#x131; kabul etmi&#x15F; say&#x131;l&#x131;rs&#x131;n&#x131;z.</p>
-
-        <div class="contact-info">
-            <h2>10. &#x130;leti&#x15F;im</h2>
-            <p>Kullan&#x131;m &#x15F;artlar&#x131; hakk&#x131;nda sorular&#x131;n&#x131;z i&#xE7;in:</p>
-            <p><strong>E-posta:</strong> <a href="mailto:muratveozturk@gmail.com">muratveozturk@gmail.com</a></p>
-            <p><strong>Geli&#x15F;tirici:</strong> Murat &#xD6;zt&#xFC;rk</p>
-            <p><strong>Uygulama:</strong> Happenin</p>
+        <div class="lang-toggle">
+            <button class="lang-btn active" onclick="switchLang('en')">English</button>
+            <button class="lang-btn" onclick="switchLang('tr')">Türkçe</button>
         </div>
 
-        <hr style="margin: 40px 0; border: none; border-top: 2px solid #f0f0f0;">
+        <!-- ENGLISH -->
+        <div id="lang-en" class="lang-section active">
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing and using Happenin ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.</p>
 
-        <p style="text-align: center; color: #999; font-size: 0.9em;">
-            &copy; 2025 Happenin. T&#xFC;m haklar&#x131; sakl&#x131;d&#x131;r. |
-            <a href="/privacy-policy">Gizlilik Politikas&#x131;</a> |
-            <a href="/">Ana Sayfa</a>
-        </p>
+            <h2>2. Description of Service</h2>
+            <p>Happenin is a social event discovery and management platform that allows users to create, share, and join local events. The service is currently provided free of charge.</p>
+
+            <h2>3. User Accounts</h2>
+            <p>To access certain features of the Service, you must register for an account. You agree to:</p>
+            <ul>
+                <li>Provide accurate, current, and complete information during registration</li>
+                <li>Maintain the security of your password and account</li>
+                <li>Accept responsibility for all activities that occur under your account</li>
+                <li>Notify us immediately of any unauthorized use of your account</li>
+            </ul>
+
+            <h2>4. Free Access</h2>
+            <p>Happenin is currently provided free of charge. All users can create and share events without limits.</p>
+
+            <h2>5. User Content</h2>
+            <p>You retain ownership of any content you post on Happenin. By posting content, you grant us a worldwide, non-exclusive, royalty-free license to use, display, and distribute your content in connection with the Service.</p>
+
+            <h2>6. Prohibited Activities</h2>
+            <p>You agree not to:</p>
+            <ul>
+                <li>Post false, misleading, or fraudulent event information</li>
+                <li>Harass, abuse, or harm other users</li>
+                <li>Violate any laws or regulations</li>
+                <li>Attempt to gain unauthorized access to the Service</li>
+                <li>Use the Service for any commercial purposes without our permission</li>
+            </ul>
+
+            <h2>7. Termination</h2>
+            <p>We reserve the right to suspend or terminate your account at any time for violations of these Terms of Service. You may delete your account at any time through your account settings.</p>
+
+            <h2>8. Limitation of Liability</h2>
+            <p>Happenin is provided "as is" without warranties of any kind. We are not liable for any damages arising from your use of the Service, including but not limited to direct, indirect, incidental, or consequential damages.</p>
+
+            <h2>9. Changes to Terms</h2>
+            <p>We reserve the right to modify these terms at any time. We will notify users of any material changes via email or through the Service. Continued use of the Service after such changes constitutes acceptance of the new terms.</p>
+
+            <h2>10. Contact Information</h2>
+            <div class="contact-box">
+                <p>For questions about these Terms of Service, please contact us at:<br>
+                <a href="mailto:sociaappsup@outlook.com">sociaappsup@outlook.com</a></p>
+            </div>
+        </div>
+
+        <!-- TURKISH -->
+        <div id="lang-tr" class="lang-section">
+            <h2>1. Şartların Kabulü</h2>
+            <p>Happenin'e ("Hizmet") erişerek ve kullanarak, bu sözleşmenin hüküm ve koşullarını kabul etmiş olursunuz.</p>
+
+            <h2>2. Hizmet Tanımı</h2>
+            <p>Happenin, kullanıcıların yerel etkinlikler oluşturmasına, paylaşmasına ve katılmasına olanak tanıyan sosyal bir etkinlik keşif ve yönetim platformudur. Hizmet şu anda ücretsiz olarak sunulmaktadır.</p>
+
+            <h2>3. Kullanıcı Hesapları</h2>
+            <p>Hizmetin belirli özelliklerine erişmek için bir hesap oluşturmanız gerekmektedir. Şunları kabul edersiniz:</p>
+            <ul>
+                <li>Kayıt sırasında doğru, güncel ve eksiksiz bilgi sağlamak</li>
+                <li>Şifrenizin ve hesabınızın güvenliğini korumak</li>
+                <li>Hesabınız altında gerçekleşen tüm faaliyetlerden sorumlu olmak</li>
+                <li>Hesabınızın yetkisiz kullanımını derhal bize bildirmek</li>
+            </ul>
+
+            <h2>4. Ücretsiz Erişim</h2>
+            <p>Happenin şu anda ücretsiz olarak sunulmaktadır. Tüm kullanıcılar sınırsız olarak etkinlik oluşturabilir ve paylaşabilir.</p>
+
+            <h2>5. Kullanıcı İçeriği</h2>
+            <p>Happenin'de paylaştığınız içeriklerin mülkiyeti size aittir. İçerik paylaşarak, bize dünya çapında, münhasır olmayan, telifsiz bir lisans vermiş olursunuz.</p>
+
+            <h2>6. Yasaklanan Faaliyetler</h2>
+            <p>Aşağıdakileri yapmamayı kabul edersiniz:</p>
+            <ul>
+                <li>Yanlış, yanıltıcı veya sahte etkinlik bilgisi paylaşmak</li>
+                <li>Diğer kullanıcılara taciz, kötüye kullanım veya zarar vermek</li>
+                <li>Herhangi bir yasa veya düzenlemeyi ihlal etmek</li>
+                <li>Hizmete yetkisiz erişim sağlamaya çalışmak</li>
+                <li>Hizmeti iznimiz olmadan ticari amaçlarla kullanmak</li>
+            </ul>
+
+            <h2>7. Fesih</h2>
+            <p>Bu Kullanım Şartlarının ihlali durumunda hesabınızı askıya alma veya sonlandırma hakkımızı saklı tutarız. Hesabınızı istediğiniz zaman hesap ayarlarından silebilirsiniz.</p>
+
+            <h2>8. Sorumluluk Sınırlaması</h2>
+            <p>Happenin herhangi bir garanti verilmeksizin "olduğu gibi" sunulmaktadır. Hizmeti kullanımınızdan kaynaklanan doğrudan, dolaylı, arızi veya sonuç olarak ortaya çıkan zararlardan sorumlu değiliz.</p>
+
+            <h2>9. Şartlardaki Değişiklikler</h2>
+            <p>Bu şartları istediğimiz zaman değiştirme hakkımızı saklı tutarız. Önemli değişiklikleri e-posta veya Hizmet üzerinden bildireceğiz. Değişikliklerden sonra Hizmeti kullanmaya devam etmeniz, yeni şartları kabul ettiğiniz anlamına gelir.</p>
+
+            <h2>10. İletişim Bilgileri</h2>
+            <div class="contact-box">
+                <p>Kullanım Şartları hakkındaki sorularınız için bize ulaşın:<br>
+                <a href="mailto:sociaappsup@outlook.com">sociaappsup@outlook.com</a></p>
+            </div>
+        </div>
+
+        <div class="page-footer">
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/refund">Refund Policy</a>
+            <a href="/contact">Contact</a>
+            <a href="/">Home</a>
+            <p>&copy; 2026 Happenin by muratsverse. All rights reserved.</p>
+        </div>
     </div>
+
+    <script>
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-section').forEach(function(el) { el.classList.remove('active'); });
+            document.querySelectorAll('.lang-btn').forEach(function(el) { el.classList.remove('active'); });
+            document.getElementById('lang-' + lang).classList.add('active');
+            document.querySelector('[onclick="switchLang(\'' + lang + '\')"]').classList.add('active');
+        }
+    </script>
 </body>
 </html>

@@ -1,78 +1,154 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İletişim - Happenin</title>
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <title>Contact / İletişim - Happenin</title>
+    <link rel="icon" href="/logo.png" type="image/png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6; color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        h1 { color: #667eea; margin-bottom: 10px; font-size: 2.5em; }
-        .subtitle { color: #666; font-size: 1.1em; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0; }
-        h2 { color: #764ba2; margin-top: 30px; margin-bottom: 15px; font-size: 1.5em; }
-        p { margin-bottom: 15px; }
-        a { color: #667eea; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .back-link { display: inline-block; margin-bottom: 20px; color: #667eea; font-weight: 600; }
 
-        .info-cards {
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #fafafa;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 32px;
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .back-link:hover { color: #5a4bd1; }
+
+        h1 {
+            font-size: 2em;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 0.95em;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .lang-toggle { display: flex; gap: 8px; margin-bottom: 32px; }
+
+        .lang-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 2px solid #eee;
+            background: #fff;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active { border-color: #6c5ce7; color: #6c5ce7; background: #f5f3ff; }
+
+        .lang-section { display: none; }
+        .lang-section.active { display: block; }
+
+        /* Response time badge */
+        .response-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 12px 20px;
+            margin-bottom: 28px;
+            font-size: 0.9em;
+            color: #166534;
+        }
+
+        .response-badge .dot {
+            width: 8px; height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+
+        /* Info cards */
+        .info-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin: 24px 0;
+            gap: 12px;
+            margin-bottom: 36px;
         }
 
         .info-card {
-            background: #f8f9fa;
-            padding: 20px;
+            background: #fff;
+            border: 1px solid #eee;
             border-radius: 12px;
-            border-left: 4px solid #667eea;
+            padding: 20px;
+            transition: border-color 0.2s;
         }
 
-        .info-card .icon { font-size: 1.5em; margin-bottom: 8px; }
-        .info-card h3 { color: #667eea; font-size: 1em; margin-bottom: 4px; }
-        .info-card p { color: #555; font-size: 0.9em; margin-bottom: 0; }
+        .info-card:hover { border-color: #d4ccff; }
 
-        .highlight {
-            background: #e8f5e9;
-            padding: 16px;
-            border-radius: 8px;
-            margin: 24px 0;
-            border-left: 4px solid #4caf50;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .info-card .label {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #999;
+            margin-bottom: 4px;
+            font-weight: 600;
         }
 
-        .highlight .badge {
-            background: #4caf50;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
+        .info-card .value {
+            font-size: 0.95em;
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+
+        .info-card a {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        .info-card a:hover { text-decoration: underline; }
+
+        /* Form */
+        h2 {
+            font-size: 1.3em;
             font-weight: 700;
-            font-size: 0.85em;
-            white-space: nowrap;
+            color: #1a1a2e;
+            margin-bottom: 6px;
         }
 
-        /* FORM */
-        .form-section { margin-top: 32px; }
+        .form-desc {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 24px;
+        }
 
-        .form-group { margin-bottom: 20px; }
+        .form-group { margin-bottom: 18px; }
 
         .form-group label {
             display: block;
             font-weight: 600;
-            color: #333;
+            color: #444;
             margin-bottom: 6px;
-            font-size: 0.95em;
+            font-size: 0.85em;
         }
 
         .form-group input,
@@ -80,173 +156,240 @@
         .form-group select {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #eee;
             border-radius: 10px;
-            font-size: 1em;
+            font-size: 0.95em;
             font-family: inherit;
             transition: border-color 0.2s;
-            background: #fafafa;
+            background: #fff;
+            color: #333;
         }
 
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #667eea;
-            background: white;
+            border-color: #6c5ce7;
         }
 
         .form-group textarea { resize: vertical; min-height: 120px; }
 
         .submit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #6c5ce7;
             color: white;
             border: none;
             padding: 14px 40px;
-            border-radius: 50px;
-            font-size: 1.05em;
+            border-radius: 10px;
+            font-size: 0.95em;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: background 0.2s, transform 0.2s;
+            font-family: inherit;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
+        .submit-btn:hover { background: #5a4bd1; transform: translateY(-1px); }
 
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .success-msg {
             display: none;
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: #f0fdf4;
+            color: #166534;
             padding: 20px;
             border-radius: 12px;
             text-align: center;
             margin-top: 20px;
             font-weight: 600;
+            border: 1px solid #bbf7d0;
         }
 
         .success-msg.show { display: block; }
 
+        .page-footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .page-footer a { color: #999; text-decoration: none; font-size: 0.8em; margin: 0 12px; transition: color 0.2s; }
+        .page-footer a:hover { color: #6c5ce7; }
+        .page-footer p { color: #ccc; font-size: 0.75em; margin-top: 12px; }
+
         @media (max-width: 600px) {
-            .container { padding: 20px; }
-            h1 { font-size: 2em; }
-            .info-cards { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="/" class="back-link">&larr; Ana Sayfa</a>
-        <h1>İletişim</h1>
-        <p class="subtitle">Sorularınız, önerileriniz veya geri bildirimleriniz için bize ulaşın.</p>
+        <a href="/" class="back-link">&larr; Home / Ana Sayfa</a>
 
-        <div class="highlight">
-            <span class="badge">48 Saat</span>
-            <span>Tüm mesajlarınıza <strong>48 saat</strong> içinde yanıt veriyoruz.</span>
+        <h1>Contact Us</h1>
+        <p class="subtitle">Get in touch with us / Bizimle iletişime geçin</p>
+
+        <div class="lang-toggle">
+            <button class="lang-btn active" onclick="switchLang('en')">English</button>
+            <button class="lang-btn" onclick="switchLang('tr')">Türkçe</button>
         </div>
 
-        <div class="info-cards">
-            <div class="info-card">
-                <div class="icon">&#x2709;&#xFE0F;</div>
-                <h3>E-posta</h3>
-                <p><a href="mailto:muratveozturk@gmail.com">muratveozturk@gmail.com</a></p>
+        <!-- ENGLISH -->
+        <div id="lang-en" class="lang-section active">
+            <div class="response-badge">
+                <span class="dot"></span>
+                We respond to all messages within <strong>48 hours</strong>
             </div>
-            <div class="info-card">
-                <div class="icon">&#x1F4F1;</div>
-                <h3>Uygulama</h3>
-                <p>Happenin - Sosyal Etkinlik Platformu</p>
-            </div>
-            <div class="info-card">
-                <div class="icon">&#x1F464;</div>
-                <h3>Geliştirici</h3>
-                <p>Murat Öztürk</p>
-            </div>
-            <div class="info-card">
-                <div class="icon">&#x1F4CD;</div>
-                <h3>Konum</h3>
-                <p>Türkiye</p>
-            </div>
-        </div>
 
-        <div class="form-section">
-            <h2>Bize Yazın</h2>
-            <p>Soru, öneri veya şikayetinizi aşağıdaki formu doldurarak iletebilirsiniz.</p>
-
-            <form id="contactForm" onsubmit="handleSubmit(event)">
-                <div class="form-group">
-                    <label for="name">Adınız *</label>
-                    <input type="text" id="name" name="name" required placeholder="Adınız Soyadınız">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="label">Email</div>
+                    <div class="value"><a href="mailto:sociaappsup@outlook.com">sociaappsup@outlook.com</a></div>
                 </div>
-
-                <div class="form-group">
-                    <label for="email">E-posta Adresiniz *</label>
-                    <input type="email" id="email" name="email" required placeholder="ornek@email.com">
+                <div class="info-card">
+                    <div class="label">App</div>
+                    <div class="value">Happenin</div>
                 </div>
+                <div class="info-card">
+                    <div class="label">Developer</div>
+                    <div class="value">muratsverse</div>
+                </div>
+                <div class="info-card">
+                    <div class="label">Location</div>
+                    <div class="value">Turkey</div>
+                </div>
+            </div>
 
+            <h2>Send us a message</h2>
+            <p class="form-desc">Questions, suggestions, or feedback — we'd love to hear from you.</p>
+
+            <form id="contactForm-en" onsubmit="handleSubmit(event, 'en')">
                 <div class="form-group">
-                    <label for="subject">Konu *</label>
-                    <select id="subject" name="subject" required>
-                        <option value="">Konu seçiniz...</option>
-                        <option value="genel">Genel Soru</option>
-                        <option value="oneri">Öneri / Geri Bildirim</option>
-                        <option value="hata">Hata Bildirimi</option>
-                        <option value="iade">İade Talebi</option>
-                        <option value="hesap">Hesap Sorunu</option>
-                        <option value="sikayet">Şikayet</option>
-                        <option value="diger">Diğer</option>
+                    <label for="name-en">Your Name *</label>
+                    <input type="text" id="name-en" required placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <label for="email-en">Your Email *</label>
+                    <input type="email" id="email-en" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="subject-en">Subject *</label>
+                    <select id="subject-en" required>
+                        <option value="">Select a subject...</option>
+                        <option value="General">General Question</option>
+                        <option value="Feedback">Feedback / Suggestion</option>
+                        <option value="Bug">Bug Report</option>
+                        <option value="Refund">Refund Request</option>
+                        <option value="Account">Account Issue</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
-
                 <div class="form-group">
-                    <label for="message">Mesajınız *</label>
-                    <textarea id="message" name="message" required placeholder="Mesajınızı buraya yazınız..."></textarea>
+                    <label for="message-en">Your Message *</label>
+                    <textarea id="message-en" required placeholder="Write your message here..."></textarea>
                 </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">Gönder</button>
+                <button type="submit" class="submit-btn" id="submitBtn-en">Send Message</button>
             </form>
-
-            <div class="success-msg" id="successMsg">
-                Mesajınız başarıyla gönderildi! 48 saat içinde size dönüş yapacağız.
+            <div class="success-msg" id="successMsg-en">
+                Your message has been sent! We'll get back to you within 48 hours.
             </div>
         </div>
 
-        <hr style="margin: 40px 0; border: none; border-top: 2px solid #f0f0f0;">
+        <!-- TURKISH -->
+        <div id="lang-tr" class="lang-section">
+            <div class="response-badge">
+                <span class="dot"></span>
+                Tüm mesajlara <strong>48 saat</strong> içinde yanıt veriyoruz
+            </div>
 
-        <p style="text-align: center; color: #999; font-size: 0.9em;">
-            © 2025 Happenin. Tüm hakları saklıdır. |
-            <a href="/privacy-policy">Gizlilik Politikası</a> |
-            <a href="/terms">Kullanım Şartları</a> |
-            <a href="/">Ana Sayfa</a>
-        </p>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="label">E-posta</div>
+                    <div class="value"><a href="mailto:sociaappsup@outlook.com">sociaappsup@outlook.com</a></div>
+                </div>
+                <div class="info-card">
+                    <div class="label">Uygulama</div>
+                    <div class="value">Happenin</div>
+                </div>
+                <div class="info-card">
+                    <div class="label">Geliştirici</div>
+                    <div class="value">muratsverse</div>
+                </div>
+                <div class="info-card">
+                    <div class="label">Konum</div>
+                    <div class="value">Türkiye</div>
+                </div>
+            </div>
+
+            <h2>Bize Yazın</h2>
+            <p class="form-desc">Soru, öneri veya geri bildirimlerinizi bekliyoruz.</p>
+
+            <form id="contactForm-tr" onsubmit="handleSubmit(event, 'tr')">
+                <div class="form-group">
+                    <label for="name-tr">Adınız *</label>
+                    <input type="text" id="name-tr" required placeholder="Adınız Soyadınız">
+                </div>
+                <div class="form-group">
+                    <label for="email-tr">E-posta Adresiniz *</label>
+                    <input type="email" id="email-tr" required placeholder="ornek@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="subject-tr">Konu *</label>
+                    <select id="subject-tr" required>
+                        <option value="">Konu seçiniz...</option>
+                        <option value="Genel">Genel Soru</option>
+                        <option value="Oneri">Öneri / Geri Bildirim</option>
+                        <option value="Hata">Hata Bildirimi</option>
+                        <option value="Iade">İade Talebi</option>
+                        <option value="Hesap">Hesap Sorunu</option>
+                        <option value="Diger">Diğer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message-tr">Mesajınız *</label>
+                    <textarea id="message-tr" required placeholder="Mesajınızı buraya yazınız..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn-tr">Gönder</button>
+            </form>
+            <div class="success-msg" id="successMsg-tr">
+                Mesajınız gönderildi! 48 saat içinde size dönüş yapacağız.
+            </div>
+        </div>
+
+        <div class="page-footer">
+            <a href="/terms">Terms of Service</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/refund">Refund Policy</a>
+            <a href="/">Home</a>
+            <p>&copy; 2026 Happenin by muratsverse. All rights reserved.</p>
+        </div>
     </div>
 
     <script>
-        function handleSubmit(e) {
-            e.preventDefault();
-            var btn = document.getElementById('submitBtn');
-            var form = document.getElementById('contactForm');
-            var successMsg = document.getElementById('successMsg');
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-section').forEach(function(el) { el.classList.remove('active'); });
+            document.querySelectorAll('.lang-btn').forEach(function(el) { el.classList.remove('active'); });
+            document.getElementById('lang-' + lang).classList.add('active');
+            document.querySelector('[onclick="switchLang(\'' + lang + '\')"]').classList.add('active');
+        }
 
-            var name = document.getElementById('name').value;
-            var email = document.getElementById('email').value;
-            var subject = document.getElementById('subject').value;
-            var message = document.getElementById('message').value;
+        function handleSubmit(e, lang) {
+            e.preventDefault();
+            var btn = document.getElementById('submitBtn-' + lang);
+            var form = document.getElementById('contactForm-' + lang);
+            var successMsg = document.getElementById('successMsg-' + lang);
+
+            var name = document.getElementById('name-' + lang).value;
+            var email = document.getElementById('email-' + lang).value;
+            var subject = document.getElementById('subject-' + lang).value;
+            var message = document.getElementById('message-' + lang).value;
 
             btn.disabled = true;
-            btn.textContent = 'Gönderiliyor...';
+            btn.textContent = lang === 'en' ? 'Sending...' : 'Gönderiliyor...';
 
-            // mailto ile e-posta gönderimi
-            var subjectText = 'Happenin İletişim: ' + subject;
-            var body = 'Ad: ' + name + '\nE-posta: ' + email + '\nKonu: ' + subject + '\n\nMesaj:\n' + message;
-            var mailtoLink = 'mailto:muratveozturk@gmail.com?subject=' + encodeURIComponent(subjectText) + '&body=' + encodeURIComponent(body);
+            var subjectText = 'Happenin Contact: ' + subject;
+            var body = 'Name: ' + name + '\nEmail: ' + email + '\nSubject: ' + subject + '\n\nMessage:\n' + message;
+            var mailtoLink = 'mailto:sociaappsup@outlook.com?subject=' + encodeURIComponent(subjectText) + '&body=' + encodeURIComponent(body);
 
             window.location.href = mailtoLink;
 

@@ -1,112 +1,185 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İade Politikası - Happenin</title>
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <title>Refund Policy / İade Politikası - Happenin</title>
+    <link rel="icon" href="/logo.png" type="image/png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6; color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #fafafa;
         }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        h1 { color: #667eea; margin-bottom: 10px; font-size: 2.5em; }
-        .last-updated { color: #666; font-size: 0.9em; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0; }
-        h2 { color: #764ba2; margin-top: 30px; margin-bottom: 15px; font-size: 1.8em; }
-        h3 { color: #667eea; margin-top: 20px; margin-bottom: 10px; font-size: 1.3em; }
-        p { margin-bottom: 15px; text-align: justify; }
-        ul { margin-left: 30px; margin-bottom: 15px; }
-        li { margin-bottom: 8px; }
-        .contact-info { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #667eea; }
-        .highlight { background: #fff3cd; padding: 15px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #ffc107; }
-        a { color: #667eea; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .back-link { display: inline-block; margin-bottom: 20px; color: #667eea; font-weight: 600; }
-        @media (max-width: 600px) { .container { padding: 20px; } h1 { font-size: 2em; } h2 { font-size: 1.5em; } }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 32px;
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .back-link:hover { color: #5a4bd1; }
+
+        h1 {
+            font-size: 2em;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .business-info {
+            background: #f5f3ff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .business-info strong { color: #6c5ce7; }
+
+        .lang-toggle { display: flex; gap: 8px; margin-bottom: 32px; }
+
+        .lang-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 2px solid #eee;
+            background: #fff;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active { border-color: #6c5ce7; color: #6c5ce7; background: #f5f3ff; }
+
+        .lang-section { display: none; }
+        .lang-section.active { display: block; }
+
+        h2 { font-size: 1.15em; font-weight: 700; color: #1a1a2e; margin-top: 28px; margin-bottom: 10px; }
+
+        p { margin-bottom: 12px; color: #555; font-size: 0.95em; }
+
+        .contact-box {
+            background: #f5f3ff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 32px;
+        }
+
+        .contact-box a { color: #6c5ce7; text-decoration: none; font-weight: 600; }
+        .contact-box a:hover { text-decoration: underline; }
+
+        .page-footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .page-footer a { color: #999; text-decoration: none; font-size: 0.8em; margin: 0 12px; transition: color 0.2s; }
+        .page-footer a:hover { color: #6c5ce7; }
+        .page-footer p { color: #ccc; font-size: 0.75em; margin-top: 12px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="/" class="back-link">&larr; Ana Sayfa</a>
-        <h1>İade Politikası</h1>
-        <p class="last-updated"><strong>Son Güncelleme:</strong> 1 Mart 2026</p>
+        <a href="/" class="back-link">&larr; Home / Ana Sayfa</a>
 
-        <p>Happenin ("biz", "uygulama") olarak kullanıcı memnuniyetini ön planda tutuyoruz. Bu iade politikası, Premium abonelik ve uygulama içi satın alımlarla ilgili iade süreçlerini açıklar.</p>
+        <h1>Refund Policy</h1>
+        <p class="subtitle">Last updated: March 1, 2026 &middot; Son güncelleme: 1 Mart 2026</p>
 
-        <h2>1. Premium Abonelik İadeleri</h2>
-
-        <h3>1.1 Deneme Süresi</h3>
-        <p>Premium aboneliğinizin ilk 7 günü deneme süresidir. Bu süre içinde iptal ederseniz herhangi bir ücret yansıtılmaz.</p>
-
-        <h3>1.2 İade Koşulları</h3>
-        <ul>
-            <li>Abonelik başlangıcından itibaren <strong>14 gün</strong> içinde iade talep edebilirsiniz</li>
-            <li>Teknik sorunlar nedeniyle hizmetten yararlanamadıysanız iade yapılır</li>
-            <li>Yanlışlıkla yapılan satın alımlarda iade değerlendirilir</li>
-        </ul>
-
-        <h3>1.3 İade Yapılmayan Durumlar</h3>
-        <ul>
-            <li>14 günlük süreyi aşan talepler</li>
-            <li>Premium özellikleri aktif olarak kullandıktan sonra yapılan talepler</li>
-            <li>Kullanım şartlarını ihlal nedeniyle kapatılan hesaplar</li>
-        </ul>
-
-        <h2>2. App Store / Google Play İadeleri</h2>
-
-        <h3>2.1 Apple App Store</h3>
-        <p>iOS üzerinden yapılan satın alımlar Apple tarafından işlenir. İade talebi için:</p>
-        <ul>
-            <li><a href="https://reportaproblem.apple.com" target="_blank">reportaproblem.apple.com</a> adresinden başvurabilirsiniz</li>
-            <li>Apple'ın iade politikası geçerlidir</li>
-        </ul>
-
-        <h3>2.2 Google Play Store</h3>
-        <p>Android üzerinden yapılan satın alımlar Google tarafından işlenir. İade talebi için:</p>
-        <ul>
-            <li>Google Play Store > Hesap > Sipariş geçmişi üzerinden başvurabilirsiniz</li>
-            <li>Google'ın iade politikası geçerlidir</li>
-        </ul>
-
-        <h2>3. İade Süreci</h2>
-        <ul>
-            <li>İade talebinizi <a href="/contact">iletişim sayfamız</a> üzerinden veya <a href="mailto:muratveozturk@gmail.com">muratveozturk@gmail.com</a> adresine gönderin</li>
-            <li>Talebiniz <strong>48 saat</strong> içinde değerlendirilecektir</li>
-            <li>Onaylanan iadeler, ödeme yönteminize bağlı olarak <strong>5-10 iş günü</strong> içinde hesabınıza yansır</li>
-        </ul>
-
-        <h2>4. Abonelik İptali</h2>
-        <p>Aboneliğinizi istediğiniz zaman iptal edebilirsiniz:</p>
-        <ul>
-            <li><strong>iOS:</strong> Ayarlar > Apple ID > Abonelikler > Happenin > İptal Et</li>
-            <li><strong>Android:</strong> Google Play Store > Abonelikler > Happenin > İptal Et</li>
-            <li>İptal sonrası mevcut dönem sonuna kadar Premium özelliklerden yararlanmaya devam edersiniz</li>
-        </ul>
-
-        <div class="highlight">
-            <strong>Not:</strong> Abonelik iptali otomatik iade anlamına gelmez. İade talebi ayrıca yapılmalıdır.
+        <div class="business-info">
+            <strong>Business Information:</strong> Legal business name: muratsverse. Happenin is operated by muratsverse.
         </div>
 
-        <div class="contact-info">
-            <h2>5. İletişim</h2>
-            <p>İade talepleriniz ve sorularınız için:</p>
-            <p><strong>E-posta:</strong> <a href="mailto:muratveozturk@gmail.com">muratveozturk@gmail.com</a></p>
-            <p><strong>İletişim Sayfası:</strong> <a href="/contact">happenin.app/contact</a></p>
-            <p>Talepleriniz 48 saat içinde yanıtlanacaktır.</p>
+        <div class="lang-toggle">
+            <button class="lang-btn active" onclick="switchLang('en')">English</button>
+            <button class="lang-btn" onclick="switchLang('tr')">Türkçe</button>
         </div>
 
-        <hr style="margin: 40px 0; border: none; border-top: 2px solid #f0f0f0;">
+        <!-- ENGLISH -->
+        <div id="lang-en" class="lang-section active">
+            <h2>1. 14-Day Refund Window</h2>
+            <p>You may request a refund within 14 days of your initial purchase. The 14-day period starts on the day after your purchase.</p>
 
-        <p style="text-align: center; color: #999; font-size: 0.9em;">
-            © 2025 Happenin. Tüm hakları saklıdır. |
-            <a href="/privacy-policy">Gizlilik Politikası</a> |
-            <a href="/terms">Kullanım Şartları</a> |
-            <a href="/">Ana Sayfa</a>
-        </p>
+            <h2>2. Refund Process</h2>
+            <p>Approved refunds are returned to the original payment method.</p>
+
+            <h2>3. How to Request a Refund</h2>
+            <p>To request a refund, please contact our support team with your account email address and transaction details.</p>
+
+            <h2>4. Processing Time</h2>
+            <p>Approved refunds are typically processed within 5-10 business days.</p>
+
+            <h2>5. Contact Information</h2>
+            <div class="contact-box">
+                <p>For questions about this Refund Policy or to request a refund, please contact us at:<br>
+                <a href="mailto:sociaappsup@outlook.com">sociaappsup@outlook.com</a></p>
+                <p>Response Time: We aim to respond to all refund requests within 24-48 hours.</p>
+            </div>
+        </div>
+
+        <!-- TURKISH -->
+        <div id="lang-tr" class="lang-section">
+            <h2>1. 14 Günlük İade Süresi</h2>
+            <p>İlk satın alma işleminizden itibaren 14 gün içinde iade talebinde bulunabilirsiniz. 14 günlük süre, satın alma işleminizin ertesi günü başlar.</p>
+
+            <h2>2. İade Süreci</h2>
+            <p>Onaylanan iadeler, orijinal ödeme yöntemine iade edilir.</p>
+
+            <h2>3. İade Nasıl Talep Edilir</h2>
+            <p>İade talep etmek için hesap e-posta adresiniz ve işlem detaylarınızla birlikte destek ekibimizle iletişime geçin.</p>
+
+            <h2>4. İşlem Süresi</h2>
+            <p>Onaylanan iadeler genellikle 5-10 iş günü içinde işlenir.</p>
+
+            <h2>5. İletişim Bilgileri</h2>
+            <div class="contact-box">
+                <p>İade Politikası hakkında sorularınız veya iade talepleriniz için bize ulaşın:<br>
+                <a href="mailto:sociaappsup@outlook.com">sociaappsup@outlook.com</a></p>
+                <p>Yanıt Süresi: Tüm iade taleplerine 24-48 saat içinde yanıt vermeyi hedefliyoruz.</p>
+            </div>
+        </div>
+
+        <div class="page-footer">
+            <a href="/terms">Terms of Service</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/contact">Contact</a>
+            <a href="/">Home</a>
+            <p>&copy; 2026 Happenin by muratsverse. All rights reserved.</p>
+        </div>
     </div>
+
+    <script>
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-section').forEach(function(el) { el.classList.remove('active'); });
+            document.querySelectorAll('.lang-btn').forEach(function(el) { el.classList.remove('active'); });
+            document.getElementById('lang-' + lang).classList.add('active');
+            document.querySelector('[onclick="switchLang(\'' + lang + '\')"]').classList.add('active');
+        }
+    </script>
 </body>
 </html>

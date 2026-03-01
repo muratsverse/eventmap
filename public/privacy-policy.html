@@ -1,338 +1,288 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gizlilik Politikası - Happenin</title>
+    <title>Privacy Policy / Gizlilik Politikası - Happenin</title>
+    <link rel="icon" href="/logo.png" type="image/png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            background: #fafafa;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 720px;
             margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px 24px 60px;
         }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 32px;
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .back-link:hover { color: #5a4bd1; }
 
         h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-
-        .last-updated {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        h2 {
-            color: #764ba2;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-        }
-
-        h3 {
-            color: #667eea;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        ul {
-            margin-left: 30px;
-            margin-bottom: 15px;
-        }
-
-        li {
+            font-size: 2em;
+            font-weight: 800;
+            color: #1a1a2e;
             margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
-        .contact-info {
-            background: #f8f9fa;
-            padding: 20px;
+        .subtitle {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .business-info {
+            background: #f5f3ff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .business-info strong { color: #6c5ce7; }
+
+        .lang-toggle { display: flex; gap: 8px; margin-bottom: 32px; }
+
+        .lang-btn {
+            padding: 8px 20px;
             border-radius: 8px;
-            margin-top: 30px;
-            border-left: 4px solid #667eea;
+            border: 2px solid #eee;
+            background: #fff;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .highlight {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 20px 0;
-            border-left: 4px solid #ffc107;
+        .lang-btn.active { border-color: #6c5ce7; color: #6c5ce7; background: #f5f3ff; }
+
+        .lang-section { display: none; }
+        .lang-section.active { display: block; }
+
+        h2 { font-size: 1.15em; font-weight: 700; color: #1a1a2e; margin-top: 28px; margin-bottom: 10px; }
+
+        p { margin-bottom: 12px; color: #555; font-size: 0.95em; }
+
+        ul { margin-left: 20px; margin-bottom: 12px; }
+        li { margin-bottom: 6px; color: #555; font-size: 0.95em; }
+
+        .contact-box {
+            background: #f5f3ff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 32px;
         }
 
-        a {
-            color: #667eea;
-            text-decoration: none;
+        .contact-box a { color: #6c5ce7; text-decoration: none; font-weight: 600; }
+        .contact-box a:hover { text-decoration: underline; }
+
+        .page-footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            h2 {
-                font-size: 1.5em;
-            }
-        }
+        .page-footer a { color: #999; text-decoration: none; font-size: 0.8em; margin: 0 12px; transition: color 0.2s; }
+        .page-footer a:hover { color: #6c5ce7; }
+        .page-footer p { color: #ccc; font-size: 0.75em; margin-top: 12px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="/" style="display:inline-block;margin-bottom:20px;color:#667eea;font-weight:600;text-decoration:none;">&larr; Ana Sayfa</a>
-        <h1>Gizlilik Politikası</h1>
-        <p class="last-updated"><strong>Son Güncelleme:</strong> 27 Aralık 2024</p>
+        <a href="/" class="back-link">&larr; Home / Ana Sayfa</a>
 
-        <p>Happenin ("biz", "bize" veya "uygulama"), kullanıcılarımızın gizliliğini korumayı taahhüt eder. Bu gizlilik politikası, Happenin mobil uygulamasını kullandığınızda kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı, sakladığımızı ve koruduğumuzu açıklar.</p>
+        <h1>Privacy Policy</h1>
+        <p class="subtitle">Last updated: March 1, 2026 &middot; Son güncelleme: 1 Mart 2026</p>
 
-        <div class="highlight">
-            <strong>Önemli:</strong> Happenin uygulamasını kullanarak, bu gizlilik politikasında açıklanan uygulamaları kabul etmiş olursunuz. Politikamızı kabul etmiyorsanız, lütfen uygulamamızı kullanmayın.
+        <div class="business-info">
+            <strong>Business Information:</strong> Legal business name: muratsverse. Happenin is operated by muratsverse.
         </div>
 
-        <h2>1. Topladığımız Bilgiler</h2>
-
-        <h3>1.1 Kişisel Bilgiler</h3>
-        <p>Uygulamamızı kullanırken aşağıdaki kişisel bilgileri toplayabiliriz:</p>
-        <ul>
-            <li><strong>Hesap Bilgileri:</strong> Ad, soyad, e-posta adresi, şifre (şifrelenmiş)</li>
-            <li><strong>Profil Bilgileri:</strong> Profil fotoğrafı, biyografi, kullanıcı adı</li>
-            <li><strong>İletişim Bilgileri:</strong> E-posta adresi, iletişim tercihleri</li>
-            <li><strong>Ödeme Bilgileri:</strong> Premium abonelik için kredi kartı bilgileri (üçüncü taraf ödeme sağlayıcıları aracılığıyla işlenir, bizim sunucularımızda saklanmaz)</li>
-        </ul>
-
-        <h3>1.2 Kullanım Bilgileri</h3>
-        <p>Uygulamayı kullanırken otomatik olarak toplanan bilgiler:</p>
-        <ul>
-            <li><strong>Konum Bilgileri:</strong> Yakınınızdaki etkinlikleri göstermek için yaklaşık konum bilginiz (izninizle)</li>
-            <li><strong>Cihaz Bilgileri:</strong> Cihaz modeli, işletim sistemi sürümü, benzersiz cihaz tanımlayıcıları</li>
-            <li><strong>Kullanım Verileri:</strong> Hangi etkinlikleri görüntülediğiniz, favorilediğiniz, katılım sağladığınız</li>
-            <li><strong>Log Verileri:</strong> IP adresi, uygulama kullanım süreleri, hata raporları</li>
-        </ul>
-
-        <h3>1.3 Etkinlik Bilgileri</h3>
-        <p>Oluşturduğunuz etkinliklerle ilgili:</p>
-        <ul>
-            <li>Etkinlik adı, açıklaması, tarihi ve saati</li>
-            <li>Etkinlik konumu (adres ve koordinatlar)</li>
-            <li>Etkinlik görselleri</li>
-            <li>Kategori ve etiketler</li>
-        </ul>
-
-        <h3>1.4 Üçüncü Taraf Hizmetlerinden Alınan Bilgiler</h3>
-        <p>Google ile giriş yaptığınızda:</p>
-        <ul>
-            <li>Google hesabınızdan gelen temel profil bilgileri (ad, e-posta, profil fotoğrafı)</li>
-            <li>Google hesabınızın benzersiz tanımlayıcısı</li>
-        </ul>
-
-        <h2>2. Bilgileri Nasıl Kullanıyoruz</h2>
-
-        <p>Topladığımız bilgileri şu amaçlarla kullanırız:</p>
-
-        <h3>2.1 Hizmet Sunumu</h3>
-        <ul>
-            <li>Hesap oluşturma ve yönetme</li>
-            <li>Etkinlik oluşturma, düzenleme ve yayınlama</li>
-            <li>Yakınınızdaki etkinlikleri gösterme</li>
-            <li>Favori etkinliklerinizi ve katılım bilgilerinizi saklama</li>
-            <li>Premium özelliklere erişim sağlama</li>
-        </ul>
-
-        <h3>2.2 İletişim</h3>
-        <ul>
-            <li>Hesap güncellemeleri ve önemli bildirimler</li>
-            <li>Etkinlik hatırlatmaları</li>
-            <li>Premium abonelik durumu hakkında bilgilendirme</li>
-            <li>Müşteri desteği sağlama</li>
-        </ul>
-
-        <h3>2.3 İyileştirme ve Analiz</h3>
-        <ul>
-            <li>Uygulama performansını izleme ve iyileştirme</li>
-            <li>Kullanıcı deneyimini geliştirme</li>
-            <li>Hataları tespit etme ve düzeltme</li>
-            <li>Yeni özellikler geliştirme</li>
-        </ul>
-
-        <h3>2.4 Güvenlik ve Dolandırıcılık Önleme</h3>
-        <ul>
-            <li>Hesap güvenliğini sağlama</li>
-            <li>Yetkisiz erişimi tespit etme ve önleme</li>
-            <li>Kötüye kullanımı ve spam'i önleme</li>
-        </ul>
-
-        <h2>3. Bilgi Paylaşımı</h2>
-
-        <h3>3.1 Herkese Açık Bilgiler</h3>
-        <p>Aşağıdaki bilgiler uygulama içinde diğer kullanıcılar tarafından görülebilir:</p>
-        <ul>
-            <li>Kullanıcı adınız ve profil fotoğrafınız</li>
-            <li>Oluşturduğunuz etkinlikler ve detayları</li>
-            <li>Herkese açık profil bilgileriniz</li>
-        </ul>
-
-        <h3>3.2 Üçüncü Taraf Hizmet Sağlayıcılar</h3>
-        <p>Bilgilerinizi güvenilir üçüncü taraf hizmet sağlayıcılarla paylaşabiliriz:</p>
-        <ul>
-            <li><strong>Supabase:</strong> Veritabanı ve kimlik doğrulama hizmetleri</li>
-            <li><strong>Google OAuth:</strong> Sosyal medya ile giriş hizmeti</li>
-            <li><strong>Stripe / Apple In-App Purchase / Google Play Billing:</strong> Ödeme işleme</li>
-            <li><strong>Cloud Storage Sağlayıcılar:</strong> Görsel ve medya dosyaları için</li>
-        </ul>
-
-        <h3>3.3 Yasal Gereklilikler</h3>
-        <p>Bilgilerinizi şu durumlarda açıklayabiliriz:</p>
-        <ul>
-            <li>Yasal yükümlülükleri yerine getirmek için</li>
-            <li>Haklarımızı, mülkiyetimizi veya güvenliğimizi korumak için</li>
-            <li>Dolandırıcılığı veya güvenlik sorunlarını araştırmak için</li>
-            <li>Mahkeme kararı veya yasal süreçlere uymak için</li>
-        </ul>
-
-        <h2>4. Veri Güvenliği</h2>
-
-        <p>Kişisel bilgilerinizi korumak için endüstri standardı güvenlik önlemleri kullanıyoruz:</p>
-        <ul>
-            <li><strong>Şifreleme:</strong> Verileriniz aktarım sırasında SSL/TLS ile şifrelenir</li>
-            <li><strong>Güvenli Depolama:</strong> Şifreler bcrypt ile hash'lenerek saklanır</li>
-            <li><strong>Erişim Kontrolü:</strong> Sınırlı yetkili personel erişimi</li>
-            <li><strong>Düzenli Güvenlik Güncellemeleri:</strong> Sistemlerimizi sürekli güncelliyoruz</li>
-            <li><strong>Güvenlik Duvarları:</strong> Yetkisiz erişimleri engellemek için</li>
-        </ul>
-
-        <div class="highlight">
-            <strong>Not:</strong> İnternet üzerinden hiçbir veri iletimi %100 güvenli değildir. Makul güvenlik önlemleri alsak da, mutlak güvenliği garanti edemeyiz.
+        <div class="lang-toggle">
+            <button class="lang-btn active" onclick="switchLang('en')">English</button>
+            <button class="lang-btn" onclick="switchLang('tr')">Türkçe</button>
         </div>
 
-        <h2>5. Veri Saklama</h2>
+        <!-- ENGLISH -->
+        <div id="lang-en" class="lang-section active">
+            <h2>1. Information We Collect</h2>
+            <p>We collect information you provide directly to us when you create an account, create events, or use our services:</p>
+            <ul>
+                <li><strong>Account Information:</strong> Email address, name, profile picture</li>
+                <li><strong>Event Information:</strong> Event details, descriptions, locations, images</li>
+                <li><strong>Usage Information:</strong> Events attended, created events, search history</li>
+                <li><strong>Location Data:</strong> Approximate location for event discovery (with your permission)</li>
+            </ul>
 
-        <p>Kişisel bilgilerinizi şu sürelerde saklarız:</p>
-        <ul>
-            <li><strong>Aktif Hesaplar:</strong> Hesabınız aktif olduğu sürece</li>
-            <li><strong>Hesap Silme:</strong> Hesabınızı sildiğinizde, 30 gün içinde tüm kişisel bilgileriniz silinir</li>
-            <li><strong>Yasal Saklama:</strong> Yasal yükümlülükler için gerekli olan veriler daha uzun süre saklanabilir</li>
-            <li><strong>Anonim Veriler:</strong> Anonim hale getirilmiş kullanım verileri süresiz saklanabilir</li>
-        </ul>
+            <h2>2. How We Use Your Information</h2>
+            <p>We use the collected information to:</p>
+            <ul>
+                <li>Provide, maintain, and improve our services</li>
+                <li>Maintain the service and your account</li>
+                <li>Send you notifications about events and service updates</li>
+                <li>Personalize your experience and show relevant events</li>
+                <li>Detect, prevent, and address technical issues and fraud</li>
+                <li>Comply with legal obligations</li>
+            </ul>
 
-        <h2>6. Haklarınız</h2>
+            <h2>3. Information Sharing</h2>
+            <p>We do not sell your personal information. We may share your information in the following circumstances:</p>
+            <ul>
+                <li><strong>Public Events:</strong> Event information you create is visible to other users</li>
+                <li><strong>Service Providers:</strong> Third-party services that help us operate (e.g., Supabase for hosting)</li>
+                <li><strong>Legal Requirements:</strong> When required by law or to protect our rights</li>
+                <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
+            </ul>
 
-        <p>KVKK (Kişisel Verilerin Korunması Kanunu) kapsamında aşağıdaki haklara sahipsiniz:</p>
+            <h2>4. Data Security</h2>
+            <p>We implement industry-standard security measures to protect your personal information. However, no method of transmission over the internet is 100% secure. We use encryption, secure authentication, and regularly update our security practices.</p>
 
-        <h3>6.1 Erişim Hakkı</h3>
-        <p>Hakkınızda sakladığımız kişisel verilere erişim talep edebilirsiniz.</p>
+            <h2>5. Your Rights and Choices</h2>
+            <p>You have the right to:</p>
+            <ul>
+                <li>Access and review your personal information</li>
+                <li>Update or correct your information through account settings</li>
+                <li>Delete your account and associated data</li>
+                <li>Opt-out of marketing communications</li>
+                <li>Request a copy of your data</li>
+                <li>Object to certain data processing activities</li>
+            </ul>
 
-        <h3>6.2 Düzeltme Hakkı</h3>
-        <p>Yanlış veya eksik kişisel verilerin düzeltilmesini talep edebilirsiniz.</p>
+            <h2>6. Cookies and Tracking</h2>
+            <p>We use cookies and similar technologies to improve your experience, analyze usage patterns, and personalize content. You can control cookie preferences through your browser settings.</p>
 
-        <h3>6.3 Silme Hakkı</h3>
-        <p>Hesabınızı ve kişisel verilerinizi tamamen silme talebinde bulunabilirsiniz. Uygulama içindeki Ayarlar > Hesabı Sil bölümünden hesabınızı silebilirsiniz.</p>
+            <h2>7. Third-Party Services</h2>
+            <p>We use the following third-party services:</p>
+            <ul>
+                <li><strong>Supabase:</strong> Database and authentication hosting</li>
+                <li><strong>Google OAuth:</strong> Optional sign-in authentication</li>
+                <li><strong>OpenStreetMap:</strong> Map and location services</li>
+            </ul>
 
-        <h3>6.4 İtiraz Hakkı</h3>
-        <p>Belirli veri işleme faaliyetlerine itiraz edebilirsiniz.</p>
+            <h2>8. Children's Privacy</h2>
+            <p>Happenin is not intended for users under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware of such collection, we will delete the information immediately.</p>
 
-        <h3>6.5 Veri Taşınabilirliği</h3>
-        <p>Kişisel verilerinizin bir kopyasını makine tarafından okunabilir formatta talep edebilirsiniz.</p>
+            <h2>9. International Data Transfers</h2>
+            <p>Your information may be transferred to and processed in countries other than your country of residence. We ensure appropriate safeguards are in place to protect your data in accordance with this Privacy Policy.</p>
 
-        <h2>7. Çocukların Gizliliği</h2>
+            <h2>10. Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. We will notify you of any material changes by email or through the Service. Your continued use after such changes constitutes acceptance of the updated policy.</p>
 
-        <p>Happenin, 18 yaşından küçük kullanıcılara yönelik değildir. Bilerek 18 yaşından küçük çocuklardan kişisel bilgi toplamıyoruz. Eğer 18 yaşından küçük bir çocuğun bize kişisel bilgi verdiğini fark ederseniz, lütfen bize bildirin.</p>
-
-        <h2>8. Uluslararası Veri Transferleri</h2>
-
-        <p>Verileriniz, Türkiye dışındaki sunucularda saklanabilir ve işlenebilir. Veri transferlerinin güvenli bir şekilde gerçekleştirilmesi için uygun önlemleri alıyoruz ve üçüncü taraf hizmet sağlayıcılarımızın da uygun güvenlik standartlarına uymasını sağlıyoruz.</p>
-
-        <h2>9. Çerezler ve İzleme Teknolojileri</h2>
-
-        <p>Uygulamamız sınırlı sayıda çerez ve izleme teknolojisi kullanır:</p>
-        <ul>
-            <li><strong>Oturum Yönetimi:</strong> Giriş durumunuzu hatırlamak için</li>
-            <li><strong>Tercihler:</strong> Uygulama ayarlarınızı saklamak için</li>
-            <li><strong>Analitik:</strong> Uygulama kullanımını anlamak için (anonim)</li>
-        </ul>
-
-        <h2>10. Değişiklikler</h2>
-
-        <p>Bu gizlilik politikasını zaman zaman güncelleyebiliriz. Önemli değişiklikler olduğunda sizi uygulama içi bildirim veya e-posta ile bilgilendireceğiz. Değişiklikler yayınlandıktan sonra uygulamayı kullanmaya devam ederseniz, yeni politikayı kabul etmiş sayılırsınuz.</p>
-
-        <p>Politikanın üst kısmındaki "Son Güncelleme" tarihi, en son revizyon tarihini gösterir.</p>
-
-        <h2>11. Bildirim Ayarları</h2>
-
-        <p>Uygulama içindeki Ayarlar bölümünden bildirimleri yönetebilirsiniz:</p>
-        <ul>
-            <li>Etkinlik hatırlatmaları</li>
-            <li>Yeni etkinlik bildirimleri</li>
-            <li>Premium abonelik bildirimleri</li>
-            <li>Pazarlama e-postaları</li>
-        </ul>
-
-        <h2>12. Premium Abonelik</h2>
-
-        <p>Premium abonelik satın aldığınızda:</p>
-        <ul>
-            <li>Ödeme işlemi Stripe, Apple In-App Purchase veya Google Play Billing aracılığıyla güvenli bir şekilde gerçekleştirilir</li>
-            <li>Kredi kartı bilgileriniz bizim sunucularımızda saklanmaz</li>
-            <li>Abonelik bilgileriniz (durum, başlangıç/bitiş tarihi) saklanır</li>
-            <li>Fatura bilgileriniz yasal gereklilikler için saklanır</li>
-        </ul>
-
-        <div class="contact-info">
-            <h2>13. İletişim</h2>
-            <p>Gizlilik politikamız veya kişisel verilerinizle ilgili sorularınız varsa, bizimle iletişime geçebilirsiniz:</p>
-            <p><strong>E-posta:</strong> <a href="mailto:muratveozturk@gmail.com">muratveozturk@gmail.com</a></p>
-            <p><strong>Veri Sorumlusu:</strong> Murat Öztürk</p>
-            <p><strong>Uygulama:</strong> Happenin</p>
-            <p>Talepleriniz 30 gün içinde yanıtlanacaktır.</p>
+            <h2>11. Contact Us</h2>
+            <div class="contact-box">
+                <p>For questions or concerns about this Privacy Policy or our data practices, please contact us at:<br>
+                <a href="mailto:sociaappsup@outlook.com">sociaappsup@outlook.com</a></p>
+            </div>
         </div>
 
-        <h2>14. Onay</h2>
+        <!-- TURKISH -->
+        <div id="lang-tr" class="lang-section">
+            <h2>1. Topladığımız Bilgiler</h2>
+            <p>Hesap oluşturduğunuzda, etkinlik oluşturduğunuzda veya hizmetlerimizi kullandığınızda bize doğrudan sağladığınız bilgileri topluyoruz:</p>
+            <ul>
+                <li><strong>Hesap Bilgileri:</strong> E-posta adresi, ad, profil fotoğrafı</li>
+                <li><strong>Etkinlik Bilgileri:</strong> Etkinlik detayları, açıklamalar, konumlar, görseller</li>
+                <li><strong>Kullanım Bilgileri:</strong> Katıldığınız etkinlikler, oluşturduğunuz etkinlikler, arama geçmişi</li>
+                <li><strong>Konum Verileri:</strong> Etkinlik keşfi için yaklaşık konum (izninizle)</li>
+            </ul>
 
-        <p>Happenin uygulamasını kullanarak, bu gizlilik politikasını okuduğunuzu, anladığınızı ve kabul ettiğinizi onaylamış olursunuz.</p>
+            <h2>2. Bilgilerinizi Nasıl Kullanıyoruz</h2>
+            <p>Toplanan bilgileri şu amaçlarla kullanıyoruz:</p>
+            <ul>
+                <li>Hizmetlerimizi sağlamak, sürdürmek ve iyileştirmek</li>
+                <li>Hizmeti ve hesabınızı yönetmek</li>
+                <li>Etkinlikler ve hizmet güncellemeleri hakkında bildirim göndermek</li>
+                <li>Deneyiminizi kişiselleştirmek ve ilgili etkinlikleri göstermek</li>
+                <li>Teknik sorunları ve dolandırıcılığı tespit etmek, önlemek ve çözmek</li>
+                <li>Yasal yükümlülüklere uymak</li>
+            </ul>
 
-        <div class="highlight">
-            <strong>Önemli Hatırlatma:</strong> Gizliliğiniz bizim için önemlidir. Verilerinizin nasıl kullanıldığı konusunda herhangi bir endişeniz varsa, lütfen bizimle iletişime geçin.
+            <h2>3. Bilgi Paylaşımı</h2>
+            <p>Kişisel bilgilerinizi satmıyoruz. Bilgilerinizi aşağıdaki durumlarda paylaşabiliriz:</p>
+            <ul>
+                <li><strong>Herkese Açık Etkinlikler:</strong> Oluşturduğunuz etkinlik bilgileri diğer kullanıcılar tarafından görülebilir</li>
+                <li><strong>Hizmet Sağlayıcılar:</strong> Operasyonlarımızda yardımcı olan üçüncü taraf hizmetler (örn. Supabase)</li>
+                <li><strong>Yasal Gereklilikler:</strong> Yasalar gerektirdiğinde veya haklarımızı korumak için</li>
+                <li><strong>İşletme Transferleri:</strong> Birleşme, devralma veya varlık satışı durumunda</li>
+            </ul>
+
+            <h2>4. Veri Güvenliği</h2>
+            <p>Kişisel bilgilerinizi korumak için endüstri standardı güvenlik önlemleri uyguluyoruz. Ancak internet üzerinden hiçbir iletim yöntemi %100 güvenli değildir. Şifreleme, güvenli kimlik doğrulama kullanıyor ve güvenlik uygulamalarımızı düzenli olarak güncelliyoruz.</p>
+
+            <h2>5. Haklarınız ve Seçenekleriniz</h2>
+            <p>Şu haklara sahipsiniz:</p>
+            <ul>
+                <li>Kişisel bilgilerinize erişmek ve incelemek</li>
+                <li>Hesap ayarları üzerinden bilgilerinizi güncellemek veya düzeltmek</li>
+                <li>Hesabınızı ve ilişkili verileri silmek</li>
+                <li>Pazarlama iletişimlerinden çıkmak</li>
+                <li>Verilerinizin bir kopyasını talep etmek</li>
+                <li>Belirli veri işleme faaliyetlerine itiraz etmek</li>
+            </ul>
+
+            <h2>6. Çerezler ve İzleme</h2>
+            <p>Deneyiminizi iyileştirmek, kullanım kalıplarını analiz etmek ve içeriği kişiselleştirmek için çerezler ve benzer teknolojiler kullanıyoruz. Tarayıcı ayarlarınız üzerinden çerez tercihlerinizi kontrol edebilirsiniz.</p>
+
+            <h2>7. Üçüncü Taraf Hizmetler</h2>
+            <p>Aşağıdaki üçüncü taraf hizmetleri kullanıyoruz:</p>
+            <ul>
+                <li><strong>Supabase:</strong> Veritabanı ve kimlik doğrulama barındırma</li>
+                <li><strong>Google OAuth:</strong> İsteğe bağlı oturum açma kimlik doğrulaması</li>
+                <li><strong>OpenStreetMap:</strong> Harita ve konum hizmetleri</li>
+            </ul>
+
+            <h2>8. Çocukların Gizliliği</h2>
+            <p>Happenin 13 yaş altı kullanıcılar için tasarlanmamıştır. 13 yaş altı çocuklardan bilerek kişisel bilgi toplamıyoruz. Bu tür bir toplama fark edersek, bilgileri derhal sileceğiz.</p>
+
+            <h2>9. Uluslararası Veri Transferleri</h2>
+            <p>Bilgileriniz, ikamet ettiğiniz ülke dışındaki ülkelere aktarılabilir ve orada işlenebilir. Bu Gizlilik Politikasına uygun olarak verilerinizi korumak için uygun güvencelerin mevcut olmasını sağlıyoruz.</p>
+
+            <h2>10. Bu Politikadaki Değişiklikler</h2>
+            <p>Bu Gizlilik Politikasını zaman zaman güncelleyebiliriz. Önemli değişiklikleri e-posta veya Hizmet üzerinden bildireceğiz. Bu tür değişikliklerden sonra kullanmaya devam etmeniz, güncellenen politikayı kabul ettiğiniz anlamına gelir.</p>
+
+            <h2>11. Bize Ulaşın</h2>
+            <div class="contact-box">
+                <p>Bu Gizlilik Politikası veya veri uygulamalarımız hakkındaki sorularınız için bize ulaşın:<br>
+                <a href="mailto:sociaappsup@outlook.com">sociaappsup@outlook.com</a></p>
+            </div>
         </div>
 
-        <hr style="margin: 40px 0; border: none; border-top: 2px solid #f0f0f0;">
-
-        <p style="text-align: center; color: #999; font-size: 0.9em;">
-            © 2025 Happenin. Tüm hakları saklıdır. |
-            <a href="/terms">Kullanım Şartları</a> |
-            <a href="/">Ana Sayfa</a>
-        </p>
+        <div class="page-footer">
+            <a href="/terms">Terms of Service</a>
+            <a href="/refund">Refund Policy</a>
+            <a href="/contact">Contact</a>
+            <a href="/">Home</a>
+            <p>&copy; 2026 Happenin by muratsverse. All rights reserved.</p>
+        </div>
     </div>
+
+    <script>
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-section').forEach(function(el) { el.classList.remove('active'); });
+            document.querySelectorAll('.lang-btn').forEach(function(el) { el.classList.remove('active'); });
+            document.getElementById('lang-' + lang).classList.add('active');
+            document.querySelector('[onclick="switchLang(\'' + lang + '\')"]').classList.add('active');
+        }
+    </script>
 </body>
 </html>
