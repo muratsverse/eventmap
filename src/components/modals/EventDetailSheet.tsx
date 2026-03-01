@@ -31,21 +31,18 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
   const remainingSpots = hasCapacityLimit ? Math.max(0, event.maxAttendees! - attendeesCount) : null;
 
   const handleShare = async () => {
+    const shareUrl = 'https://bit.ly/4aths9j';
     const shareText = `${event.title}\n${event.date} • ${event.time}\n${event.location}, ${event.city}`;
-    const shareUrl = Capacitor.isNativePlatform()
-      ? `eventmap://event?event=${event.id}`
-      : `${window.location.origin}?event=${event.id}`;
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: event.title,
+          title: 'Happenin - Etkinlik Uygulaması',
           text: shareText,
           url: shareUrl,
         });
       } catch {}
     } else {
-      // Fallback: clipboard'a kopyala
       try {
         await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
         alert('Link kopyalandı!');
