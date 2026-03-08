@@ -15,8 +15,9 @@ import './i18n'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 1, // 1 minute - keep data fresh across devices
+      refetchOnWindowFocus: true, // Refetch when app comes to foreground
+      refetchOnReconnect: true,
     },
   },
 })

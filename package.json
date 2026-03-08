@@ -1,7 +1,7 @@
 {
   "name": "happenin",
   "private": true,
-  "version": "1.0.24",
+  "version": "1.0.25",
   "type": "module",
   "description": "Sosyal Etkinlik Platformu - Türkiye'nin etkinlik ağı",
   "scripts": {
@@ -48,6 +48,7 @@
     "react-dom": "^18.3.1",
     "react-google-recaptcha": "^3.1.0",
     "react-i18next": "^16.2.4",
+    "react-image-crop": "^11.0.10",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^7.9.5",
     "rss-parser": "^3.13.0",

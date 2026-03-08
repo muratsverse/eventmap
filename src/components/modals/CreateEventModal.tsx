@@ -483,7 +483,7 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
                 <button
                   type="button"
                   onClick={handleGeocodeAddress}
-                  disabled={isGeocoding || isCreating || !formData.address || !formData.city}
+                  disabled={isGeocoding || isCreating || !formData.address}
                   className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 flex items-center justify-center gap-2 hover:bg-[var(--surface-2)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isGeocoding ? (
@@ -530,19 +530,18 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
                     />
                     <LocationPicker
                       onLocationSelect={async (lat, lng) => {
-                        // Önce koordinatları set et
                         setFormData(prev => ({ ...prev, latitude: lat, longitude: lng }));
-                        // Reverse geocoding - koordinatlardan adres al
                         try {
-                          const address = await reverseGeocode(lat, lng);
-                          if (address) {
-                            console.log('✅ Reverse geocoding success:', address);
-                            setFormData(prev => ({ ...prev, address }));
-                          } else {
-                            console.log('❌ No address found');
+                          const result = await reverseGeocode(lat, lng);
+                          if (result) {
+                            setFormData(prev => ({
+                              ...prev,
+                              address: result.address,
+                              ...(result.city ? { city: result.city as City } : {}),
+                            }));
                           }
                         } catch (error) {
-                          console.error('❌ Reverse geocoding error:', error);
+                          console.error('Reverse geocoding error:', error);
                         }
                       }}
                     />

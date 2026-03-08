@@ -87,13 +87,19 @@ export async function geocodeAddress(
   }
 }
 
+interface ReverseGeocodeResult {
+  address: string;
+  city: string | null;
+  displayName: string;
+}
+
 /**
- * Reverse geocode coordinates to an address
+ * Reverse geocode coordinates to a structured address
  */
 export async function reverseGeocode(
   latitude: number,
   longitude: number
-): Promise<string | null> {
+): Promise<ReverseGeocodeResult | null> {
   try {
     await waitForRateLimit();
 
@@ -102,6 +108,8 @@ export async function reverseGeocode(
         lat: latitude.toString(),
         lon: longitude.toString(),
         format: 'json',
+        addressdetails: '1',
+        'accept-language': 'tr',
       });
 
     const response = await fetch(url, {
@@ -115,7 +123,41 @@ export async function reverseGeocode(
     }
 
     const data = await response.json();
-    return data.display_name || null;
+
+    if (!data || data.error) {
+      return null;
+    }
+
+    const addr = data.address || {};
+
+    // Build a clean, readable address
+    const parts: string[] = [];
+    if (addr.road) parts.push(addr.road);
+    if (addr.house_number && parts.length > 0) parts[parts.length - 1] += ' No:' + addr.house_number;
+    if (addr.neighbourhood) parts.push(addr.neighbourhood);
+    if (addr.suburb) parts.push(addr.suburb);
+    if (addr.district || addr.county) parts.push(addr.district || addr.county);
+
+    const address = parts.length > 0 ? parts.join(', ') : (data.display_name || '');
+
+    // Detect city from Nominatim response
+    const rawCity = addr.province || addr.city || addr.state || '';
+    const cityMap: Record<string, string> = {
+      'istanbul': 'Istanbul',
+      'İstanbul': 'Istanbul',
+      'ankara': 'Ankara',
+      'izmir': 'Izmir',
+      'İzmir': 'Izmir',
+      'antalya': 'Antalya',
+      'bursa': 'Bursa',
+    };
+    const city = cityMap[rawCity] || cityMap[rawCity.toLowerCase()] || null;
+
+    return {
+      address,
+      city,
+      displayName: data.display_name || address,
+    };
   } catch (error) {
     console.error('Reverse geocoding error:', error);
     return null;

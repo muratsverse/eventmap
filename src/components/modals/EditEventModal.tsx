@@ -492,9 +492,13 @@ export default function EditEventModal({ isOpen, onClose, event }: EditEventModa
                       onLocationSelect={async (lat, lng) => {
                         setFormData(prev => ({ ...prev, latitude: lat, longitude: lng }));
                         try {
-                          const address = await reverseGeocode(lat, lng);
-                          if (address) {
-                            setFormData(prev => ({ ...prev, address }));
+                          const result = await reverseGeocode(lat, lng);
+                          if (result) {
+                            setFormData(prev => ({
+                              ...prev,
+                              address: result.address,
+                              ...(result.city ? { city: result.city as City } : {}),
+                            }));
                           }
                         } catch (error) {
                           console.error('Reverse geocoding error:', error);

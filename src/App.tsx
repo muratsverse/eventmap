@@ -13,6 +13,7 @@ import { useEvents } from './hooks/useEvents';
 import type { TabType, Event, EventCategory, City } from './types';
 import { App as CapacitorApp } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
+import { useQueryClient } from '@tanstack/react-query';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('liste');
@@ -23,6 +24,23 @@ function App() {
   const [pendingEventId, setPendingEventId] = useState<string | null>(null);
 
   const { user, profile } = useAuth();
+  const queryClient = useQueryClient();
+
+  // Refetch events when app comes back from background
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    let removeListener: (() => void) | undefined;
+    void CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (isActive) {
+        queryClient.invalidateQueries({ queryKey: ['events'] });
+      }
+    }).then((handle) => {
+      removeListener = () => handle.remove();
+    });
+
+    return () => { removeListener?.(); };
+  }, [queryClient]);
 
   // Deep Link & URL Handler - OAuth ve şifre sıfırlama için
   useEffect(() => {
