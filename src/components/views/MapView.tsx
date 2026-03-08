@@ -151,31 +151,6 @@ export default function MapView({ events, onEventClick, onFilterClick }: MapView
           </div>
         )}
 
-        {/* Legend */}
-        {events.length > 0 && (
-          <div className="absolute bottom-4 left-4 z-10 rounded-2xl p-3 max-w-[200px] bg-[var(--surface)] border border-[var(--border)]">
-            <div className="text-[var(--text)] text-xs font-semibold mb-2">Kategoriler:</div>
-            <div className="grid grid-cols-2 gap-1">
-              {['Konser', 'Spor', 'Tiyatro', 'Festival', 'Meetup', 'Sergi'].map((cat) => {
-                const category = cat as EventCategory;
-                const count = events.filter((e) => e.category === category).length;
-                if (count === 0) return null;
-
-                return (
-                  <div key={category} className="flex items-center gap-1">
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: getCategoryColor(category) }}
-                    />
-                    <span className="text-[var(--muted)] text-xs">
-                      {category} ({count})
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
