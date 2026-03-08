@@ -18,10 +18,10 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 safe-area-bottom">
-      <div className="max-w-mobile mx-auto px-4 pb-2">
-        <div className="bg-[#1a1d2e] rounded-3xl shadow-[0_-2px_20px_rgba(0,0,0,0.5)] border border-[rgba(255,255,255,0.08)]">
-          <div className="grid grid-cols-5 items-center h-16 px-1">
+    <nav className="fixed bottom-0 left-0 right-0 z-40">
+      <div className="max-w-mobile mx-auto">
+        <div className="bg-[#1a1d2e] shadow-[0_-4px_24px_rgba(0,0,0,0.6)] border-t border-[rgba(255,255,255,0.08)] pb-[env(safe-area-inset-bottom)]">
+          <div className="grid grid-cols-5 items-center h-16 px-2">
             {tabs.map((tab) => {
               if (tab.label === '') {
                 return (
