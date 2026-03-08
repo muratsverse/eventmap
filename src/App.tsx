@@ -128,7 +128,7 @@ function App() {
     start: null,
     end: null,
   });
-  const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [sortBy, setSortBy] = useState<SortOption>('random');
   const [searchQuery, setSearchQuery] = useState('');
 
   // User's city (default to Istanbul for now, can be expanded to use profile data)
@@ -185,6 +185,8 @@ function App() {
 
     // Sorting
     switch (sortBy) {
+      case 'random':
+        return filtered; // Already shuffled from useEvents
       case 'newest':
         return [...filtered].sort((a, b) =>
           new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -226,7 +228,7 @@ function App() {
     setShowNearby(false);
     setPriceRange([0, 1000]);
     setDateRange({ start: null, end: null });
-    setSortBy('newest');
+    setSortBy('random');
     setSearchQuery('');
   };
 
@@ -244,6 +246,8 @@ function App() {
             onEventClick={setSelectedEvent}
             onFilterClick={() => setShowFilter(true)}
             isLoading={isLoading}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
           />
         )}
 

@@ -4,7 +4,7 @@ import { getCategoryColor, getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useState, KeyboardEvent } from 'react';
 
-export type SortOption = 'newest' | 'upcoming' | 'popular' | 'price-low' | 'price-high';
+export type SortOption = 'random' | 'newest' | 'upcoming' | 'popular' | 'price-low' | 'price-high';
 
 interface FilterSheetProps {
   isOpen: boolean;

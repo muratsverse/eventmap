@@ -87,6 +87,7 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [noResults, setNoResults] = useState(false);
   const [mapKey, setMapKey] = useState(0); // Force map re-render
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -101,14 +102,17 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
     if (query.length < 3) {
       setSuggestions([]);
       setShowSuggestions(false);
+      setNoResults(false);
       return;
     }
 
     setIsSearching(true);
+    setNoResults(false);
     searchTimeoutRef.current = setTimeout(async () => {
       const results = await searchAddress(query);
       setSuggestions(results);
       setShowSuggestions(results.length > 0);
+      setNoResults(results.length === 0 && query.length >= 3);
       setIsSearching(false);
     }, 600);
   };
@@ -489,9 +493,16 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
                   </div>
                 )}
 
-                <p className="text-xs text-[var(--muted)] mt-1">
-                  Yazın ve listeden seçin veya haritaya tıklayın
-                </p>
+                {noResults && !isSearching && (
+                  <div className="mt-2 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
+                    <p className="text-sm text-yellow-400 font-medium">Adres bulunamadı, haritadan işaretleyin</p>
+                  </div>
+                )}
+                {!noResults && (
+                  <p className="text-xs text-[var(--muted)] mt-1">
+                    Yazın ve listeden seçin veya haritaya tıklayın
+                  </p>
+                )}
               </div>
 
               {/* City */}

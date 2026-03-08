@@ -48,10 +48,11 @@ export async function searchAddress(
 
     const url = `https://nominatim.openstreetmap.org/search?` +
       new URLSearchParams({
-        q: query + ', Türkiye',
+        q: query,
         format: 'json',
         limit: limit.toString(),
         addressdetails: '1',
+        countrycodes: 'tr',
         'accept-language': 'tr',
       });
 
@@ -63,14 +64,6 @@ export async function searchAddress(
 
     const data = await response.json();
 
-    const cityMap: Record<string, string> = {
-      'istanbul': 'Istanbul', 'İstanbul': 'Istanbul',
-      'ankara': 'Ankara',
-      'izmir': 'Izmir', 'İzmir': 'Izmir',
-      'antalya': 'Antalya',
-      'bursa': 'Bursa',
-    };
-
     return data.map((item: any) => {
       const addr = item.address || {};
       const parts: string[] = [];
@@ -81,7 +74,7 @@ export async function searchAddress(
       if (addr.district || addr.county) parts.push(addr.district || addr.county);
 
       const rawCity = addr.province || addr.city || addr.state || '';
-      const city = cityMap[rawCity] || cityMap[rawCity.toLowerCase()] || null;
+      const city = rawCity || null;
 
       return {
         displayName: item.display_name,
@@ -213,16 +206,7 @@ export async function reverseGeocode(
 
     // Detect city from Nominatim response
     const rawCity = addr.province || addr.city || addr.state || '';
-    const cityMap: Record<string, string> = {
-      'istanbul': 'Istanbul',
-      'İstanbul': 'Istanbul',
-      'ankara': 'Ankara',
-      'izmir': 'Izmir',
-      'İzmir': 'Izmir',
-      'antalya': 'Antalya',
-      'bursa': 'Bursa',
-    };
-    const city = cityMap[rawCity] || cityMap[rawCity.toLowerCase()] || null;
+    const city = rawCity || null;
 
     return {
       address,
