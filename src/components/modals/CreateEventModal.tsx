@@ -1,12 +1,12 @@
-import { useState, useRef } from 'react';
-import { X, Image as ImageIcon, Upload, Loader2, Map, Navigation2, Shield } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { X, Image as ImageIcon, Upload, Loader2, Search, Shield } from 'lucide-react';
 import { EventCategory, City } from '@/types';
 import { getCategoryIcon } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useCreateEvent } from '@/hooks/useCreateEvent';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import { Icon as LeafletIcon } from 'leaflet';
-import { geocodeAddress, reverseGeocode } from '@/lib/geocoding';
+import { reverseGeocode, searchAddress, type AddressSuggestion } from '@/lib/geocoding';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { RECAPTCHA_SITE_KEY, isRecaptchaConfigured, checkRateLimit, formatRemainingTime } from '@/lib/recaptcha';
 import { useAuth } from '@/contexts/AuthContext';
@@ -32,6 +32,15 @@ function LocationPicker({ onLocationSelect }: { onLocationSelect: (lat: number, 
       onLocationSelect(e.latlng.lat, e.latlng.lng);
     },
   });
+  return null;
+}
+
+// Fly map to a location when coordinates change
+function MapFlyTo({ lat, lng }: { lat: number; lng: number }) {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo([lat, lng], 16, { duration: 1 });
+  }, [lat, lng, map]);
   return null;
 }
 
@@ -73,37 +82,49 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
-  const [showMap, setShowMap] = useState(false);
-  const [isGeocoding, setIsGeocoding] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [addressQuery, setAddressQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [mapKey, setMapKey] = useState(0); // Force map re-render
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   if (!isOpen) return null;
 
-  const handleGeocodeAddress = async () => {
-    if (!formData.address) {
-      alert('⚠️ Lütfen önce adres bilgisini girin');
+  const handleAddressSearch = (query: string) => {
+    setAddressQuery(query);
+    setFormData(prev => ({ ...prev, address: query }));
+
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+
+    if (query.length < 3) {
+      setSuggestions([]);
+      setShowSuggestions(false);
       return;
     }
 
-    setIsGeocoding(true);
-    try {
-      const result = await geocodeAddress(formData.address, formData.city || 'Türkiye');
+    setIsSearching(true);
+    searchTimeoutRef.current = setTimeout(async () => {
+      const results = await searchAddress(query);
+      setSuggestions(results);
+      setShowSuggestions(results.length > 0);
+      setIsSearching(false);
+    }, 600);
+  };
 
-      if (result) {
-        setFormData({
-          ...formData,
-          latitude: result.latitude,
-          longitude: result.longitude,
-        });
-        alert(`✅ Konum bulundu! (${result.confidence} güvenilirlik)\n${result.displayName}`);
-      } else {
-        alert('❌ Adres bulunamadı. Lütfen haritadan manuel olarak seçin.');
-      }
-    } catch (error) {
-      alert('❌ Konum arama hatası. Lütfen tekrar deneyin.');
-    } finally {
-      setIsGeocoding(false);
-    }
+  const handleSelectSuggestion = (suggestion: AddressSuggestion) => {
+    setAddressQuery(suggestion.shortName);
+    setFormData(prev => ({
+      ...prev,
+      address: suggestion.shortName,
+      latitude: suggestion.latitude,
+      longitude: suggestion.longitude,
+      ...(suggestion.city ? { city: suggestion.city as City } : {}),
+    }));
+    setSuggestions([]);
+    setShowSuggestions(false);
+    setMapKey(prev => prev + 1);
   };
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -414,7 +435,7 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
             <div>
               <h3 className="text-lg font-semibold text-[var(--text)] mb-4">Konum Bilgileri</h3>
 
-              {/* Location */}
+              {/* Location Name */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-[var(--text)] mb-2">
                   Mekan Adı *
@@ -430,22 +451,46 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
                 />
               </div>
 
-              {/* Address - TAM ADRES */}
-              <div className="mb-4">
+              {/* Address Search with Autocomplete */}
+              <div className="mb-4 relative">
                 <label className="block text-sm font-medium text-[var(--text)] mb-2">
-                  Tam Adres *
+                  Adres Ara *
                 </label>
-                <input
-                  type="text"
-                  value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  placeholder="Örn: Levazım Mahallesi, Koru Sokağı No:2 Beşiktaş"
-                  className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
-                  required
-                  disabled={isCreating}
-                />
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted)]" />
+                  {isSearching && <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted)] animate-spin" />}
+                  <input
+                    type="text"
+                    value={addressQuery}
+                    onChange={(e) => handleAddressSearch(e.target.value)}
+                    onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                    placeholder="Adres veya mekan adı yazın..."
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border)] rounded-xl pl-11 pr-10 py-3 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-40)]"
+                    required
+                    disabled={isCreating}
+                    autoComplete="off"
+                  />
+                </div>
+
+                {/* Suggestions Dropdown */}
+                {showSuggestions && (
+                  <div className="absolute z-20 w-full mt-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-lg overflow-hidden max-h-48 overflow-y-auto">
+                    {suggestions.map((s, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => handleSelectSuggestion(s)}
+                        className="w-full text-left px-4 py-3 hover:bg-[var(--surface-2)] transition-colors border-b border-[var(--border)] last:border-b-0"
+                      >
+                        <p className="text-sm text-[var(--text)] font-medium">{s.shortName}</p>
+                        <p className="text-xs text-[var(--muted)] truncate">{s.displayName}</p>
+                      </button>
+                    ))}
+                  </div>
+                )}
+
                 <p className="text-xs text-[var(--muted)] mt-1">
-                  Tam adres haritada doğru konumu göstermek için önemlidir
+                  Yazın ve listeden seçin veya haritaya tıklayın
                 </p>
               </div>
 
@@ -473,89 +518,50 @@ export default function CreateEventModal({ isOpen, onClose }: CreateEventModalPr
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Interactive Map - Always visible */}
+              <div className="mb-4 rounded-xl overflow-hidden" style={{ height: '250px' }}>
+                <MapContainer
+                  key={mapKey}
+                  center={[formData.latitude, formData.longitude]}
+                  zoom={13}
+                  style={{ height: '100%', width: '100%' }}
+                  className="z-0"
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <MapFlyTo lat={formData.latitude} lng={formData.longitude} />
+                  <LocationPicker
+                    onLocationSelect={async (lat, lng) => {
+                      setFormData(prev => ({ ...prev, latitude: lat, longitude: lng }));
+                      try {
+                        const result = await reverseGeocode(lat, lng);
+                        if (result) {
+                          setAddressQuery(result.address);
+                          setFormData(prev => ({
+                            ...prev,
+                            address: result.address,
+                            ...(result.city ? { city: result.city as City } : {}),
+                          }));
+                        }
+                      } catch (error) {
+                        console.error('Reverse geocoding error:', error);
+                      }
+                    }}
+                  />
+                  <Marker position={[formData.latitude, formData.longitude]} icon={customIcon} />
+                </MapContainer>
                 <p className="text-xs text-[var(--muted)] mt-2">
-                  💡 Haritadan konum seçtiğinizde şehir otomatik belirlenecektir
+                  Haritaya tıklayarak da konum seçebilirsiniz
                 </p>
               </div>
 
-              {/* Geocode Button */}
-              <div className="mb-4">
-                <button
-                  type="button"
-                  onClick={handleGeocodeAddress}
-                  disabled={isGeocoding || isCreating || !formData.address}
-                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 flex items-center justify-center gap-2 hover:bg-[var(--surface-2)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isGeocoding ? (
-                    <>
-                      <Loader2 className="w-5 h-5 text-[var(--muted)] animate-spin" />
-                      <span className="text-[var(--muted)]">Konum aranıyor...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Navigation2 className="w-5 h-5 text-[var(--muted)]" />
-                      <span className="text-[var(--muted)]">🔍 Adresten Konum Bul</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Map Picker Button */}
-              <div className="mb-4">
-                <button
-                  type="button"
-                  onClick={() => setShowMap(!showMap)}
-                  className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl p-3 flex items-center justify-center gap-2 hover:bg-[var(--surface-2)] transition-all"
-                  disabled={isCreating}
-                >
-                  <Map className="w-5 h-5 text-[var(--muted)]" />
-                  <span className="text-[var(--muted)]">
-                    {showMap ? 'Haritayı Gizle' : '📍 Haritadan Konum Seç'}
-                  </span>
-                </button>
-              </div>
-
-              {/* Interactive Map */}
-              {showMap && (
-                <div className="mb-4 rounded-xl overflow-hidden" style={{ height: '300px' }}>
-                  <MapContainer
-                    center={[formData.latitude, formData.longitude]}
-                    zoom={13}
-                    style={{ height: '100%', width: '100%' }}
-                    className="z-0"
-                  >
-                    <TileLayer
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <LocationPicker
-                      onLocationSelect={async (lat, lng) => {
-                        setFormData(prev => ({ ...prev, latitude: lat, longitude: lng }));
-                        try {
-                          const result = await reverseGeocode(lat, lng);
-                          if (result) {
-                            setFormData(prev => ({
-                              ...prev,
-                              address: result.address,
-                              ...(result.city ? { city: result.city as City } : {}),
-                            }));
-                          }
-                        } catch (error) {
-                          console.error('Reverse geocoding error:', error);
-                        }
-                      }}
-                    />
-                    <Marker position={[formData.latitude, formData.longitude]} icon={customIcon} />
-                  </MapContainer>
-                  <p className="text-xs text-[var(--muted)] mt-2">
-                    🖱️ Haritaya tıklayarak konumu seçin
-                  </p>
-                </div>
-              )}
-
-              {/* Koordinatlar (opsiyonel gösterim) */}
+              {/* Coordinates info */}
               <div className="text-xs text-[var(--muted)]">
-                📍 Koordinatlar: {formData.latitude.toFixed(4)}, {formData.longitude.toFixed(4)}
+                Koordinatlar: {formData.latitude.toFixed(4)}, {formData.longitude.toFixed(4)}
               </div>
             </div>
 

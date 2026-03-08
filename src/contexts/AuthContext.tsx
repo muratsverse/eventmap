@@ -5,6 +5,7 @@ import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 import { App } from '@capacitor/app';
 import { RestoreAccountModal } from '@/components/auth/RestoreAccountModal';
+import { initPushNotifications, removePushToken } from '@/services/pushNotifications';
 
 interface Profile {
   id: string;
@@ -328,6 +329,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Normal aktif hesap
       if (!data.deleted_at) {
         setProfile(data as Profile);
+        // Initialize push notifications
+        initPushNotifications(userId);
       } else {
         setProfile(null);
       }
@@ -415,6 +418,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    if (user) {
+      await removePushToken(user.id);
+    }
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);

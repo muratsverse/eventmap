@@ -87,12 +87,20 @@ export function useEvents(filters?: {
       });
 
       // Merge attendee counts with events
-      return eventsData.map((event) =>
+      const events = eventsData.map((event) =>
         dbToEvent({
           ...event,
           attendee_count: attendeeCounts[event.id] || 0,
         })
       );
+
+      // Fisher-Yates shuffle - random order on each load
+      for (let i = events.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [events[i], events[j]] = [events[j], events[i]];
+      }
+
+      return events;
     },
   });
 }

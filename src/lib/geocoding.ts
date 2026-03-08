@@ -26,6 +26,77 @@ async function waitForRateLimit() {
   lastRequestTime = Date.now();
 }
 
+export interface AddressSuggestion {
+  displayName: string;
+  shortName: string;
+  latitude: number;
+  longitude: number;
+  city: string | null;
+}
+
+/**
+ * Search addresses with autocomplete-style results
+ */
+export async function searchAddress(
+  query: string,
+  limit: number = 5
+): Promise<AddressSuggestion[]> {
+  if (query.length < 3) return [];
+
+  try {
+    await waitForRateLimit();
+
+    const url = `https://nominatim.openstreetmap.org/search?` +
+      new URLSearchParams({
+        q: query + ', Türkiye',
+        format: 'json',
+        limit: limit.toString(),
+        addressdetails: '1',
+        'accept-language': 'tr',
+      });
+
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'Happenin/1.0' },
+    });
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+
+    const cityMap: Record<string, string> = {
+      'istanbul': 'Istanbul', 'İstanbul': 'Istanbul',
+      'ankara': 'Ankara',
+      'izmir': 'Izmir', 'İzmir': 'Izmir',
+      'antalya': 'Antalya',
+      'bursa': 'Bursa',
+    };
+
+    return data.map((item: any) => {
+      const addr = item.address || {};
+      const parts: string[] = [];
+      if (addr.road) parts.push(addr.road);
+      if (addr.house_number && parts.length > 0) parts[parts.length - 1] += ' No:' + addr.house_number;
+      if (addr.neighbourhood) parts.push(addr.neighbourhood);
+      if (addr.suburb) parts.push(addr.suburb);
+      if (addr.district || addr.county) parts.push(addr.district || addr.county);
+
+      const rawCity = addr.province || addr.city || addr.state || '';
+      const city = cityMap[rawCity] || cityMap[rawCity.toLowerCase()] || null;
+
+      return {
+        displayName: item.display_name,
+        shortName: parts.length > 0 ? parts.join(', ') : item.display_name.split(',').slice(0, 3).join(','),
+        latitude: parseFloat(item.lat),
+        longitude: parseFloat(item.lon),
+        city,
+      };
+    });
+  } catch (error) {
+    console.error('Address search error:', error);
+    return [];
+  }
+}
+
 /**
  * Geocode an address to coordinates using Nominatim
  */
