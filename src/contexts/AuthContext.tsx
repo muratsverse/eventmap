@@ -223,23 +223,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     // Uygulama resume olduğunda session kontrol et
+    let appStateHandle: any;
     App.addListener('appStateChange', async ({ isActive }) => {
       if (isActive) {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session && !user) {
-          setSession(session);
-          setUser(session.user);
-          loadProfile(session.user.id, session.user);
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        if (currentSession) {
+          // Only update if we don't have a session yet (avoids unnecessary re-renders)
+          setUser((prevUser) => {
+            if (!prevUser) {
+              setSession(currentSession);
+              loadProfile(currentSession.user.id, currentSession.user);
+              return currentSession.user;
+            }
+            return prevUser;
+          });
         }
       }
-    });
+    }).then((handle) => { appStateHandle = handle; });
 
     return () => {
       if (listenerHandle) {
         listenerHandle.remove();
       }
+      if (appStateHandle) {
+        appStateHandle.remove();
+      }
       Browser.removeAllListeners();
-      App.removeAllListeners();
     };
   }, [isSupabaseConfigured]);
 
