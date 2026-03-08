@@ -20,7 +20,7 @@ export default function BottomNav({ activeTab, onTabChange, onCreateClick }: Bot
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 safe-area-bottom">
       <div className="max-w-mobile mx-auto px-4 pb-2">
-        <div className="bg-[var(--surface)] backdrop-blur-md rounded-3xl shadow-lg border border-[var(--border)]">
+        <div className="bg-[#1a1d2e] rounded-3xl shadow-[0_-2px_20px_rgba(0,0,0,0.5)] border border-[rgba(255,255,255,0.08)]">
           <div className="grid grid-cols-5 items-center h-16 px-1">
             {tabs.map((tab) => {
               if (tab.label === '') {
