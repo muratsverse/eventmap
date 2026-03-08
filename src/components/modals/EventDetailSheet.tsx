@@ -15,7 +15,7 @@ interface EventDetailSheetProps {
 }
 
 export default function EventDetailSheet({ event, onClose }: EventDetailSheetProps) {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { isAttending, toggleAttendance } = useAttendances();
   const { attendees, count: attendeesCount } = useEventAttendees(event?.id || null);
@@ -23,8 +23,10 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
 
   if (!event) return null;
 
-  // Kullanıcı bu etkinliğin sahibi mi kontrol et
+  // Kullanıcı bu etkinliğin sahibi mi veya admin mi kontrol et
   const isOwner = user && event.creatorId === user.id;
+  const isAdmin = profile?.is_admin === true;
+  const canEdit = isOwner || isAdmin;
 
   // Kapasite kontrolü
   const hasCapacityLimit = event.maxAttendees !== undefined && event.maxAttendees !== null;
@@ -113,8 +115,8 @@ export default function EventDetailSheet({ event, onClose }: EventDetailSheetPro
 
           {/* Header Buttons */}
           <div className="absolute top-4 right-4 flex items-center gap-2">
-            {/* Edit Button - Sadece etkinlik sahibi görebilir */}
-            {isOwner && (
+            {/* Edit Button - Etkinlik sahibi veya admin görebilir */}
+            {canEdit && (
               <button
                 onClick={() => setShowEditModal(true)}
                 className="rounded-full p-2 bg-[var(--surface)]/80 border border-[var(--border)] hover:bg-[var(--surface)] active:scale-95 transition-all"

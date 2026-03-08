@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "553515486853",
+    "project_id": "happenin06",
+    "storage_bucket": "happenin06.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553515486853:android:a48b63288239f6fc71a3ec",
+        "android_client_info": {
+          "package_name": "com.muratveozturk.eventmap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvYken5uPhVWfHn-SUKg5jwugD5PyuNXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
