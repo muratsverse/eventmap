@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { User as UserIcon, Mail, Lock, Heart, Calendar, Settings, Bell, LogOut, Shield, Edit2, Eye, EyeOff, Trash2, FileText, Scale, CreditCard, PlusCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites, useAttendances } from '@/hooks/useFavorites';
 import { useEvents, useUserCreatedEvents } from '@/hooks/useEvents';
@@ -10,7 +11,6 @@ import EventCard from '../EventCard';
 import AdminPanel from '../admin/AdminPanel';
 import PasswordResetModal from '../modals/PasswordResetModal';
 import NotificationSettingsModal from '../modals/NotificationSettingsModal';
-import ProfilePhotoModal from '../modals/ProfilePhotoModal';
 import EditProfileModal from '../modals/EditProfileModal';
 import UpdatePasswordModal from '../modals/UpdatePasswordModal';
 import { supabase } from '@/lib/supabase';
@@ -31,6 +31,7 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
     signIn,
     signUp,
     signOut,
+    updateProfile,
     loading,
     signInWithGoogle,
     signInWithApple,
@@ -48,12 +49,90 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
   const [loginError, setLoginError] = useState('');
   const [showPasswordReset, setShowPasswordReset] = useState(false);
   const [showNotifSettings, setShowNotifSettings] = useState(false);
-  const [showProfilePhoto, setShowProfilePhoto] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showUpdatePassword, setShowUpdatePassword] = useState(false);
   const [emailVisible, setEmailVisible] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isPhotoUploading, setIsPhotoUploading] = useState(false);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadProfilePhoto = async (fileOrBlob: File | Blob) => {
+    if (!user) return;
+
+    const maxSize = 5 * 1024 * 1024;
+    if (fileOrBlob.size > maxSize) {
+      alert('Dosya boyutu 5MB\'dan kucuk olmalidir');
+      return;
+    }
+
+    setIsPhotoUploading(true);
+    try {
+      const fileName = `${user.id}-${Date.now()}.jpg`;
+      const filePath = `profiles/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, fileOrBlob, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: 'image/jpeg',
+        });
+
+      if (uploadError) throw uploadError;
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from('avatars').getPublicUrl(filePath);
+
+      const { error: updateError } = await updateProfile({ profile_photo: publicUrl });
+      if (updateError) throw updateError;
+    } catch (error: any) {
+      console.error('Profil resmi yukleme hatasi:', error);
+      alert(`Yukleme hatasi: ${error.message || 'Bilinmeyen hata'}`);
+    } finally {
+      setIsPhotoUploading(false);
+    }
+  };
+
+  const handleAvatarClick = async () => {
+    if (!user || isPhotoUploading) return;
+
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: CameraResultType.DataUrl,
+          source: CameraSource.Photos,
+        });
+
+        if (!image.dataUrl) return;
+        const response = await fetch(image.dataUrl);
+        const blob = await response.blob();
+        await uploadProfilePhoto(blob);
+      } catch (error) {
+        console.error('Galeri acma hatasi:', error);
+      }
+      return;
+    }
+
+    photoInputRef.current?.click();
+  };
+
+  const handleAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Lutfen bir resim dosyasi secin');
+      e.target.value = '';
+      return;
+    }
+
+    await uploadProfilePhoto(file);
+    e.target.value = '';
+  };
 
   const handleGoogleSignIn = async () => {
     setLoginError('');
@@ -327,7 +406,8 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
             <div className="flex items-start gap-4">
               {/* Avatar */}
               <button
-                onClick={() => setShowProfilePhoto(true)}
+                onClick={handleAvatarClick}
+                disabled={isPhotoUploading}
                 className="w-20 h-20 bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl flex items-center justify-center flex-shrink-0 hover:opacity-90 active:scale-95 transition-all relative group"
               >
                 {profile?.profile_photo ? (
@@ -341,9 +421,17 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
                 )}
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="text-white text-xs font-medium">Değiştir</span>
+                  <span className="text-white text-xs font-medium">{isPhotoUploading ? 'Yukleniyor' : 'Degistir'}</span>
                 </div>
               </button>
+
+              <input
+                ref={photoInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarFileChange}
+                className="hidden"
+              />
 
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
@@ -644,11 +732,6 @@ export default function ProfileView({ events, onEventClick }: ProfileViewProps) 
         <NotificationSettingsModal
           isOpen={showNotifSettings}
           onClose={() => setShowNotifSettings(false)}
-        />
-
-        <ProfilePhotoModal
-          isOpen={showProfilePhoto}
-          onClose={() => setShowProfilePhoto(false)}
         />
 
         <EditProfileModal
