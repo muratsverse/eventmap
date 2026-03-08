@@ -1,29 +1,15 @@
 /**
- * Geocoding utilities using Nominatim (OpenStreetMap)
- * Free, no API key required, rate limited to 1 req/sec
+ * Geocoding utilities using LocationIQ
+ * 5000 requests/day free tier
  */
+
+const LOCATIONIQ_KEY = 'pk.52a68a9fe5e057aee28c8a53bca6618b';
 
 interface GeocodingResult {
   latitude: number;
   longitude: number;
   displayName: string;
   confidence: 'high' | 'medium' | 'low';
-}
-
-// Rate limiting: 1 request per second
-let lastRequestTime = 0;
-const MIN_REQUEST_INTERVAL = 1000; // 1 second
-
-async function waitForRateLimit() {
-  const now = Date.now();
-  const timeSinceLastRequest = now - lastRequestTime;
-
-  if (timeSinceLastRequest < MIN_REQUEST_INTERVAL) {
-    const waitTime = MIN_REQUEST_INTERVAL - timeSinceLastRequest;
-    await new Promise(resolve => setTimeout(resolve, waitTime));
-  }
-
-  lastRequestTime = Date.now();
 }
 
 export interface AddressSuggestion {
@@ -35,7 +21,7 @@ export interface AddressSuggestion {
 }
 
 /**
- * Search addresses with autocomplete-style results
+ * Search addresses with autocomplete-style results using LocationIQ
  */
 export async function searchAddress(
   query: string,
@@ -44,21 +30,17 @@ export async function searchAddress(
   if (query.length < 3) return [];
 
   try {
-    await waitForRateLimit();
-
-    const url = `https://nominatim.openstreetmap.org/search?` +
+    const url = `https://api.locationiq.com/v1/autocomplete?` +
       new URLSearchParams({
+        key: LOCATIONIQ_KEY,
         q: query,
-        format: 'json',
         limit: limit.toString(),
-        addressdetails: '1',
         countrycodes: 'tr',
         'accept-language': 'tr',
+        tag: 'place:house,place:building,highway:*,amenity:*,shop:*,tourism:*,leisure:*',
       });
 
-    const response = await fetch(url, {
-      headers: { 'User-Agent': 'Happenin/1.0' },
-    });
+    const response = await fetch(url);
 
     if (!response.ok) return [];
 
@@ -67,13 +49,15 @@ export async function searchAddress(
     return data.map((item: any) => {
       const addr = item.address || {};
       const parts: string[] = [];
+
+      if (addr.name && addr.name !== addr.road) parts.push(addr.name);
       if (addr.road) parts.push(addr.road);
       if (addr.house_number && parts.length > 0) parts[parts.length - 1] += ' No:' + addr.house_number;
       if (addr.neighbourhood) parts.push(addr.neighbourhood);
       if (addr.suburb) parts.push(addr.suburb);
       if (addr.district || addr.county) parts.push(addr.district || addr.county);
 
-      const rawCity = addr.province || addr.city || addr.state || '';
+      const rawCity = addr.state || addr.city || addr.province || '';
       const city = rawCity || null;
 
       return {
@@ -91,7 +75,7 @@ export async function searchAddress(
 }
 
 /**
- * Geocode an address to coordinates using Nominatim
+ * Geocode an address to coordinates using LocationIQ
  */
 export async function geocodeAddress(
   address: string,
@@ -99,22 +83,17 @@ export async function geocodeAddress(
   country: string = 'Turkey'
 ): Promise<GeocodingResult | null> {
   try {
-    await waitForRateLimit();
-
     const query = `${address}, ${city}, ${country}`;
-    const url = `https://nominatim.openstreetmap.org/search?` +
+    const url = `https://api.locationiq.com/v1/search?` +
       new URLSearchParams({
+        key: LOCATIONIQ_KEY,
         q: query,
         format: 'json',
         limit: '1',
         addressdetails: '1',
       });
 
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Happenin/1.0',
-      },
-    });
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error('Geocoding request failed');
@@ -128,8 +107,7 @@ export async function geocodeAddress(
 
     const result = data[0];
 
-    // Determine confidence based on importance score
-    const importance = parseFloat(result.importance);
+    const importance = parseFloat(result.importance || '0');
     let confidence: 'high' | 'medium' | 'low';
     if (importance > 0.5) {
       confidence = 'high';
@@ -158,17 +136,16 @@ interface ReverseGeocodeResult {
 }
 
 /**
- * Reverse geocode coordinates to a structured address
+ * Reverse geocode coordinates to a structured address using LocationIQ
  */
 export async function reverseGeocode(
   latitude: number,
   longitude: number
 ): Promise<ReverseGeocodeResult | null> {
   try {
-    await waitForRateLimit();
-
-    const url = `https://nominatim.openstreetmap.org/reverse?` +
+    const url = `https://us1.locationiq.com/v1/reverse?` +
       new URLSearchParams({
+        key: LOCATIONIQ_KEY,
         lat: latitude.toString(),
         lon: longitude.toString(),
         format: 'json',
@@ -176,11 +153,7 @@ export async function reverseGeocode(
         'accept-language': 'tr',
       });
 
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Happenin/1.0',
-      },
-    });
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error('Reverse geocoding request failed');
@@ -194,7 +167,6 @@ export async function reverseGeocode(
 
     const addr = data.address || {};
 
-    // Build a clean, readable address
     const parts: string[] = [];
     if (addr.road) parts.push(addr.road);
     if (addr.house_number && parts.length > 0) parts[parts.length - 1] += ' No:' + addr.house_number;
@@ -204,8 +176,7 @@ export async function reverseGeocode(
 
     const address = parts.length > 0 ? parts.join(', ') : (data.display_name || '');
 
-    // Detect city from Nominatim response
-    const rawCity = addr.province || addr.city || addr.state || '';
+    const rawCity = addr.state || addr.city || addr.province || '';
     const city = rawCity || null;
 
     return {
@@ -221,7 +192,6 @@ export async function reverseGeocode(
 
 /**
  * Validate if coordinates match the given address
- * Returns true if within reasonable distance (< 1km)
  */
 export async function validateAddressCoordinates(
   address: string,
@@ -235,7 +205,6 @@ export async function validateAddressCoordinates(
     return false;
   }
 
-  // Calculate distance using Haversine formula
   const distance = calculateDistance(
     latitude,
     longitude,
@@ -243,13 +212,11 @@ export async function validateAddressCoordinates(
     result.longitude
   );
 
-  // Accept if within 1km
   return distance < 1000;
 }
 
 /**
- * Calculate distance between two coordinates in meters
- * Using Haversine formula
+ * Calculate distance between two coordinates in meters (Haversine)
  */
 function calculateDistance(
   lat1: number,
@@ -257,7 +224,7 @@ function calculateDistance(
   lat2: number,
   lon2: number
 ): number {
-  const R = 6371e3; // Earth's radius in meters
+  const R = 6371e3;
   const φ1 = (lat1 * Math.PI) / 180;
   const φ2 = (lat2 * Math.PI) / 180;
   const Δφ = ((lat2 - lat1) * Math.PI) / 180;
@@ -269,5 +236,5 @@ function calculateDistance(
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-  return R * c; // Distance in meters
+  return R * c;
 }
