@@ -66,17 +66,30 @@ function createCustomIcon(category: EventCategory): Icon {
 }
 
 export default function MapView({ events, onEventClick, onFilterClick }: MapViewProps) {
-  // Default center: Istanbul
-  const [mapCenter, setMapCenter] = useState<[number, number]>([41.0082, 28.9784]);
-  const [mapZoom, setMapZoom] = useState(11);
+  // Default center: Turkey overview
+  const [mapCenter, setMapCenter] = useState<[number, number]>([39.9, 32.8]);
+  const [mapZoom, setMapZoom] = useState(6);
+  const [locationLoaded, setLocationLoaded] = useState(false);
 
-  // Center map on first event with coordinates
+  // Get user's current location
   useEffect(() => {
-    if (events.length > 0 && events[0].latitude && events[0].longitude) {
-      setMapCenter([events[0].latitude, events[0].longitude]);
-      setMapZoom(12);
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setMapCenter([position.coords.latitude, position.coords.longitude]);
+          setMapZoom(13);
+          setLocationLoaded(true);
+        },
+        () => {
+          // Location denied/failed - stay at default
+          setLocationLoaded(true);
+        },
+        { enableHighAccuracy: false, timeout: 5000 }
+      );
+    } else {
+      setLocationLoaded(true);
     }
-  }, [events]);
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col">
@@ -142,14 +155,7 @@ export default function MapView({ events, onEventClick, onFilterClick }: MapView
           </MapContainer>
         )}
 
-        {/* Event count indicator */}
-        {events.length > 0 && (
-          <div className="absolute top-4 left-4 z-10 rounded-2xl px-4 py-2 bg-[var(--surface)] border border-[var(--border)]">
-            <span className="text-[var(--text)] font-semibold">
-              📍 {events.length} Etkinlik
-            </span>
-          </div>
-        )}
+
 
       </div>
     </div>
