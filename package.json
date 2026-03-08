@@ -1,7 +1,7 @@
 {
   "name": "happenin",
   "private": true,
-  "version": "1.0.25",
+  "version": "1.0.27",
   "type": "module",
   "description": "Sosyal Etkinlik Platformu - Türkiye'nin etkinlik ağı",
   "scripts": {
